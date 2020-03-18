@@ -37,10 +37,11 @@ public class Create {
 			stmt2.close();
 			Statement stmt3 = c.createStatement();
 			String sql3 = "CREATE TABLE product "
-					   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
+					   + "(id   INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					   + " name     TEXT     NOT NULL, "
 					   + " type  TEXT  	NOT NULL, "
-					   + " price	INTEGER NOT NULL)";
+					   + " price	INTEGER NOT NULL,"
+					   + " n_products INTEGER)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 			Statement stmt4 = c.createStatement();
@@ -62,9 +63,9 @@ public class Create {
 			Statement stmt6=c.createStatement();
 			String sql6 = "CREATE TABLE contract_pharmacy"
 					+"(id INTEGER PRIMARY KEY AUTOINCRIMENT,"
-					+"type TEXT NOT NULL,"
-					+"expediture DOUBLE NOT NULL,"
-					+"nproducts INTEGER NOT NULL)";
+					+" type TEXT NOT NULL,"
+					+" expediture DOUBLE NOT NULL,"
+					+" nproducts INTEGER NOT NULL)";
 			stmt6.executeUpdate(sql6);
 			stmt6.close();
 			Statement stmt7=c.createStatement();
