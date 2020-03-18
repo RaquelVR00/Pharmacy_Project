@@ -22,6 +22,21 @@ public class Products implements Serializable {
 		this.type = type;
 		this.price = price;
 	}
+	
+
+
+	public Products(String name, Float price) {
+		super();
+		this.name = name;
+		this.price = price;
+	}
+
+	
+
+	public Products(String type) {
+		super();
+		this.type = type;
+	}
 
 
 	@Override
@@ -95,8 +110,5 @@ public class Products implements Serializable {
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-	
-	
-	
 	
 }
