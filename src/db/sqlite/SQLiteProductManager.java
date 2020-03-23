@@ -50,19 +50,38 @@ public class SQLiteProductManager implements ProductManager {
 			ResultSet rs  = prep.executeQuery();
 			while(rs.next()) {
 				int id = rs.getInt("id");
-				
+				String productsName = rs.getString("name");
+				String productsType = rs.getString("type");
+				Float productsPrice = rs.getFloat("price");
+				Products newproducts = new Products(productsName,productsType,productsPrice);
+				productsList.add(newproducts);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return productsList;
 	}
 
 	@Override
 	public List<Products> searchByPrice(Float price) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			String sql = "SELECT * FROM products WHERE price LIKE ?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, "%"+price+"%");
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+			int id = rs.getInt("id");
+			String productsName = rs.getString("name");
+			String productsType = rs.getString("type");
+			Float productsPrice = rs.getFloat("price");
+			Products newproducts = new Products(productsName,productsType,productsPrice);
+			productsList.add(newproducts);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return productsList;
 	}
 
 	@Override
