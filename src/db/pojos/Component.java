@@ -84,8 +84,4 @@ public class Component implements Serializable {
 	public void setSupplier(String supplier) {
 		this.supplier = supplier;
 	}
-	
-	
-	
-
 }

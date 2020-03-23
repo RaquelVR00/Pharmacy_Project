@@ -1,5 +1,7 @@
 package db.pojos;
 
-public class ContractWorker {
+import java.io.Serializable;
+
+public class ContractWorker implements Serializable{
 
 }
