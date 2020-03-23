@@ -7,11 +7,11 @@ import java.sql.Statement;
 
 import db.interfaces.DBManager;
 
-public class SQLManager implements DBManager {
+public class SQLiteManager implements DBManager {
 	
 	private Connection c;
 	
-	public SQLManager() {
+	public SQLiteManager() {
 		super();
 	}
 
