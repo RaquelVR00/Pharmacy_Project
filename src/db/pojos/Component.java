@@ -22,6 +22,15 @@ public class Component implements Serializable {
 		this.price = price;
 		this.supplier = supplier;
 	}
+	
+
+	public Component(Integer id, String name, Float price, String supplier) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.supplier = supplier;
+	}
 
 	@Override
 	public int hashCode() {
