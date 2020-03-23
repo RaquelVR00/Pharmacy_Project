@@ -52,6 +52,7 @@ public class SQLiteComponentManager implements ComponentManager {
 			e.printStackTrace();
 		}
 		return componentList;
+		
 	}
 
 	@Override
