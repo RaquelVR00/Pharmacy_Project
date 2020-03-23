@@ -9,9 +9,9 @@ import java.util.List;
 import db.interfaces.ProductManager;
 import db.pojos.Products;
 
-public class SQLProduct implements ProductManager {
+public class SQLiteProductManager implements ProductManager {
 	private Connection c;
-	public SQLProduct(Connection c) {
+	public SQLiteProductManager(Connection c) {
 		this.c=c;
 	}
 
