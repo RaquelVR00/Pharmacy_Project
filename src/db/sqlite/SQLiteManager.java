@@ -113,7 +113,7 @@ public class SQLiteManager implements DBManager {
 				System.out.println("Tables created!!");
 		}catch(Exception e) {
 			if(e.getMessage().contains("already exists")) {
-				//If tables allready exist we are going to do nothing
+				//If tables already exist we are going to do nothing
 			}else {
 				e.printStackTrace();
 			}
