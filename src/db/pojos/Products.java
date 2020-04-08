@@ -1,6 +1,8 @@
 package db.pojos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Products implements Serializable {
 	private static final long serialVersionUID = 1413835970238962198L;
@@ -9,10 +11,20 @@ public class Products implements Serializable {
 	private String name;
 	private String type;
 	private Float price;
+	private List<Component> components;
 	
 	
 	public Products() {
 		super();
+	}
+
+
+	public Products(Integer id, String name, String type, Float price) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.price = price;
 	}
 
 
@@ -21,6 +33,7 @@ public class Products implements Serializable {
 		this.name = name;
 		this.type = type;
 		this.price = price;
+		this.components = new ArrayList<Component>();
 	}
 	
 
@@ -29,6 +42,8 @@ public class Products implements Serializable {
 		super();
 		this.name = name;
 		this.price = price;
+		this.components = new ArrayList<Component>();
+
 	}
 
 	
@@ -36,6 +51,8 @@ public class Products implements Serializable {
 	public Products(String type) {
 		super();
 		this.type = type;
+		this.components = new ArrayList<Component>();
+
 	}
 
 
@@ -68,7 +85,8 @@ public class Products implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Products [id=" + id + ", name=" + name + ", type=" + type + ", price=" + price + "]";
+		return "Products [id=" + id + ", name=" + name + ", type=" + type + ", price=" + price + ", components="
+				+ components + "]";
 	}
 
 
@@ -109,6 +127,16 @@ public class Products implements Serializable {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+
+	public List<Component> getComponents() {
+		return components;
+	}
+
+
+	public void setComponents(List<Component> components) {
+		this.components = components;
 	}
 	
 }

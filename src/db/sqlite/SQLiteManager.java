@@ -1,5 +1,7 @@
 package db.sqlite;
 
+import db.interfaces.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,6 +12,11 @@ import db.interfaces.DBManager;
 public class SQLiteManager implements DBManager {
 	
 	private Connection c;
+	private ProductManager product;
+	private ComponentManager component;
+	private WorkerManager worker;
+	private PharmacyManager pharmacy;
+	
 	
 	public SQLiteManager() {
 		super();
@@ -21,6 +28,14 @@ public class SQLiteManager implements DBManager {
 			Class.forName("org.sqlite.Pharmacy");
 			this.c= DriverManager.getConnection("pharmacy:sqlite./db/pharmacy.db");
 			c.createStatement().execute("PRAGMA foreing_keys=ON");
+			//Create product
+			product = new SQLiteProductManager(c);
+			//Create component
+			component = new SQLiteComponentManager(c);
+			//Create worker
+			worker =new SQLiteWorkerManager(c);
+			//Create Pharmacy
+			pharmacy = new SQLitePharmacyManager(c);
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -98,17 +113,20 @@ public class SQLiteManager implements DBManager {
 		stmt6.executeUpdate(sql6);
 		stmt6.close();
 		Statement stmt7=c.createStatement();
-		String sql7= "CREATE TABLE pharmacyandproducts"
-				+"(p_id INTEGER REFERENCES pharmacy(id),"
-				+"pr_id INTEGER REFERENCES product(id))";
+		String sql7= "CREATE TABLE pharmacyProducts"
+				+"(pharmacieId INTEGER REFERENCES pharmacy(id),"
+				+"productId INTEGER REFERENCES product(id),"
+				+"PRIMARY KEY(pharmacieId,productId))";
 		stmt7.executeUpdate(sql7);
 		stmt7.close();
 		Statement stmt8=c.createStatement();
-		String sql8= "CREATE TABLE productandcomponents"
-                 +"(p_id INTEGER REFERENCES product(id),"
-				 +"c_id INTEGER REFERENCES component(id))";
+		String sql8= "CREATE TABLE productComponents"
+                 +"(productId INTEGER REFERENCES product(id),"
+				 +"componentId INTEGER REFERENCES component(id),"
+                 +"PRIMARY KEY(productId,componentId))";
 		stmt8.executeUpdate(sql8);
 		stmt8.close();
+		
 		
 				System.out.println("Tables created!!");
 		}catch(Exception e) {
@@ -120,5 +138,24 @@ public class SQLiteManager implements DBManager {
 		}
 
 	}
+	
+	@Override  
+	public ProductManager getProductManager() {
+		return product;
+	}
+	@Override  
+	public ComponentManager getComponentManager() {
+		return component;
+	}
+	@Override  
+	public WorkerManager getWorkerManager() {
+		return worker;
+	}
+	@Override  
+	public PharmacyManager getPharmacyManager() {
+		return pharmacy;
+	}
+	
+	
 
 }

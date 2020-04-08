@@ -9,13 +9,30 @@ import java.util.List;
 
 import db.interfaces.ComponentManager;
 import db.pojos.Component;
+import db.pojos.Products;
 
 public class SQLiteComponentManager implements ComponentManager {
 
 	private Connection c;
+	
 	public SQLiteComponentManager(Connection c) {
 		this.c=c;
 	}
+	
+	public void give(int productId, int componentId) {
+	//Link Product and Component
+			try {
+				String sql = "INSERT INTO productComponents (p_id,c_id) "
+						+ "VALUES (?,?);";
+				PreparedStatement prep = c.prepareStatement(sql);
+				prep.setInt(1,productId);
+				prep.setInt(2,componentId);
+				prep.close();
+			} catch (Exception e) {
+				e.printStackTrace();	
+		}
+	}
+	
 	public void add(Component component) {
 		try {
 			String sql = "INSERT INTO components (name,price,supplier) "
@@ -31,6 +48,29 @@ public class SQLiteComponentManager implements ComponentManager {
 		}
 		
 	}
+	
+	public List<Component> showComponents(){
+		List<Component> componentsList = new ArrayList<Component>();
+		try {
+			String sql = "SELECT * FROM component7yg";
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+			int id = rs.getInt("id");
+			String componentName = rs.getString("name");
+			String supplier = rs.getString("supplier");
+			Float componentPrice = rs.getFloat("price");
+			Component newComponent = new Component(id,componentName,componentPrice,supplier);
+			//Add to component list
+			componentsList.add(newComponent);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return componentsList;
+	}
+
+	
 
 	@Override
 	public List<Component> searchByName(String name) {

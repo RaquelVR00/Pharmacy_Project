@@ -6,10 +6,12 @@ import java.sql.Date;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import db.interfaces.ProductManager;
+import db.pojos.Component;
 import db.pojos.Products;
 
 public class SQLiteProductManager implements ProductManager {
@@ -104,6 +106,39 @@ public class SQLiteProductManager implements ProductManager {
 	public void buy(Products product) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public Products getProduct(int productId) {
+		//Get product and components
+		Products newProduct = null;
+		try {
+			String sql="SELECT * FROM products AS p JOIN productComponents AS pc ON p.id = pc.productId"
+					+"JOIN component AS c ON pc.componentId=c.id"
+					+"WHERE p.id = ?";
+			PreparedStatement p= c.prepareStatement(sql);
+			p.setInt(1, productId);
+			ResultSet rs= p.executeQuery();
+			List<Component> componentsList = new ArrayList<Component>();
+			boolean productCreated = false;
+			while(rs.next()) {
+				if(!productCreated) {
+			   int newProductId = rs.getInt(1);
+			   String productName = rs.getString(2);
+			   String productType = rs.getString(3);
+			   float productPrice = rs.getFloat(4);
+			   newProduct = new Products(newProductId,productName,productType,productPrice);
+			   productCreated = true;
+				}
+			   int componentId = rs.getInt("7");
+			   String componentName = rs.getString("8");
+			   Component newComponent = new Component(componentId, componentName);
+			   componentsList.add(newComponent);
+			}
+				newProduct.setComponents(componentsList);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return newProduct;
 	}
 
 }

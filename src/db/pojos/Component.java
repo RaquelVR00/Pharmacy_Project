@@ -1,6 +1,10 @@
 package db.pojos;
 
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Component implements Serializable {
 
@@ -10,9 +14,11 @@ public class Component implements Serializable {
 	private String name;
 	private Float price;
 	private String supplier;
+	private List<Products> products;
 	
 	public Component() {
 		super();
+		products = new ArrayList<Products>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -21,8 +27,19 @@ public class Component implements Serializable {
 		this.name = name;
 		this.price = price;
 		this.supplier = supplier;
+		products = new ArrayList<Products>();
+
 	}
 	
+	
+
+	public Component(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+		products = new ArrayList<Products>();
+
+	}
 
 	public Component(Integer id, String name, Float price, String supplier) {
 		super();
@@ -30,6 +47,18 @@ public class Component implements Serializable {
 		this.name = name;
 		this.price = price;
 		this.supplier = supplier;
+		products = new ArrayList<Products>();
+
+	}
+	
+
+	public Component(Integer id, String name, Float price, String supplier, List<Products> products) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.supplier = supplier;
+		this.products = products;
 	}
 
 	@Override
@@ -93,4 +122,14 @@ public class Component implements Serializable {
 	public void setSupplier(String supplier) {
 		this.supplier = supplier;
 	}
+
+	public List<Products> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Products> products) {
+		this.products = products;
+	}
+	
+	
 }
