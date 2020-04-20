@@ -107,6 +107,8 @@ public class Products implements Serializable {
 	}
 
 
+	
+
 	public Integer getId() {
 		return id;
 	}
@@ -144,6 +146,16 @@ public class Products implements Serializable {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+
+	public Integer getNumberProducts() {
+		return numberProducts;
+	}
+
+
+	public void setNumberProducts(Integer numberProducts) {
+		this.numberProducts = numberProducts;
 	}
 
 

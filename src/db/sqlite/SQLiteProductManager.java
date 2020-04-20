@@ -141,4 +141,18 @@ public class SQLiteProductManager implements ProductManager {
 		return newProduct;
 	}
 
+	public void update(Products product) {
+		try {
+			// Update every aspect of a particular dog
+			String sql = "UPDATE product SET numberProducts=? WHERE id=?";
+			PreparedStatement s = c.prepareStatement(sql);
+			s.setInt(1, product.getId());
+			s.setInt(2, product.getNumberProducts());
+			s.executeUpdate();
+			s.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

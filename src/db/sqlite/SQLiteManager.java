@@ -156,6 +156,4 @@ public class SQLiteManager implements DBManager {
 		return pharmacy;
 	}
 	
-	
-
 }

@@ -13,4 +13,5 @@ public interface ProductManager {
 	 public void add(Products product);
 	 public void buy(Products product);
 	 public Products getProduct(int productId);
+	 public void update(Products product);
 }
