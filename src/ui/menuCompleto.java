@@ -16,6 +16,7 @@ import db.interfaces.WorkerManager;
 import db.pojos.Component;
 import db.pojos.Pharmacy;
 import db.pojos.Product;
+import db.pojos.Products;
 import db.pojos.Worker;
 import db.sqlite.SQLiteManager;
 
@@ -131,8 +132,8 @@ public class menuCompleto {
 		int id=Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the number of products you want to add: ");
 		int numberproducts=Integer.parseInt(reader.readLine());
-		Product toBeModified=ProductManager.getProduct(id);
-		Product updateProduct=new Product(numberproducts);
+		Products toBeModified=ProductManager.getProduct(id);
+		Products updateProduct=new Products(numberproducts);
 		productManager.update(updateProduct);	
 	}
 	
@@ -145,8 +146,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the name of the product you want to search: ");
 		String name= reader.readLine();
-		List<Product> productList=productManager.searchByName(name);
-		for (Product product : productList) {
+		List<Products> productList=productManager.searchByName(name);
+		for (Products product : productList) {
 			System.out.println(product);
 		}
 	}
@@ -155,8 +156,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the type of the product you want to search: ");
 		String type= reader.readLine();
-		List<Product> productList=productManager.searchByType(type);
-		for (Product product : productList) {
+		List<Products> productList=productManager.searchByType(type);
+		for (Products product : productList) {
 			System.out.println(product);
 		}
 	}
@@ -165,8 +166,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the price of the product you want to search: ");
 		Float price=Float.parseFloat(reader.readLine());
-		List<Product> productList=productManager.searchByPrice(price);
-		for (Product product : productList) {
+		List<Products> productList=productManager.searchByPrice(price);
+		for (Products product : productList) {
 			System.out.println(product);
 		}
 	}
@@ -189,7 +190,7 @@ public class menuCompleto {
 		} while (!wrongText);
 		System.out.println("Number of products: ");
 		Integer numberproducts=Integer.parseInt(reader.readLine());
-		Product product=new Product(name,type,price,numberproducts);
+		Products product=new Products(name,type,price,numberproducts);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		productManager.addProduct(product);
 	}
