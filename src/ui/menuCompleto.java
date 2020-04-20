@@ -132,7 +132,7 @@ public class menuCompleto {
 		int id=Integer.parseInt(reader.readLine());
 		System.out.println("Introduce the number of products you want to add: ");
 		int numberproducts=Integer.parseInt(reader.readLine());
-		Products toBeModified=ProductManager.getProduct(id);
+		Products toBeModified=productManager.getProduct(id);
 		Products updateProduct=new Products(numberproducts);
 		productManager.update(updateProduct);	
 	}
