@@ -12,6 +12,9 @@ public interface ProductManager {
 	 public List<Products> searchByPrice(Float price);
 	 public void add(Products product);
 	 public void buy(Products product);
-	
-	 
+	 public static Products getProduct(int productId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

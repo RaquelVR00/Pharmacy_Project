@@ -11,6 +11,7 @@ public class Products implements Serializable {
 	private String name;
 	private String type;
 	private Float price;
+	private Integer numberProducts;
 	private List<Component> components;
 	
 	
@@ -53,6 +54,22 @@ public class Products implements Serializable {
 		this.type = type;
 		this.components = new ArrayList<Component>();
 
+	}
+
+
+	public Products(Integer numberProducts) {
+		super();
+		this.numberProducts = numberProducts;
+	}
+	
+	
+
+	public Products(String name, String type, Float price, Integer numberProducts) {
+		super();
+		this.name = name;
+		this.type = type;
+		this.price = price;
+		this.numberProducts = numberProducts;
 	}
 
 

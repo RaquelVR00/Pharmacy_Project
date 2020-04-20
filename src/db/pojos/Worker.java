@@ -30,6 +30,16 @@ public class Worker implements Serializable {
 		this.contract_id = contract_id;
 	}
 	
+	
+	
+	public Worker(String name, String position, Date start_date, String nationality) {
+		super();
+		this.name = name;
+		this.position = position;
+		this.start_date = start_date;
+		this.nationality = nationality;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
