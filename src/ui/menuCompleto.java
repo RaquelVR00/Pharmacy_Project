@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+//import java.util.Date;
 import java.util.List;
 
 import db.interfaces.ComponentManager;
@@ -18,6 +18,9 @@ import db.pojos.Pharmacy;
 import db.pojos.Products;
 import db.pojos.Worker;
 import db.sqlite.SQLiteManager;
+
+
+import java.sql.Date;
 
 public class menuCompleto {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //cada vez que introduzcan una fecha van a tener que introducir este formato
@@ -274,13 +277,15 @@ public class menuCompleto {
 		String name= reader.readLine();
 		System.out.println("Position: ");
 		String position=reader.readLine();
-		System.out.println("Start Date (yyyy-MM-dd: ");
+		System.out.println("Start Date (yyyy-MM-dd): ");
 		String sd = reader.readLine();
-		LocalDate startDate = LocalDate.parse(sd,formatter);
-		Date date1 = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		LocalDate start_date = LocalDate.parse(sd,formatter);
+			//String sd = reader.readLine();
+			//LocalDate startDate = LocalDate.parse(sd,formatter);
+			//Date date1 = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		System.out.println("Nationality: ");
 		String nationality= reader.readLine();
-		Worker worker=new Worker(name, position, date1, nationality);
+		Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		workerManager.add(worker);
 	}
