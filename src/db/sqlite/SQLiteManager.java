@@ -66,7 +66,7 @@ public class SQLiteManager implements DBManager {
 				   + " position  TEXT	 NOT NULL,"
 				   + "start_date DATE DEFAULT (CURRENT DATE),"
 				   + "nationality TEXT NOT NULL,"
-				   + "contract_id INTEGER REFERENCES contract_worker(id)"
+				   + "contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL"
 				   ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
@@ -75,7 +75,7 @@ public class SQLiteManager implements DBManager {
 				   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " location TEXT NOT NULL,"
-				   +"contract_pid INTEGER REFERENCES contract_pharmacy(id)"
+				   +"contract_pid INTEGER REFERENCES contract_pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL"
 				  ;
 		stmt2.executeUpdate(sql2);
 		stmt2.close();
@@ -114,15 +114,15 @@ public class SQLiteManager implements DBManager {
 		stmt6.close();
 		Statement stmt7=c.createStatement();
 		String sql7= "CREATE TABLE pharmacyProducts"
-				+"(pharmacieId INTEGER REFERENCES pharmacy(id),"
-				+"productId INTEGER REFERENCES product(id),"
+				+"(pharmacieId INTEGER REFERENCES pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+"productId INTEGER REFERENCES product(id) ON UPDATE CASCADE ON DELETE SET NULL,"
 				+"PRIMARY KEY(pharmacieId,productId))";
 		stmt7.executeUpdate(sql7);
 		stmt7.close();
 		Statement stmt8=c.createStatement();
 		String sql8= "CREATE TABLE productComponents"
-                 +"(productId INTEGER REFERENCES product(id),"
-				 +"componentId INTEGER REFERENCES component(id),"
+                 +"(productId INTEGER REFERENCES product(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				 +"componentId INTEGER REFERENCES component(id) ON UPDATE CASCADE ON DELETE SET NULL,"
                  +"PRIMARY KEY(productId,componentId))";
 		stmt8.executeUpdate(sql8);
 		stmt8.close();
