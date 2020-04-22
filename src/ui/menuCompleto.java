@@ -280,7 +280,7 @@ public class menuCompleto {
 		Date date1 = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		System.out.println("Nationality: ");
 		String nationality= reader.readLine();
-		Worker worker=new Worker(name,position,date1,nationality);
+		Worker worker=new Worker(name, position, date1, nationality);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		workerManager.add(worker);
 	}
