@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +116,32 @@ public class SQLiteComponentManager implements ComponentManager {
 			e.printStackTrace();
 		}
 		return supplierList;
+	}
+	
+	public Component getComponent(int componentId) {
+		//Get product and components
+		Component newComponent = null;
+		try {
+			String sql="SELECT * FROM component"
+					+"WHERE p.id = ?";
+			PreparedStatement p= c.prepareStatement(sql);
+			p.setInt(1, componentId);
+			ResultSet rs= p.executeQuery();
+			boolean componentCreated = false;
+			while(rs.next()) {
+				if(!componentCreated) {
+			   int newComponentId = rs.getInt(1);
+			   String componentName = rs.getString(2);
+			   float componentPrice = rs.getFloat(3);
+			   String componentSupplier = rs.getString(4);
+			   newComponent = new Component(newComponentId,componentName,componentPrice,componentSupplier);
+			   componentCreated = true;
+				}
+			  }
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return newComponent;
 	}
 
 }
