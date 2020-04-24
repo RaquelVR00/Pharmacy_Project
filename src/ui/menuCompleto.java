@@ -40,8 +40,9 @@ public class menuCompleto {
 	public static void main(String[] args) throws Exception{
 		
 		//para conectar con la base de datos
-		dbManager.connect();
+		
 		dbManager= new SQLiteManager();
+		dbManager.connect();
 		productManager=dbManager.getProductManager();
 		workerManager=dbManager.getWorkerManager();
 		componentManager=dbManager.getComponentManager();
