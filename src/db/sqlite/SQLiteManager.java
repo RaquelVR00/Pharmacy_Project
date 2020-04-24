@@ -25,8 +25,8 @@ public class SQLiteManager implements DBManager {
 	@Override
 	public void connect() {
 		try {
-			Class.forName("org.sqlite.Pharmacy");
-			this.c= DriverManager.getConnection("pharmacy:sqlite./db/pharmacy.db");
+			Class.forName("org.sqlite.JDBC");
+			this.c= DriverManager.getConnection("jdbc:sqlite./db/pharmacy.db");
 			c.createStatement().execute("PRAGMA foreing_keys=ON");
 			//Create product
 			product = new SQLiteProductManager(c);
@@ -42,9 +42,9 @@ public class SQLiteManager implements DBManager {
 		}
 
 	}
-	protected Connection getConnection() {
+	/*protected Connection getConnection() {
 		return c;
-	}
+	}*/
 
 	@Override
 	public void disconnect() {
