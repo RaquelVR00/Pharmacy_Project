@@ -143,6 +143,20 @@ public class SQLiteComponentManager implements ComponentManager {
 		}
 		return newComponent;
 	}
+	
+	public void update(Component component ) {
+		try {
+			// Update every aspect of a particular dog
+			String sql = "UPDATE component SET numberComponents=? WHERE id=?";
+			PreparedStatement s = c.prepareStatement(sql);
+			s.setInt(1, component.getId());
+			s.setInt(2, component.getNumberComponents());
+			s.executeUpdate();
+			s.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
 

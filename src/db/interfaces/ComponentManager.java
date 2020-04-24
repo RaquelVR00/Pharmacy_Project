@@ -2,6 +2,7 @@ package db.interfaces;
 import java.util.List;
 
 import db.pojos.Component;
+import db.pojos.Products;
 
 public interface ComponentManager {
 	
@@ -11,4 +12,5 @@ public interface ComponentManager {
 	public List<Component>showComponents();
 	public List<Component> searchByName(String name);
 	public List<Component> searchBySupplier(String supplier);
+	public void update(Component component);
 }

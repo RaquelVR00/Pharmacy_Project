@@ -14,6 +14,7 @@ public class Component implements Serializable {
 	private String name;
 	private Float price;
 	private String supplier;
+	private Integer numberComponents;
 	private List<Products> products;
 	
 	public Component() {
@@ -59,6 +60,20 @@ public class Component implements Serializable {
 		this.price = price;
 		this.supplier = supplier;
 		this.products = products;
+	}
+	
+	
+	public Component(String name, Float price, String supplier, Integer numberComponents) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.supplier = supplier;
+		this.numberComponents = numberComponents;
+	}
+
+	public Component(Integer numberComponents) {
+		super();
+		this.numberComponents = numberComponents;
 	}
 
 	@Override
@@ -123,6 +138,14 @@ public class Component implements Serializable {
 		this.supplier = supplier;
 	}
 
+	public Integer getNumberComponents() {
+		return numberComponents;
+	}
+
+	public void setNumberComponents(Integer numberComponents) {
+		this.numberComponents = numberComponents;
+	}
+
 	public List<Products> getProducts() {
 		return products;
 	}
@@ -130,6 +153,8 @@ public class Component implements Serializable {
 	public void setProducts(List<Products> products) {
 		this.products = products;
 	}
+
+	
 	
 	
 }

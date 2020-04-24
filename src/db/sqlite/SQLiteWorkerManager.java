@@ -9,6 +9,7 @@ import java.util.List;
 
 import db.interfaces.WorkerManager;
 import db.pojos.Worker;
+import ui.Employee;
 
 public class SQLiteWorkerManager implements WorkerManager {
 
@@ -101,5 +102,23 @@ public class SQLiteWorkerManager implements WorkerManager {
 			// TODO: handle exception
 		}
 	}
+	
+	private static void printWorkers() throws Exception{
+		String sql = "SELECT * FROM worker";
+		ResultSet rs = stmt.executeQuery(sql);
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String position = rs.getString("position");
+			Date date = rs.getDate("start_date");
+			String nationalitiy = rs.getString("nationality");
+			int contract_id = rs.getInt("contract id");
+			Employee employee = new Employee(id, name, dob, address, salary, photo, dep);
+			System.out.println(employee);
+		}
+		rs.close();
+		stmt.close();
+	}
+
 
 }

@@ -18,9 +18,14 @@ import db.pojos.Pharmacy;
 import db.pojos.Products;
 import db.pojos.Worker;
 import db.sqlite.SQLiteManager;
+import sample.db.pojos.Department;
+import sample.db.pojos.Employee;
 
-
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class menuCompleto {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //cada vez que introduzcan una fecha van a tener que introducir este formato
@@ -83,7 +88,6 @@ public class menuCompleto {
 		switch(choice) {
 		case 1:
 			searchComponentByName();
-			System.out.println("Introduce the selected dog큦 id: ");
 			break;
 		case 2:
 			searchComponentBySupplier();
@@ -132,10 +136,13 @@ public class menuCompleto {
 		String product=searchProduct();
 		System.out.println("Introduce the selected product큦 id");
 		int id=Integer.parseInt(reader.readLine());
+		Products toBeModified=productManager.getProduct(id);
+		int preexistingNumber=toBeModified.getNumberProducts();
+		System.out.println("The number of products that are now avaiable are: " +preexistingNumber);
 		System.out.println("Introduce the number of products you want to add: ");
 		int numberproducts=Integer.parseInt(reader.readLine());
-		Products toBeModified=productManager.getProduct(id);
-		Products updateProduct=new Products(numberproducts);
+		int updatedNumber=preexistingNumber+numberproducts;
+		Products updateProduct=new Products(updatedNumber);
 		productManager.update(updateProduct);	
 	}
 	
@@ -205,12 +212,13 @@ public class menuCompleto {
 		System.out.println("4. Fire worker");
 		System.out.println("5. Search pharmacy by name");
 		System.out.println("6. Purchase component");
-		System.out.println("7. Search component by name");
-		System.out.println("8. Search component by supplier");
-		System.out.println("9. Search product by name");
-		System.out.println("10. Search product by type");
-		System.out.println("11. Search product by price");
-		System.out.println("12. Go back");
+		System.out.println("7. Add component");
+		System.out.println("8. Search component by name");
+		System.out.println("9. Search component by supplier");
+		System.out.println("10. Search product by name");
+		System.out.println("11. Search product by type");
+		System.out.println("12. Search product by price");
+		System.out.println("13. Go back");
 		int choice=Integer.parseInt(reader.readLine()); 
 		
 		switch(choice) {
@@ -224,27 +232,30 @@ public class menuCompleto {
 			addWorker();
 			break;
 		case 4:
-			//fireWorker();
+			fireWorker();
 			break;
 		case 5:
 			searchPharmacyByName();
 			break;
 		case 6:
-			//purchaseComponent();
+			purchaseComponent();
 			break;
 		case 7:
-			searchComponentByName();
+			addComponent();
 			break;
 		case 8:
-			searchComponentBySupplier();
+			searchComponentByName();
 			break;
 		case 9:
-			searchProductByName();
+			searchComponentBySupplier();
 			break;
 		case 10:
-			searchProductByType();
+			searchProductByName();
 			break;
 		case 11:
+			searchProductByType();
+			break;
+		case 12:
 			searchProductByPrice();
 			break;
 		default:
@@ -280,14 +291,23 @@ public class menuCompleto {
 		System.out.println("Start Date (yyyy-MM-dd): ");
 		String sd = reader.readLine();
 		LocalDate start_date = LocalDate.parse(sd,formatter);
-			//String sd = reader.readLine();
-			//LocalDate startDate = LocalDate.parse(sd,formatter);
-			//Date date1 = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		System.out.println("Nationality: ");
 		String nationality= reader.readLine();
 		Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		workerManager.add(worker);
+	}
+	
+	private static void fireWorker() throws Exception{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Choose an employee to delete, type its ID: ");
+		printWorkers();
+		int dep_id = Integer.parseInt(reader.readLine());
+		String sql = "DELETE FROM employees WHERE id=?";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setInt(1, dep_id);
+		prep.executeUpdate();
+		System.out.println("Deletion finished.");
 	}
 	
 	private static void searchPharmacyByName() throws Exception{
@@ -300,7 +320,49 @@ public class menuCompleto {
 		}
 	}
 	
+	private static void purchaseComponent() throws Exception{
+		System.out.println("Please, enter the following information: ");
+		System.out.println("Name: ");
+		String name= reader.readLine();
+		System.out.println("Price: ");
+		Float price = null;
+		boolean wrongText=false;
+		do {
+			try {
+				price=Float.parseFloat(reader.readLine());
+			} catch (Exception e) {
+				wrongText=true;
+			}
+		} while (!wrongText);
+		System.out.println("Supplier: ");
+		String supplier=reader.readLine();
+		System.out.println("Number of components: ");
+		Integer numbercomponents=Integer.parseInt(reader.readLine());
+		Component component=new Component(name,price,supplier,numbercomponents);
+		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
+		componentManager.add(component);
+	}
+	
+	private static void addComponent() throws Exception{
+		String component=searchComponent();
+		System.out.println("Introduce the selected component큦 id");
+		int id=Integer.parseInt(reader.readLine());
+		Component toBeModified=componentManager.getComponent(id);
+		int preexistingNumber=toBeModified.getNumberComponents();
+		System.out.println("The number of components that are now avaiable are: " +preexistingNumber);
+		System.out.println("Introduce the number of components you want to add: ");
+		int numbercomponents=Integer.parseInt(reader.readLine());
+		int updatedNumber=preexistingNumber+numbercomponents;
+		Component updateComponent=new Component(updatedNumber);
+		componentManager.update(updateComponent);	
+	}
 
+	private static String searchComponent() throws Exception{
+		System.out.println("Please, introduce the name of the component you want to add: ");
+		String name= reader.readLine();
+		return name;	
+	}
+	
 	private static void pharmacyMenu() throws Exception{
 		System.out.println("What would you like to do?");
 		System.out.println("1. Search product by name");
@@ -321,11 +383,24 @@ public class menuCompleto {
 			searchProductByPrice();
 			break;
 		case 4:
-			//buy();
+			buy();
 			break;
 		default: 
 			return;
 		}
 	}
 	
+	private static void buy() throws Exception{
+		String product=searchProduct();
+		System.out.println("Introduce the selected product큦 id");
+		int id=Integer.parseInt(reader.readLine());
+		Products toBeModified=productManager.getProduct(id);
+		int preexistingNumber=toBeModified.getNumberProducts();
+		System.out.println("The number of products that are now avaiable are: " +preexistingNumber);
+		System.out.println("Introduce the number of products you want to buy: ");
+		int numberproducts=Integer.parseInt(reader.readLine());
+		int updatedNumber=preexistingNumber-numberproducts;
+		Products updateProducts=new Products(updatedNumber);
+		productManager.update(updateProducts);	
+	}
 }
