@@ -1,6 +1,7 @@
 package db.pojos;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ContractWorker implements Serializable{
 	private static final long serialVersionUID = -8915157235521255210L;
@@ -9,7 +10,7 @@ public class ContractWorker implements Serializable{
 	private Float bonus;
 	private Float salary;
 	private String type;
-	
+	private List<Worker> worker;
 	
 	public ContractWorker() {
 		super();

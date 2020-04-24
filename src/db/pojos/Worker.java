@@ -16,6 +16,7 @@ public class Worker implements Serializable {
 	private Date start_date;
 	private String nationality;
 	private Integer contract_id;
+	private List<ContractWorker> contract;
 	
 	public Worker() {
 		super();
@@ -32,12 +33,24 @@ public class Worker implements Serializable {
 	
 	
 	
+	public Worker(String name, String position, Date start_date, String nationality, Integer contract_id,
+			List<ContractWorker> contract) {
+		super();
+		this.name = name;
+		this.position = position;
+		this.start_date = start_date;
+		this.nationality = nationality;
+		this.contract_id = contract_id;
+		this.contract = contract;
+	}
+
 	public Worker(String name, String position, Date start_date, String nationality) {
 		super();
 		this.name = name;
 		this.position = position;
 		this.start_date = start_date;
 		this.nationality = nationality;
+		
 	}
 
 	@Override

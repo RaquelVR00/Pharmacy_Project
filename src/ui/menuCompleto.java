@@ -16,6 +16,7 @@ import db.interfaces.WorkerManager;
 import db.pojos.Component;
 import db.pojos.Pharmacy;
 import db.pojos.Products;
+import db.pojos.ContractWorker;
 import db.pojos.Worker;
 import db.sqlite.SQLiteManager;
 
@@ -204,6 +205,20 @@ public class menuCompleto {
 		Products product=new Products(name,type,price,numberproducts);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		productManager.add(product);
+		System.out.println("A continucación encontrará los componentes disponibles");
+		List<Component> components = componentManager.showComponents();
+		for(Component component: components) {
+			System.out.println(component);
+		}
+		System.out.println("Escoja los id deseados:");
+		int x=5;
+		while(x!=0) {
+		int componentId = Integer.parseInt(reader.readLine());
+		//Component chosencomponent =componentManager.getComponent(componentId);
+		componentManager.give(product.getId(),componentId);
+		System.out.println("Si no desea añadir otro componente pulse 0 si no 5");
+		x=Integer.parseInt(reader.readLine());
+		}
 	}
 	
 	private static void bossMenu() throws Exception{
@@ -295,10 +310,21 @@ public class menuCompleto {
 		LocalDate start_date = LocalDate.parse(sd,formatter);
 		System.out.println("Nationality: ");
 		String nationality= reader.readLine();
-		Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality);
+		//Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
+		//workerManager.add(worker);
+		System.out.println("A continucación encontrará los contratos");
+		List<ContractWorker> contracts = ;
+		for(ContractWorker contract: contracts) {
+			System.out.println(contract);
+		}
+		System.out.println("Escoja el id del contrato deseado:");
+		int contractId = Integer.parseInt(reader.readLine());
+		ContractWorker contractChoose = contractWorkerManager.getContract(contractId);
+		Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality,contractChoose.getID());
 		workerManager.add(worker);
-	}
+		}
+	
 	
 	/*private static void fireWorker() throws Exception{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
