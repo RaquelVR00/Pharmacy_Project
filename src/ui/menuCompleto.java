@@ -85,6 +85,8 @@ public class menuCompleto {
 		System.out.println("8. Go back");
 		int choice=Integer.parseInt(reader.readLine()); 
 		
+		
+		
 		switch(choice) {
 		case 1:
 			searchComponentByName();
@@ -147,7 +149,7 @@ public class menuCompleto {
 	}
 	
 	private static String searchProduct() throws Exception{
-		System.out.println("Please, introduce the name of the product you want to add: ");
+		System.out.println("Please, introduce the name of the product you would like to add: ");
 		String name= reader.readLine();
 		return name;	
 	}
