@@ -18,8 +18,7 @@ import db.pojos.Pharmacy;
 import db.pojos.Products;
 import db.pojos.Worker;
 import db.sqlite.SQLiteManager;
-import sample.db.pojos.Department;
-import sample.db.pojos.Employee;
+
 
 import java.sql.Connection;
 import java.sql.Date;
