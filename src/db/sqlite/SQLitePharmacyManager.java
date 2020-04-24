@@ -3,6 +3,7 @@ package db.sqlite;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class SQLitePharmacyManager implements PharmacyManager {
 			Pharmacy newpharmacy = new Pharmacy(pharmacyName,pharmacyContract_pid,pharmacyLocation);
 		   
 			}
-		}catch(Exception e) {
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return pharmacyList;

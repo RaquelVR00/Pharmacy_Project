@@ -234,7 +234,7 @@ public class menuCompleto {
 			addWorker();
 			break;
 		case 4:
-			fireWorker();
+			//fireWorker();
 			break;
 		case 5:
 			searchPharmacyByName();
@@ -300,7 +300,7 @@ public class menuCompleto {
 		workerManager.add(worker);
 	}
 	
-	private static void fireWorker() throws Exception{
+	/*private static void fireWorker() throws Exception{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Choose an employee to delete, type its ID: ");
 		printWorkers();
@@ -310,7 +310,7 @@ public class menuCompleto {
 		prep.setInt(1, dep_id);
 		prep.executeUpdate();
 		System.out.println("Deletion finished.");
-	}
+	}*/
 	
 	private static void searchPharmacyByName() throws Exception{
 		System.out.println("Please, enter the following information: ");

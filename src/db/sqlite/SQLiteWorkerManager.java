@@ -9,7 +9,7 @@ import java.util.List;
 
 import db.interfaces.WorkerManager;
 import db.pojos.Worker;
-import ui.Employee;
+
 
 public class SQLiteWorkerManager implements WorkerManager {
 
@@ -93,6 +93,9 @@ public class SQLiteWorkerManager implements WorkerManager {
 
 	@Override
 	public void fire(Worker worker) {
+		
+	}
+	/*public void fire(Worker worker) {
 		// TODO Auto-generated method stub
 		try {
 			String sql = "DELETE FROM workers WHERE name LIKE ?";
@@ -103,7 +106,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 	}
 	
-	private static void printWorkers() throws Exception{
+	/*private static void printWorkers() throws Exception{
 		String sql = "SELECT * FROM worker";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
@@ -118,7 +121,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 		rs.close();
 		stmt.close();
-	}
+	}*/
 
 
 }
