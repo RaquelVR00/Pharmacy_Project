@@ -149,7 +149,7 @@ public class menuCompleto {
 	}
 	
 	private static String searchProduct() throws Exception{
-		System.out.println("Please, introduce the name of the product you would like to add: ");
+		System.out.println("Introduce the name of the product you would like to add: ");
 		String name= reader.readLine();
 		return name;	
 	}
