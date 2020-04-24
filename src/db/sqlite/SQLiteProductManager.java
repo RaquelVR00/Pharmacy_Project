@@ -143,7 +143,7 @@ public class SQLiteProductManager implements ProductManager {
 
 	public void update(Products product) {
 		try {
-			// Update every aspect of a particular dog
+			// Update the number of products
 			String sql = "UPDATE product SET numberProducts=? WHERE id=?";
 			PreparedStatement s = c.prepareStatement(sql);
 			s.setInt(1, product.getId());
