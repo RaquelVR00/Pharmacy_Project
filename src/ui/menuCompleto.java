@@ -141,7 +141,7 @@ public class menuCompleto {
 		Products toBeModified=productManager.getProduct(id);
 		int preexistingNumber=toBeModified.getNumberProducts();
 		System.out.println("The number of products that are now avaiable are: " +preexistingNumber);
-		System.out.println("Introduce the number of products you want to add: ");
+		System.out.println("Introduce the number of products you would like to add: ");
 		int numberproducts=Integer.parseInt(reader.readLine());
 		int updatedNumber=preexistingNumber+numberproducts;
 		Products updateProduct=new Products(updatedNumber);
