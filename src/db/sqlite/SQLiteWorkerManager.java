@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import db.pojos.Worker;
 
 public class SQLiteWorkerManager implements WorkerManager {
 
-	private Connection c;
+	private static Connection c;
 
 	public SQLiteWorkerManager(Connection c) {
 		this.c = c;
@@ -91,22 +93,23 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 	}
 
-	@Override
-	public void fire(Worker worker) {
-		
-	}
-	/*public void fire(Worker worker) {
+	public void fire(Integer worker_id) {
 		// TODO Auto-generated method stub
 		try {
-			String sql = "DELETE FROM workers WHERE name LIKE ?";
+			//String sql = "DELETE FROM workers WHERE name LIKE ?";
+			String sql = "DELETE FROM worker WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, "%" + worker + "%");
+			prep.setInt(1, worker_id);
+			prep.executeUpdate();
+			c.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 	
-	/*private static void printWorkers() throws Exception{
+	public void printWorkers(){
+		try {
+		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM worker";
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
@@ -114,14 +117,19 @@ public class SQLiteWorkerManager implements WorkerManager {
 			String name = rs.getString("name");
 			String position = rs.getString("position");
 			Date date = rs.getDate("start_date");
-			String nationalitiy = rs.getString("nationality");
+			String nationality = rs.getString("nationality");
 			int contract_id = rs.getInt("contract id");
-			Employee employee = new Employee(id, name, dob, address, salary, photo, dep);
-			System.out.println(employee);
+			Worker worker = new Worker(id, name, position, date, nationality, contract_id);
+			System.out.println(worker);
 		}
 		rs.close();
 		stmt.close();
-	}*/
+		}catch(SQLException e) {
+			//TODO
+		}
+		
+	}
+	
 
 
 }

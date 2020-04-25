@@ -26,7 +26,7 @@ public class SQLiteManager implements DBManager {
 	public void connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			this.c= DriverManager.getConnection("jdbc:sqlite./db/pharmacy.db");
+			this.c= DriverManager.getConnection("jdbc:sqlite:./db/pharmacy.db");
 			c.createStatement().execute("PRAGMA foreing_keys=ON");
 			//Create product
 			product = new SQLiteProductManager(c);
@@ -50,7 +50,7 @@ public class SQLiteManager implements DBManager {
 	public void disconnect() {
 		try {
 			c.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -58,77 +58,79 @@ public class SQLiteManager implements DBManager {
 
 	@Override
 	public void createTables() {
+		Statement stmt1;
 		try {
-		Statement stmt1 = c.createStatement();
+		stmt1 = c.createStatement();
 		String sql1 = "CREATE TABLE worker "
 				   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " position  TEXT	 NOT NULL,"
 				   + "start_date DATE DEFAULT (CURRENT DATE),"
 				   + "nationality TEXT NOT NULL,"
-				   + "contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL"
+				   + "contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL)"
 				   ;
 		stmt1.executeUpdate(sql1);
-		stmt1.close();
-		Statement stmt2 = c.createStatement();
+		
+		stmt1 = c.createStatement();
 		String sql2 = "CREATE TABLE pharmacy "
 				   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " location TEXT NOT NULL,"
-				   +"contract_pid INTEGER REFERENCES contract_pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL"
+				   +"contract_pid INTEGER REFERENCES contract_pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL)"
 				  ;
-		stmt2.executeUpdate(sql2);
-		stmt2.close();
-		Statement stmt3 = c.createStatement();
+		stmt1.executeUpdate(sql2);
+		
+		stmt1 = c.createStatement();
 		String sql3 = "CREATE TABLE product "
 				   + "(id   INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " type  TEXT  	NOT NULL, "
 				   + " price	INTEGER NOT NULL,"
 				   + " n_products INTEGER)";
-		stmt3.executeUpdate(sql3);
-		stmt3.close();
-		Statement stmt4 = c.createStatement();
+		stmt1.executeUpdate(sql3);
+	
+		stmt1 = c.createStatement();
 		String sql4 = "CREATE TABLE component "
-				   + "(id INTEGER PRIMARY KEY AUTOINCRIMENT,"
+				   + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				   +"name TEXT NOT NULL,"
 				   +"price INTEGER NOT NULL,"
 				   +"supplier TEXT NOT NULL)";
-		stmt4.executeUpdate(sql4);
-		stmt4.close();
-		Statement stmt5=c.createStatement();
+		stmt1.executeUpdate(sql4);
+	
+		stmt1=c.createStatement();
 		String sql5 = "CREATE TABLE contract_worker"
-				+"(id INTEGER PRIMARY KEY AUTOINCRIMENT,"
+				+"(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+"salary DOUBLE,"
 				+"bonus DOUBLE,"
 				+"type TEXT NOT NULL)";
-		stmt5.executeUpdate(sql5);
-		stmt5.close();
-		Statement stmt6=c.createStatement();
+		stmt1.executeUpdate(sql5);
+		
+		stmt1=c.createStatement();
 		String sql6 = "CREATE TABLE contract_pharmacy"
-				+"(id INTEGER PRIMARY KEY AUTOINCRIMENT,"
+				+"(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+" type TEXT NOT NULL,"
 				+" expediture DOUBLE NOT NULL,"
 				+" nproducts INTEGER NOT NULL)";
-		stmt6.executeUpdate(sql6);
-		stmt6.close();
-		Statement stmt7=c.createStatement();
+		stmt1.executeUpdate(sql6);
+		
+		stmt1=c.createStatement();
 		String sql7= "CREATE TABLE pharmacyProducts"
 				+"(pharmacieId INTEGER REFERENCES pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL,"
 				+"productId INTEGER REFERENCES product(id) ON UPDATE CASCADE ON DELETE SET NULL,"
 				+"PRIMARY KEY(pharmacieId,productId))";
-		stmt7.executeUpdate(sql7);
-		stmt7.close();
-		Statement stmt8=c.createStatement();
+		stmt1.executeUpdate(sql7);
+		
+		stmt1=c.createStatement();
 		String sql8= "CREATE TABLE productComponents"
                  +"(productId INTEGER REFERENCES product(id) ON UPDATE CASCADE ON DELETE SET NULL,"
 				 +"componentId INTEGER REFERENCES component(id) ON UPDATE CASCADE ON DELETE SET NULL,"
                  +"PRIMARY KEY(productId,componentId))";
-		stmt8.executeUpdate(sql8);
-		stmt8.close();
+		stmt1.executeUpdate(sql8);
 		
+		stmt1.close();
 		
-				System.out.println("Tables created!!");
+		System.out.println("Tables created!!");
+		
 		}catch(Exception e) {
 			if(e.getMessage().contains("already exists")) {
 				//If tables already exist we are going to do nothing

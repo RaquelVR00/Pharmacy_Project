@@ -326,17 +326,14 @@ public class menuCompleto {
 		}
 	
 	
-	/*private static void fireWorker() throws Exception{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Choose an employee to delete, type its ID: ");
-		printWorkers();
-		int dep_id = Integer.parseInt(reader.readLine());
-		String sql = "DELETE FROM employees WHERE id=?";
-		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setInt(1, dep_id);
-		prep.executeUpdate();
+	private static void fireWorker() throws Exception{
+		//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Choose a worker to delete, type its ID: ");
+		workerManager.printWorkers(); 
+		int worker_id = Integer.parseInt(reader.readLine());
+		workerManager.fire(worker_id);
 		System.out.println("Deletion finished.");
-	}*/
+	}
 	
 	private static void searchPharmacyByName() throws Exception{
 		System.out.println("Please, enter the following information: ");
