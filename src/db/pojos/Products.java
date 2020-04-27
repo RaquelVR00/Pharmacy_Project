@@ -11,7 +11,7 @@ public class Products implements Serializable {
 	private String name;
 	private String type;
 	private Float price;
-	private Integer numberProducts;
+	private int numberProducts;
 	private List<Component> components;
 	
 	
@@ -57,14 +57,24 @@ public class Products implements Serializable {
 	}
 
 
-	public Products(Integer numberProducts) {
+	public Products(int numberProducts) {
 		super();
 		this.numberProducts = numberProducts;
 	}
 	
 	
 
-	public Products(String name, String type, Float price, Integer numberProducts) {
+	public Products(Integer id, String name, String type, Float price, int numberProducts) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.price = price;
+		this.numberProducts = numberProducts;
+	}
+
+
+	public Products(String name, String type, Float price, int numberProducts) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -149,12 +159,12 @@ public class Products implements Serializable {
 	}
 
 
-	public Integer getNumberProducts() {
+	public int getNumberProducts() {
 		return numberProducts;
 	}
 
 
-	public void setNumberProducts(Integer numberProducts) {
+	public void setNumberProducts(int numberProducts) {
 		this.numberProducts = numberProducts;
 	}
 

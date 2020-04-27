@@ -11,4 +11,7 @@ public interface DBManager {
 	public WorkerManager getWorkerManager();
 	public PharmacyManager getPharmacyManager();
 	public ContractWorkerManager getContractWorkerManager();
+	
+	public int getLastId();
 }
+

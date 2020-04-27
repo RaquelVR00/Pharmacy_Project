@@ -7,9 +7,9 @@ import java.util.List;
 public interface ProductManager {
 
 
-	 public List<Products> searchByName(String name);
-	 public List<Products> searchByType(String type);
-	 public List<Products> searchByPrice(Float price);
+	 public Products searchByName(String name);
+	 public Products searchByType(String type);
+	 public Products searchByPrice(Float price);
 	 public void add(Products product);
 	 public void buy(Products product);
 	 public Products getProduct(int productId);

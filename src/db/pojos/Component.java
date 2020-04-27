@@ -14,7 +14,7 @@ public class Component implements Serializable {
 	private String name;
 	private Float price;
 	private String supplier;
-	private Integer numberComponents;
+	private int numberComponents;
 	private List<Products> products;
 	
 	public Component() {
@@ -63,7 +63,16 @@ public class Component implements Serializable {
 	}
 	
 	
-	public Component(String name, Float price, String supplier, Integer numberComponents) {
+	public Component(Integer id, String name, Float price, String supplier, int numberComponents) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.supplier = supplier;
+		this.numberComponents = numberComponents;
+	}
+
+	public Component(String name, Float price, String supplier, int numberComponents) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -101,9 +110,17 @@ public class Component implements Serializable {
 		return true;
 	}
 
+	
+
+	/*public Component(String name) {
+		super();
+		this.name = name;
+	}*/
+
 	@Override
 	public String toString() {
-		return "Component [id=" + id + ", name=" + name + ", price=" + price + ", supplier=" + supplier + "]";
+		return "Component [id=" + id + ", name=" + name + ", price=" + price + ", supplier=" + supplier
+				+ ", numberComponents=" + numberComponents + "]";
 	}
 
 	public Integer getId() {
@@ -138,7 +155,7 @@ public class Component implements Serializable {
 		this.supplier = supplier;
 	}
 
-	public Integer getNumberComponents() {
+	public int getNumberComponents() {
 		return numberComponents;
 	}
 

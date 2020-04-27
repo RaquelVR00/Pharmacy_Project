@@ -4,6 +4,8 @@ import db.interfaces.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -68,10 +70,9 @@ public class SQLiteManager implements DBManager {
 				   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " position  TEXT	 NOT NULL,"
-				   + "start_date DATE DEFAULT (CURRENT DATE),"
-				   + "nationality TEXT NOT NULL,"
-				   + "contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL)"
-				   ;
+				   + " start_date DATE DEFAULT (CURRENT_DATE),"
+				   + " nationality TEXT NOT NULL,"
+				   + " contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL)";
 		stmt1.executeUpdate(sql1);
 		
 		stmt1 = c.createStatement();
@@ -79,8 +80,7 @@ public class SQLiteManager implements DBManager {
 				   + "(id       INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " location TEXT NOT NULL,"
-				   +"contract_pid INTEGER REFERENCES contract_pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL)"
-				  ;
+				   +" contract_pid INTEGER REFERENCES contract_pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL)";
 		stmt1.executeUpdate(sql2);
 		
 		stmt1 = c.createStatement();
@@ -89,15 +89,16 @@ public class SQLiteManager implements DBManager {
 				   + " name     TEXT     NOT NULL, "
 				   + " type  TEXT  	NOT NULL, "
 				   + " price	INTEGER NOT NULL,"
-				   + " n_products INTEGER)";
+				   + " n_products INTEGER NOT NULL)";
 		stmt1.executeUpdate(sql3);
 	
 		stmt1 = c.createStatement();
 		String sql4 = "CREATE TABLE component "
 				   + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				   +"name TEXT NOT NULL,"
-				   +"price INTEGER NOT NULL,"
-				   +"supplier TEXT NOT NULL)";
+				   +"price FLOAT NOT NULL,"
+				   +"supplier TEXT NOT NULL,"
+				   + "numberComponents INTEGER NOT NULL)";
 		stmt1.executeUpdate(sql4);
 	
 		stmt1=c.createStatement();
@@ -163,6 +164,20 @@ public class SQLiteManager implements DBManager {
 	@Override
 	public ContractWorkerManager getContractWorkerManager() {
 		return contractWorker;
+	}
+	
+	@Override
+	public int getLastId() {
+		int result = 0;
+		try {
+			String query = "SELECT last_insert_rowid() AS lastId";
+			PreparedStatement p = c.prepareStatement(query);
+			ResultSet rs = p.executeQuery();
+			result = rs.getInt("lastId");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }

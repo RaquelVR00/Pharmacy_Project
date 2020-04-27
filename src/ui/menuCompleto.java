@@ -45,6 +45,7 @@ public class menuCompleto {
 		
 		dbManager= new SQLiteManager();
 		dbManager.connect();
+		
 		productManager=dbManager.getProductManager();
 		workerManager=dbManager.getWorkerManager();
 		componentManager=dbManager.getComponentManager();
@@ -55,7 +56,7 @@ public class menuCompleto {
 		//para inicializar el bufferedReader
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to our data base!");
-		System.out.println("Do you want to create the tables?");
+		//System.out.println("Do you want to create the tables?");
 		dbManager.createTables();
 		System.out.println("Who are you? Choose between the following options:  ");
 		System.out.println("1. Worker");
@@ -161,30 +162,24 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the name of the product you want to search: ");
 		String name= reader.readLine();
-		List<Products> productList=productManager.searchByName(name);
-		for (Products product : productList) {
-			System.out.println(product);
-		}
+		Products productList=productManager.searchByName(name);
+		System.out.println(productList);
 	}
 	
 	private static void searchProductByType() throws Exception{
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the type of the product you want to search: ");
 		String type= reader.readLine();
-		List<Products> productList=productManager.searchByType(type);
-		for (Products product : productList) {
-			System.out.println(product);
-		}
+		Products productList=productManager.searchByType(type);
+		System.out.println(productList);
 	}
 	
 	private static void searchProductByPrice() throws Exception{
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the price of the product you want to search: ");
 		Float price=Float.parseFloat(reader.readLine());
-		List<Products> productList=productManager.searchByPrice(price);
-		for (Products product : productList) {
-			System.out.println(product);
-		}
+		Products productList=productManager.searchByPrice(price);
+		System.out.println(productList);
 	}
 	
 	private static void createProduct() throws Exception{
@@ -194,20 +189,21 @@ public class menuCompleto {
 		System.out.println("Type: ");
 		String type=reader.readLine();
 		System.out.println("Price: ");
-		Float price = null;
-		boolean wrongText=false;
+		Float price = Float.parseFloat(reader.readLine());;
+		/*boolean wrongText=false;
 		do {
 			try {
 				price=Float.parseFloat(reader.readLine());
 			} catch (Exception e) {
 				wrongText=true;
 			}
-		} while (!wrongText);
+		} while (!wrongText);*/
 		System.out.println("Number of products: ");
 		Integer numberproducts=Integer.parseInt(reader.readLine());
 		Products product=new Products(name,type,price,numberproducts);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		productManager.add(product);
+		//Products p = productManager.getProduct(productId)
 		System.out.println("A continucación encontrará los componentes disponibles");
 		List<Component> components = componentManager.showComponents();
 		for(Component component: components) {
@@ -217,69 +213,73 @@ public class menuCompleto {
 		int x=5;
 		while(x!=0) {
 		int componentId = Integer.parseInt(reader.readLine());
-		//Component chosencomponent =componentManager.getComponent(componentId);
-		componentManager.give(product.getId(),componentId);
+		
+		componentManager.give(dbManager.getLastId(),componentId);
+		
 		System.out.println("Si no desea añadir otro componente pulse 0 si no 5");
 		x=Integer.parseInt(reader.readLine());
 		}
+		
 	}
 	
-	private static void bossMenu() throws Exception{
-		System.out.println("What would you like to do?");
-		System.out.println("1. Search worker by name");
-		System.out.println("2. Search worker by position");
-		System.out.println("3. Add worker");
-		System.out.println("4. Fire worker");
-		System.out.println("5. Search pharmacy by name");
-		System.out.println("6. Purchase component");
-		System.out.println("7. Add component");
-		System.out.println("8. Search component by name");
-		System.out.println("9. Search component by supplier");
-		System.out.println("10. Search product by name");
-		System.out.println("11. Search product by type");
-		System.out.println("12. Search product by price");
-		System.out.println("13. Go back");
-		int choice=Integer.parseInt(reader.readLine()); 
-		
-		switch(choice) {
-		case 1:
-			searchWorkerByName();
-			break;
-		case 2:
-			searchWorkerByPosition();
-			break;
-		case 3:
-			addWorker();
-			break;
-		case 4:
-			//fireWorker();
-			break;
-		case 5:
-			searchPharmacyByName();
-			break;
-		case 6:
-			purchaseComponent();
-			break;
-		case 7:
-			addComponent();
-			break;
-		case 8:
-			searchComponentByName();
-			break;
-		case 9:
-			searchComponentBySupplier();
-			break;
-		case 10:
-			searchProductByName();
-			break;
-		case 11:
-			searchProductByType();
-			break;
-		case 12:
-			searchProductByPrice();
-			break;
-		default:
-			return;
+	private static void bossMenu() throws Exception {
+		while(true) {
+			System.out.println("What would you like to do?");
+			System.out.println("1. Search worker by name");
+			System.out.println("2. Search worker by position");
+			System.out.println("3. Add worker");
+			System.out.println("4. Fire worker");
+			System.out.println("5. Search pharmacy by name");
+			System.out.println("6. Purchase component");
+			System.out.println("7. Add component");
+			System.out.println("8. Search component by name");
+			System.out.println("9. Search component by supplier");
+			System.out.println("10. Search product by name");
+			System.out.println("11. Search product by type");
+			System.out.println("12. Search product by price");
+			System.out.println("13. Go back");
+			int choice=Integer.parseInt(reader.readLine()); 
+			
+			switch(choice) {
+			case 1:
+				searchWorkerByName();
+				break;
+			case 2:
+				searchWorkerByPosition();
+				break;
+			case 3:
+				addWorker();
+				break;
+			case 4:
+				//fireWorker();
+				break;
+			case 5:
+				searchPharmacyByName();
+				break;
+			case 6:
+				purchaseComponent();
+				break;
+			case 7:
+				addComponent();
+				break;
+			case 8:
+				searchComponentByName();
+				break;
+			case 9:
+				searchComponentBySupplier();
+				break;
+			case 10:
+				searchProductByName();
+				break;
+			case 11:
+				searchProductByType();
+				break;
+			case 12:
+				searchProductByPrice();
+				break;
+			default:
+				return;
+			}
 		}
 	}
 	
@@ -353,15 +353,15 @@ public class menuCompleto {
 		System.out.println("Name: ");
 		String name= reader.readLine();
 		System.out.println("Price: ");
-		Float price = null;
-		boolean wrongText=false;
+		Float price = Float.parseFloat(reader.readLine());
+		/*boolean wrongText=false;
 		do {
 			try {
 				price=Float.parseFloat(reader.readLine());
 			} catch (Exception e) {
 				wrongText=true;
 			}
-		} while (!wrongText);
+		} while (!wrongText);*/
 		System.out.println("Supplier: ");
 		String supplier=reader.readLine();
 		System.out.println("Number of components: ");
@@ -373,16 +373,22 @@ public class menuCompleto {
 	
 	private static void addComponent() throws Exception{
 		String component=searchComponent();
-		System.out.println("Introduce the selected component´s id");
+		System.out.println("Introduce the selected component's id");
+		List<Component> list_components = componentManager.showComponents();
+		for(Component components : list_components) {
+			System.out.println(components);
+		}
 		int id=Integer.parseInt(reader.readLine());
 		Component toBeModified=componentManager.getComponent(id);
+		System.out.println(toBeModified);
 		int preexistingNumber=toBeModified.getNumberComponents();
 		System.out.println("The number of components that are now avaiable are: " +preexistingNumber);
 		System.out.println("Introduce the number of components you want to add: ");
 		int numbercomponents=Integer.parseInt(reader.readLine());
 		int updatedNumber=preexistingNumber+numbercomponents;
-		Component updateComponent=new Component(updatedNumber);
-		componentManager.update(updateComponent);	
+		//Component updateComponent=new Component(updatedNumber);
+		toBeModified.setNumberComponents(updatedNumber);
+		componentManager.update(toBeModified);	
 	}
 
 	private static String searchComponent() throws Exception{
