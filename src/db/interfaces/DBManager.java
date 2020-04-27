@@ -10,4 +10,5 @@ public interface DBManager {
 	public ComponentManager getComponentManager();
 	public WorkerManager getWorkerManager();
 	public PharmacyManager getPharmacyManager();
+	public ContractWorkerManager getContractWorkerManager();
 }

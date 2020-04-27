@@ -16,6 +16,7 @@ public class SQLiteManager implements DBManager {
 	private ComponentManager component;
 	private WorkerManager worker;
 	private PharmacyManager pharmacy;
+	private ContractWorkerManager contractWorker;
 	
 	
 	public SQLiteManager() {
@@ -36,6 +37,8 @@ public class SQLiteManager implements DBManager {
 			worker =new SQLiteWorkerManager(c);
 			//Create Pharmacy
 			pharmacy = new SQLitePharmacyManager(c);
+			//Create Contract Worker
+			contractWorker = new SQLiteContractWorkerManager(c);
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -156,6 +159,10 @@ public class SQLiteManager implements DBManager {
 	@Override  
 	public PharmacyManager getPharmacyManager() {
 		return pharmacy;
+	}
+	@Override
+	public ContractWorkerManager getContractWorkerManager() {
+		return contractWorker;
 	}
 	
 }

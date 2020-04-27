@@ -7,17 +7,23 @@ public class ContractWorker implements Serializable{
 	private static final long serialVersionUID = -8915157235521255210L;
 
 	private Integer ID;
-	private Float bonus;
-	private Float salary;
+	private Double bonus;
+	private Double salary;
 	private String type;
 	private List<Worker> worker;
 	
 	public ContractWorker() {
 		super();
 	}
+    
+	public ContractWorker(Integer id, Double salary, Double bonus, String type) {
+		this.ID=id;
+		this.salary=salary;
+		this.bonus=bonus;
+		this.type=type;
+	}
 
-
-	public ContractWorker(Float bonus, Float salary, String type) {
+	public ContractWorker(Double bonus, Double salary, String type) {
 		super();
 		this.bonus = bonus;
 		this.salary = salary;
@@ -25,7 +31,7 @@ public class ContractWorker implements Serializable{
 	}
 
 
-	public ContractWorker(Float salary, String type) {
+	public ContractWorker(Double salary, String type) {
 		super();
 		this.salary = salary;
 		this.type = type;
@@ -75,22 +81,22 @@ public class ContractWorker implements Serializable{
 	}
 
 
-	public Float getBonus() {
+	public Double getBonus() {
 		return bonus;
 	}
 
 
-	public void setBonus(Float bonus) {
+	public void setBonus(Double bonus) {
 		this.bonus = bonus;
 	}
 
 
-	public Float getSalary() {
+	public Double getSalary() {
 		return salary;
 	}
 
 
-	public void setSalary(Float salary) {
+	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
 

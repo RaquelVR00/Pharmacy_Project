@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import db.interfaces.ComponentManager;
+import db.interfaces.ContractWorkerManager;
 import db.interfaces.DBManager;
 import db.interfaces.PharmacyManager;
 import db.interfaces.ProductManager;
@@ -37,6 +38,7 @@ public class menuCompleto {
 	private static WorkerManager workerManager;
 	private static ComponentManager componentManager;
 	private static PharmacyManager pharmacyManager;
+	private static ContractWorkerManager contractWorkerManager;
 	public static void main(String[] args) throws Exception{
 		
 		//para conectar con la base de datos
@@ -47,6 +49,7 @@ public class menuCompleto {
 		workerManager=dbManager.getWorkerManager();
 		componentManager=dbManager.getComponentManager();
 		pharmacyManager=dbManager.getPharmacyManager();
+		contractWorkerManager= dbManager.getContractWorkerManager();
 		
 		
 		//para inicializar el bufferedReader
@@ -314,7 +317,7 @@ public class menuCompleto {
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		//workerManager.add(worker);
 		System.out.println("A continucación encontrará los contratos");
-		List<ContractWorker> contracts = ;
+		List<ContractWorker> contracts = contractWorkerManager.showContracts();
 		for(ContractWorker contract: contracts) {
 			System.out.println(contract);
 		}
