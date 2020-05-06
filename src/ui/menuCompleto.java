@@ -9,12 +9,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import db.interfaces.ComponentManager;
+import db.interfaces.ContractPharmacyManager;
 import db.interfaces.ContractWorkerManager;
 import db.interfaces.DBManager;
 import db.interfaces.PharmacyManager;
 import db.interfaces.ProductManager;
 import db.interfaces.WorkerManager;
 import db.pojos.Component;
+import db.pojos.ContractPharmacy;
 import db.pojos.Pharmacy;
 import db.pojos.Products;
 import db.pojos.ContractWorker;
@@ -39,6 +41,7 @@ public class menuCompleto {
 	private static ComponentManager componentManager;
 	private static PharmacyManager pharmacyManager;
 	private static ContractWorkerManager contractWorkerManager;
+	private static ContractPharmacyManager contractPharmacyManager;
 	public static void main(String[] args) throws Exception{
 		
 		//para conectar con la base de datos
@@ -51,6 +54,7 @@ public class menuCompleto {
 		componentManager=dbManager.getComponentManager();
 		pharmacyManager=dbManager.getPharmacyManager();
 		contractWorkerManager= dbManager.getContractWorkerManager();
+		contractPharmacyManager = dbManager.getContractPharmacyManager();
 		
 		
 		//para inicializar el bufferedReader
@@ -61,7 +65,7 @@ public class menuCompleto {
 		System.out.println("Who are you? Choose between the following options:  ");
 		System.out.println("1. Worker");
 		System.out.println("2. Boss");
-		System.out.println("3.Pharmacy");
+		System.out.println("3. Pharmacy");
 		int choice=Integer.parseInt(reader.readLine()); //guardamos la opcion que eliga en un entero
 		switch(choice) {
 		case 1:
@@ -114,7 +118,7 @@ public class menuCompleto {
 		case 7:
 			createProduct();
 			break;
-		default:
+		case 8:
 			return;
 		}
 	}
@@ -237,7 +241,10 @@ public class menuCompleto {
 			System.out.println("10. Search product by name");
 			System.out.println("11. Search product by type");
 			System.out.println("12. Search product by price");
-			System.out.println("13. Go back");
+			System.out.println("13. Add contract with a pharmacy");
+			System.out.println("14. Add contract with a worker");
+			System.out.println("15. Add pharmacy");
+			System.out.println("16. Go back");
 			int choice=Integer.parseInt(reader.readLine()); 
 			
 			switch(choice) {
@@ -251,7 +258,7 @@ public class menuCompleto {
 				addWorker();
 				break;
 			case 4:
-				//fireWorker();
+				fireWorker();
 				break;
 			case 5:
 				searchPharmacyByName();
@@ -277,7 +284,16 @@ public class menuCompleto {
 			case 12:
 				searchProductByPrice();
 				break;
-			default:
+			case 13:
+				addContractPharmacy();
+				break;
+			case 14:
+				addContractWorker();
+				break;
+			case 15:
+				addPharmacy();
+				break;
+			case 16:
 				return;
 			}
 		}
@@ -287,8 +303,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Insert the name of the worker you want to search: ");
 		String name= reader.readLine();
-		List<Worker> productList=workerManager.searchByName(name);
-		for (Worker worker : productList) {
+		List<Worker> workerList=workerManager.searchByName(name);
+		for (Worker worker : workerList) {
 			System.out.println(worker);
 		}
 	}
@@ -316,15 +332,14 @@ public class menuCompleto {
 		//Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		//workerManager.add(worker);
-		System.out.println("A continucación encontrará los contratos");
+		System.out.println("A continuación encontrará los contratos");
 		List<ContractWorker> contracts = contractWorkerManager.showContracts();
 		for(ContractWorker contract: contracts) {
 			System.out.println(contract);
 		}
 		System.out.println("Escoja el id del contrato deseado:");
 		int contractId = Integer.parseInt(reader.readLine());
-		ContractWorker contractChoose = contractWorkerManager.getContract(contractId);
-		Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality,contractChoose.getID());
+		Worker worker = new Worker(name,position,Date.valueOf(start_date),nationality,contractId);
 		workerManager.add(worker);
 		}
 	
@@ -367,6 +382,7 @@ public class menuCompleto {
 		System.out.println("Number of components: ");
 		Integer numbercomponents=Integer.parseInt(reader.readLine());
 		Component component=new Component(name,price,supplier,numbercomponents);
+		System.out.println(component);
 		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
 		componentManager.add(component);
 	}
@@ -396,6 +412,44 @@ public class menuCompleto {
 		String name= reader.readLine();
 		return name;	
 	}
+	private static void addContractPharmacy() throws Exception{
+		System.out.println("Please, enter the following information: ");
+		System.out.println("Type: ");
+		String type= reader.readLine();
+		System.out.println("Numer of products ");
+		Integer n_products = Integer.parseInt(reader.readLine());
+		System.out.println("Expenditure ");
+		Float expenditure = Float.parseFloat(reader.readLine());
+		ContractPharmacy contract=new ContractPharmacy(type,expenditure,n_products);
+		System.out.println(contract);
+		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
+		contractPharmacyManager.add(contract);	
+	}
+	private static void addContractWorker() throws Exception{
+		System.out.println("Please, enter the following information: ");
+		System.out.println("Bonus: ");
+		Double bonus = Double.parseDouble(reader.readLine());
+		System.out.println("Salary: ");
+		Double salary = Double.parseDouble(reader.readLine());
+		System.out.println("Type: ");
+		String type= reader.readLine();
+		ContractWorker contract=new ContractWorker(bonus, salary, type);
+		//una vez que hemos creado el producto necesitamos insertarlo en la base de datos
+		contractWorkerManager.add(contract);	
+	}
+	private static void addPharmacy() throws Exception{
+		System.out.println("Pleas, enter the following information: ");
+		System.out.println("Name: ");
+		String name = reader.readLine();
+		System.out.println("Location");
+		String location = reader.readLine();
+		Pharmacy pharmacy = new Pharmacy(name, location);
+		pharmacyManager.add(pharmacy);
+		List<ContractPharmacy> contracts = contractPharmacyManager.showContracts();
+		for(ContractWorker contract: contracts) {
+			System.out.println(contract);
+		}
+	}
 	
 	private static void pharmacyMenu() throws Exception{
 		System.out.println("What would you like to do?");
@@ -419,7 +473,7 @@ public class menuCompleto {
 		case 4:
 			buy();
 			break;
-		default: 
+		case 5: 
 			return;
 		}
 	}

@@ -19,6 +19,7 @@ public class SQLiteManager implements DBManager {
 	private WorkerManager worker;
 	private PharmacyManager pharmacy;
 	private ContractWorkerManager contractWorker;
+	private ContractPharmacyManager contractPharmacy;
 	
 	
 	public SQLiteManager() {
@@ -41,6 +42,8 @@ public class SQLiteManager implements DBManager {
 			pharmacy = new SQLitePharmacyManager(c);
 			//Create Contract Worker
 			contractWorker = new SQLiteContractWorkerManager(c);
+			//Create Contract Pharmacy
+			contractPharmacy = new SQLiteContractPharmacyManager(c);
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -113,8 +116,8 @@ public class SQLiteManager implements DBManager {
 		String sql6 = "CREATE TABLE contract_pharmacy"
 				+"(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+" type TEXT NOT NULL,"
-				+" expediture DOUBLE NOT NULL,"
-				+" nproducts INTEGER NOT NULL)";
+				+" expenditure FLOAT NOT NULL,"
+				+" n_products INTEGER NOT NULL)";
 		stmt1.executeUpdate(sql6);
 		
 		stmt1=c.createStatement();
@@ -165,7 +168,9 @@ public class SQLiteManager implements DBManager {
 	public ContractWorkerManager getContractWorkerManager() {
 		return contractWorker;
 	}
-	
+	public ContractPharmacyManager getContractPharmacyManager() {
+		return contractPharmacy;
+	}
 	@Override
 	public int getLastId() {
 		int result = 0;

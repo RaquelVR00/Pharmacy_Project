@@ -33,7 +33,6 @@ public class Component implements Serializable {
 	}
 	
 	
-
 	public Component(Integer id, String name) {
 		super();
 		this.id = id;

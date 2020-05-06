@@ -39,6 +39,23 @@ public class SQLitePharmacyManager implements PharmacyManager {
 		}
 		return pharmacyList;
 	}
+
+
+	@Override
+	public void add(Pharmacy pharmacy) {
+		// TODO Auto-generated method stub
+		try {
+			String sql = "INSERT INTO pharmacy (name, location) "
+					+ "VALUES (?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, pharmacy.getName());
+			prep.setString(2, pharmacy.getLocation());
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+}
 
 

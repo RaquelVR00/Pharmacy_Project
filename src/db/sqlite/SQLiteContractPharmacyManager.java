@@ -2,6 +2,7 @@ package db.sqlite;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import db.interfaces.ContractPharmacyManager;
 import db.pojos.ContractPharmacy;
@@ -13,8 +14,19 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 	}
 	@Override
 	public void add(ContractPharmacy contract_p) {
-		// TODO Auto-generated method stub
-
+		try {
+			String sql = "INSERT INTO contract_pharmacy (type, expenditure, n_products) "
+					+ "VALUES (?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, contract_p.getType());
+			prep.setFloat(2, contract_p.getExpenditure());
+			prep.setInt(3, contract_p.getN_products());
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -34,7 +46,7 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 			s.setFloat(2, contract_p.getExpenditure());
 			s.executeUpdate();
 			s.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

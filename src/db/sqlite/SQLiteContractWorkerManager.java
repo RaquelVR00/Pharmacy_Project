@@ -19,7 +19,18 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 	@Override
 	public void add(ContractWorker contract_w) {
 		// TODO Auto-generated method stub
-
+		try {
+			String sql = "INSERT INTO contract_worker (bonus, salary, type) "
+					+ "VALUES (?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setDouble(1, contract_w.getBonus());
+			prep.setDouble(2, contract_w.getSalary());
+			prep.setString(3, contract_w.getType());
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -28,7 +39,7 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 				try {
 					String sql="SELECT * FROM contract_worker"
 							+"WHERE id = ?";
-					PreparedStatement p= c.prepareStatement(sql);
+					PreparedStatement p = c.prepareStatement(sql);
 					p.setInt(1, contractId);
 					ResultSet rs= p.executeQuery();
 					boolean contractCreated = false;

@@ -10,20 +10,20 @@ public class ContractPharmacy implements Serializable {
 	private static final long serialVersionUID = 1816642495004232407L;
 	
 	private Integer id;
-	private Integer type;
-	private Integer n_products;
+	private String type;
 	private Float expenditure;
+	private int n_products;
 	
 	public ContractPharmacy() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ContractPharmacy(Integer type, Integer n_products, Float expenditure) {
+	public ContractPharmacy(String type, Float expenditure, Integer n_products) {
 		super();
 		this.type = type;
-		this.n_products = n_products;
 		this.expenditure = expenditure;
+		this.n_products = n_products;
 	}
 
 	@Override
@@ -65,19 +65,19 @@ public class ContractPharmacy implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
-	public Integer getN_products() {
+	public int getN_products() {
 		return n_products;
 	}
 
-	public void setN_products(Integer n_products) {
+	public void setN_products(int n_products) {
 		this.n_products = n_products;
 	}
 

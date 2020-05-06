@@ -27,7 +27,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 		// return null;
 		List<Worker> workersList = new ArrayList<Worker>();
 		try {
-			String sql = "SELECT * from workers WHERE name LIKE ?";
+			String sql = "SELECT * FROM worker WHERE name LIKE ?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, "%" + name + "%");
 			ResultSet rs = prep.executeQuery();
@@ -38,12 +38,13 @@ public class SQLiteWorkerManager implements WorkerManager {
 				Date workerStartDate = rs.getDate("start_date");
 				String workerNationality = rs.getString("nationality");
 				Integer workerContract_id = rs.getInt("contract_id");
-				Worker newworker = new Worker(workerName, workerPosition, workerStartDate, workerNationality,
+				Worker newworker = new Worker(id,workerName, workerPosition, workerStartDate, workerNationality,
 						workerContract_id);
 				workersList.add(newworker);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return workersList;
 	}
@@ -54,7 +55,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 		// return null;
 		List<Worker> workersList = new ArrayList<Worker>();
 		try {
-			String sql = "SELECT * from workers WHERE position LIKE ?";
+			String sql = "SELECT * FROM worker WHERE position LIKE ?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, "%" + position + "%");
 			ResultSet rs = prep.executeQuery();
@@ -65,7 +66,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 				Date workerStartDate = rs.getDate("start_date");
 				String workerNationality = rs.getString("nationality");
 				Integer workerContract_id = rs.getInt("contract_id");
-				Worker newworker = new Worker(workerName, workerPosition, workerStartDate, workerNationality,
+				Worker newworker = new Worker(id, workerName, workerPosition, workerStartDate, workerNationality,
 						workerContract_id);
 				workersList.add(newworker);
 			}
@@ -79,16 +80,17 @@ public class SQLiteWorkerManager implements WorkerManager {
 	public void add(Worker worker) {
 		// TODO Auto-generated method stub
 		try {
-			String sql = "INSERT INTO workers (name, position, start_date, nationality, contract_id) "
-					+ "Values (?,?,?,?,?);";
+			String sql = "INSERT INTO worker (name, position, start_date, nationality, contract_id) "
+					+ "VALUES (?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(2, worker.getName());
-			prep.setString(3, worker.getPosition());
-			prep.setDate(4, worker.getStart_date());
-			prep.setString(5, worker.getNationality());
-			prep.setInt(6, worker.getContract_id());
+			prep.setString(1, worker.getName());
+			prep.setString(2, worker.getPosition());
+			prep.setDate(3, worker.getStart_date());
+			prep.setString(4, worker.getNationality());
+			prep.setInt(5, worker.getContract_id());
+			prep.executeUpdate();
 			prep.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO: handle exception
 		}
 	}
