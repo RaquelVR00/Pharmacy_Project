@@ -26,6 +26,14 @@ public class ContractPharmacy implements Serializable {
 		this.n_products = n_products;
 	}
 
+	public ContractPharmacy(Integer id, String type, Float expenditure, int n_products) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.expenditure = expenditure;
+		this.n_products = n_products;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

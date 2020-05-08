@@ -1,11 +1,18 @@
 package db.sqlite;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import db.interfaces.ContractPharmacyManager;
 import db.pojos.ContractPharmacy;
+import db.pojos.ContractWorker;
+import db.pojos.Worker;
 
 public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 	private Connection c;
@@ -49,6 +56,27 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public List<ContractPharmacy> showContracts() {
+		List<ContractPharmacy> contractsList = new ArrayList<ContractPharmacy>();
+		try {
+			String sql = "SELECT * FROM contract_pharmacy";
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String type = rs.getString("type");
+				Float expenditure = rs.getFloat("expenditure");
+				int n_products = rs.getInt("n_products");
+				ContractPharmacy newContract = new ContractPharmacy(id, type, expenditure, n_products);
+			//Add contract
+			contractsList.add(newContract);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return contractsList;
 	}
 
 }

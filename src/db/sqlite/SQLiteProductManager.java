@@ -13,6 +13,7 @@ import java.util.List;
 import db.interfaces.ProductManager;
 import db.pojos.Component;
 import db.pojos.Products;
+import db.pojos.Worker;
 
 public class SQLiteProductManager implements ProductManager {
 	private Connection c;
@@ -97,7 +98,7 @@ public class SQLiteProductManager implements ProductManager {
 					+ " JOIN productComponents AS pc ON p.id=pc.productId "
 					+ " JOIN component AS c ON pc.componentId=c.id"+ " WHERE p.price LIKE ?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, "%"+price+"%");
+			prep.setFloat(1, price);
 			ResultSet rs = prep.executeQuery();
 			List<Component> components = new ArrayList<Component>();
 			boolean productCreated = false;
@@ -150,10 +151,10 @@ public class SQLiteProductManager implements ProductManager {
 		//Get product and components
 		Products newProduct = null;
 		try {
-			String sql="SELECT * FROM product AS p JOIN productComponents AS pc ON p.id = pc.productId"
-					+"JOIN component AS c ON pc.componentId=c.id"
+			String sql="SELECT * FROM product AS p JOIN productComponents AS pc ON p.id = pc.productId "
+					+"JOIN component AS c ON pc.componentId=c.id "
 					+"WHERE p.id = ?";
-			PreparedStatement p= c.prepareStatement(sql);
+			PreparedStatement p = c.prepareStatement(sql);
 			p.setInt(1, productId);
 			ResultSet rs= p.executeQuery();
 			List<Component> componentsList = new ArrayList<Component>();
@@ -168,8 +169,8 @@ public class SQLiteProductManager implements ProductManager {
 			   newProduct = new Products(newProductId,productName,productType,productPrice,numberProducts);
 			   productCreated = true;
 				}
-			   int componentId = rs.getInt("7");
-			   String componentName = rs.getString("8");
+			   int componentId = rs.getInt(7);
+			   String componentName = rs.getString(8);
 			   Component newComponent = new Component(componentId, componentName);
 			   componentsList.add(newComponent);
 			}
@@ -183,15 +184,41 @@ public class SQLiteProductManager implements ProductManager {
 	public void update(Products product) {
 		try {
 			// Update the number of products
-			String sql = "UPDATE product SET numberProducts=? WHERE id=?";
+			String sql = "UPDATE product SET n_products=? WHERE id=?";
 			PreparedStatement s = c.prepareStatement(sql);
+			System.out.println(product.getId());
 			s.setInt(2, product.getId());
 			s.setInt(1, product.getNumberProducts());
 			s.executeUpdate();
 			s.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	public List<Products> showProducts() {
+		Products newProduct = null;
+		List<Products> productsList = new ArrayList<Products>();
+		try {
+			String sql = "SELECT * FROM product ";
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			List<Component> components = new ArrayList<Component>();
+			boolean productCreated = false;
+			while (rs.next()) {
+				if (!productCreated) {
+					int id = rs.getInt(1);
+					String productsName = rs.getString(2);
+					String productsType = rs.getString(3);
+					Float productsPrice = rs.getFloat(4);
+					newProduct = new Products(id,productsName,productsType,productsPrice);
+					productCreated = true;
+					productsList.add(newProduct);
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return productsList;
 	}
 
 }

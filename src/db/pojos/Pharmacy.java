@@ -29,6 +29,14 @@ public class Pharmacy implements Serializable {
 		this.location = location;
 	}
 	
+	public Pharmacy(Integer id, String name, Integer contract_pid, String location) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.contract_pid = contract_pid;
+		this.location = location;
+	}
+
 	public Pharmacy(String name,String location) {
 		super();
 		this.name= name;

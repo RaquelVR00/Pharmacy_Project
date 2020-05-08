@@ -48,20 +48,18 @@ public class menuCompleto {
 		
 		dbManager= new SQLiteManager();
 		dbManager.connect();
-		
 		productManager=dbManager.getProductManager();
 		workerManager=dbManager.getWorkerManager();
 		componentManager=dbManager.getComponentManager();
 		pharmacyManager=dbManager.getPharmacyManager();
 		contractWorkerManager= dbManager.getContractWorkerManager();
 		contractPharmacyManager = dbManager.getContractPharmacyManager();
-		
-		
 		//para inicializar el bufferedReader
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to our data base!");
 		//System.out.println("Do you want to create the tables?");
 		dbManager.createTables();
+		while(true) {
 		System.out.println("Who are you? Choose between the following options:  ");
 		System.out.println("1. Worker");
 		System.out.println("2. Boss");
@@ -78,6 +76,7 @@ public class menuCompleto {
 			pharmacyMenu();
 			break;
 			
+		}
 		}
 	}
 
@@ -144,7 +143,10 @@ public class menuCompleto {
 		}
 	}
 	private static void addProduct() throws Exception{
-		String product=searchProduct();
+		List<Products> productList=productManager.showProducts();
+		for (Products product : productList) {
+			System.out.println(product);
+		}
 		System.out.println("Introduce the selected product´s id");
 		int id=Integer.parseInt(reader.readLine());
 		Products toBeModified=productManager.getProduct(id);
@@ -162,6 +164,7 @@ public class menuCompleto {
 		String name= reader.readLine();
 		return name;	
 	}
+	
 	private static void searchProductByName() throws Exception{
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Inserte the name of the product you want to search: ");
@@ -355,7 +358,7 @@ public class menuCompleto {
 	
 	private static void searchPharmacyByName() throws Exception{
 		System.out.println("Please, enter the following information: ");
-		System.out.println("Insert the name of the worker you want to search: ");
+		System.out.println("Insert the name of the pharmacy you want to search: ");
 		String name= reader.readLine();
 		List<Pharmacy> pharmacyList=pharmacyManager.searchByName(name);
 		for (Pharmacy pharmacy : pharmacyList) {
@@ -438,17 +441,20 @@ public class menuCompleto {
 		contractWorkerManager.add(contract);	
 	}
 	private static void addPharmacy() throws Exception{
-		System.out.println("Pleas, enter the following information: ");
+		System.out.println("Please, enter the following information: ");
 		System.out.println("Name: ");
 		String name = reader.readLine();
 		System.out.println("Location");
 		String location = reader.readLine();
-		Pharmacy pharmacy = new Pharmacy(name, location);
-		pharmacyManager.add(pharmacy);
+		System.out.println("Available contracts: ");
 		List<ContractPharmacy> contracts = contractPharmacyManager.showContracts();
-		for(ContractWorker contract: contracts) {
+		for(ContractPharmacy contract: contracts) {
 			System.out.println(contract);
 		}
+		System.out.println("Contract: ");
+		int contract_pid = Integer.parseInt(reader.readLine());
+		Pharmacy pharmacy = new Pharmacy(name, contract_pid, location);
+		pharmacyManager.add(pharmacy);
 	}
 	
 	private static void pharmacyMenu() throws Exception{

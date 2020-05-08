@@ -103,9 +103,10 @@ public class SQLiteWorkerManager implements WorkerManager {
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, worker_id);
 			prep.executeUpdate();
-			c.close();
+			prep.close();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
@@ -120,14 +121,12 @@ public class SQLiteWorkerManager implements WorkerManager {
 			String position = rs.getString("position");
 			Date date = rs.getDate("start_date");
 			String nationality = rs.getString("nationality");
-			int contract_id = rs.getInt("contract id");
+			int contract_id = rs.getInt("contract_id");
 			Worker worker = new Worker(id, name, position, date, nationality, contract_id);
-			System.out.println(worker);
+			System.out.println(worker);	
 		}
-		rs.close();
-		stmt.close();
 		}catch(SQLException e) {
-			//TODO
+			e.printStackTrace();//TODO
 		}
 		
 	}

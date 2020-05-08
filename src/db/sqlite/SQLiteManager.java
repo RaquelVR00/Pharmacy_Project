@@ -91,7 +91,7 @@ public class SQLiteManager implements DBManager {
 				   + "(id   INTEGER  PRIMARY KEY AUTOINCREMENT,"
 				   + " name     TEXT     NOT NULL, "
 				   + " type  TEXT  	NOT NULL, "
-				   + " price	INTEGER NOT NULL,"
+				   + " price	FLOAT NOT NULL,"
 				   + " n_products INTEGER NOT NULL)";
 		stmt1.executeUpdate(sql3);
 	
