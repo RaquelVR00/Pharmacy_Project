@@ -110,14 +110,16 @@ public class Products implements Serializable {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Products [id=" + id + ", name=" + name + ", type=" + type + ", price=" + price + ", components="
-				+ components + "]";
-	}
 
 
 	
+
+	@Override
+	public String toString() {
+		return "Products [id=" + id + ", name=" + name + ", type=" + type + ", price=" + price + ", numberProducts="
+				+ numberProducts + ", components=" + components + "]";
+	}
+
 
 	public Integer getId() {
 		return id;

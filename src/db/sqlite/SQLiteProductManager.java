@@ -24,75 +24,57 @@ public class SQLiteProductManager implements ProductManager {
 	List <Products> productsList = new ArrayList <Products> ();
 	
 	@Override
-	public Products searchByName(String name) {
+	public List<Products> searchByName(String name) {
 		Products newProduct = null;
+		List<Products> productList = new ArrayList<Products>();
 		try {
-			String sql = "SELECT * FROM product AS p "
-					+ " JOIN productComponents AS pc ON p.id=pc.productId "
-					+ " JOIN component AS c ON pc.componentId=c.id"+ " WHERE p.name LIKE ?";
+			String sql = "SELECT * FROM product " + " WHERE name LIKE ?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, "%"+name+"%");
 			ResultSet rs = prep.executeQuery();
-			List<Component> components = new ArrayList<Component>();
-			boolean productCreated = false;
-			
 			while (rs.next()) {
-				if (!productCreated) {
 					int id = rs.getInt(1);
 					String productsName = rs.getString(2);
 					String productsType = rs.getString(3);
 					Float productsPrice = rs.getFloat(4);
-					newProduct = new Products(id,productsName,productsType,productsPrice);
-					productCreated = true;
-				}
-				int componentId = rs.getInt(8);
-				String componentName = rs.getString(9);
-				Component component = new Component(componentId,componentName);
-				components.add(component);
+					int numberProducts = rs.getInt(5);
+					newProduct = new Products(id,productsName,productsType,productsPrice,numberProducts);
+				productList.add(newProduct);
 			}
-			newProduct.setComponents(components);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return newProduct;
+		return productList;
 	}
 
 	@Override
-	public Products searchByType(String type) {
+	public List<Products> searchByType(String type) {
 		Products newProduct = null;
+		List<Products> productList = new ArrayList<Products>();
 		try {
-			String sql = "SELECT * FROM product AS p "
-					+ " JOIN productComponents AS pc ON p.id=pc.productId "
-					+ " JOIN component AS c ON pc.componentId=c.id"+ " WHERE p.type LIKE ?";
+			String sql = "SELECT * FROM product WHERE type LIKE ?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, "%" + type + "%");
-			ResultSet rs  = prep.executeQuery();
-			List<Component> components = new ArrayList<Component>();
-			boolean productCreated = false;
+			prep.setString(1, "%"+type+"%");
+			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
-				if (!productCreated) {
 					int id = rs.getInt(1);
 					String productsName = rs.getString(2);
 					String productsType = rs.getString(3);
 					Float productsPrice = rs.getFloat(4);
-					newProduct = new Products(id,productsName,productsType,productsPrice);
-					productCreated = true;
-				}
-				int componentId = rs.getInt(8);
-				String componentName = rs.getString(9);
-				Component component = new Component(componentId,componentName);
-				components.add(component);
+					int numberProducts = rs.getInt(5);
+					newProduct = new Products(id,productsName,productsType,productsPrice,numberProducts);
+				productList.add(newProduct);
 			}
-			newProduct.setComponents(components);
-		} catch (Exception e) {
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return newProduct;
+		return productList;
 	}
 
 	@Override
-	public Products searchByPrice(Float price) {
+	public List<Products> searchByPrice(Float price) {
 		Products newProduct = null;
+		List<Products> productList = new ArrayList<Products>();
 		try {
 			String sql = "SELECT * FROM product AS p "
 					+ " JOIN productComponents AS pc ON p.id=pc.productId "
@@ -100,27 +82,19 @@ public class SQLiteProductManager implements ProductManager {
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setFloat(1, price);
 			ResultSet rs = prep.executeQuery();
-			List<Component> components = new ArrayList<Component>();
-			boolean productCreated = false;
 			while (rs.next()) {
-				if (!productCreated) {
 					int id = rs.getInt(1);
 					String productsName = rs.getString(2);
 					String productsType = rs.getString(3);
 					Float productsPrice = rs.getFloat(4);
-					newProduct = new Products(id,productsName,productsType,productsPrice);
-					productCreated = true;
-				}
-				int componentId = rs.getInt(8);
-				String componentName = rs.getString(9);
-				Component component = new Component(componentId,componentName);
-				components.add(component);
+					int numberProducts = rs.getInt(5);
+					newProduct = new Products(id,productsName,productsType,productsPrice,numberProducts);
+				productList.add(newProduct);
 			}
-			newProduct.setComponents(components);
-		}catch(Exception e) {
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return newProduct;
+		return productList;
 	}
 
 	@Override
@@ -186,7 +160,6 @@ public class SQLiteProductManager implements ProductManager {
 			// Update the number of products
 			String sql = "UPDATE product SET n_products=? WHERE id=?";
 			PreparedStatement s = c.prepareStatement(sql);
-			System.out.println(product.getId());
 			s.setInt(2, product.getId());
 			s.setInt(1, product.getNumberProducts());
 			s.executeUpdate();
@@ -210,7 +183,8 @@ public class SQLiteProductManager implements ProductManager {
 					String productsName = rs.getString(2);
 					String productsType = rs.getString(3);
 					Float productsPrice = rs.getFloat(4);
-					newProduct = new Products(id,productsName,productsType,productsPrice);
+					int numberProducts = rs.getInt(5);
+					newProduct = new Products(id,productsName,productsType,productsPrice,numberProducts);
 					productCreated = true;
 					productsList.add(newProduct);
 				}
