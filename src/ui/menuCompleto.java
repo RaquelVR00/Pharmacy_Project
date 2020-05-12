@@ -332,8 +332,7 @@ public class menuCompleto {
 		String nationality = reader.readLine();
 		// Worker worker = new
 		// Worker(name,position,Date.valueOf(start_date),nationality);
-		// una vez que hemos creado el producto necesitamos insertarlo en la base de
-		// datos
+		// Once we have created the worker we have to add it to the DB
 		// workerManager.add(worker);
 		System.out.println("Now you will find the contacts: ");
 		List<ContractWorker> contracts = contractWorkerManager.showContracts();
