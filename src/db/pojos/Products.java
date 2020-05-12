@@ -13,11 +13,20 @@ public class Products implements Serializable {
 	private Float price;
 	private int numberProducts;
 	private List<Component> components;
-	
+	private List<Pharmacy> pharmacies;
 	
 	public Products() {
 		super();
 	}
+
+	
+	
+	public Products(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 
 
 	public Products(Integer id, String name, String type, Float price) {
@@ -184,5 +193,17 @@ public class Products implements Serializable {
 	public void setComponents(List<Component> components) {
 		this.components = components;
 	}
+
+
+	public List<Pharmacy> getPharmacies() {
+		return pharmacies;
+	}
+
+
+	public void setPharmacies(List<Pharmacy> pharmacies) {
+		this.pharmacies = pharmacies;
+	}
+	
+	
 	
 }

@@ -2,7 +2,6 @@ package db.interfaces;
 
 
 import java.util.List;
-
 import db.pojos.ContractPharmacy;
 
 public interface ContractPharmacyManager {

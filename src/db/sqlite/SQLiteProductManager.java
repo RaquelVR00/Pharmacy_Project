@@ -112,11 +112,6 @@ public class SQLiteProductManager implements ProductManager {
 		}
 	}
 
-	@Override
-	public void buy(Products product) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	
 	public Products getProduct(int productId) {

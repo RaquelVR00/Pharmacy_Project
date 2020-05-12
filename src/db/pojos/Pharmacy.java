@@ -3,6 +3,7 @@ package db.pojos;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -17,6 +18,7 @@ public class Pharmacy implements Serializable {
 	private String name;
 	private Integer contract_pid;
 	private String location;
+	private List<Products> products;
 	
 	public Pharmacy(){
 		super();
@@ -43,6 +45,15 @@ public class Pharmacy implements Serializable {
 		this.location=location;
 	}
 	
+	
+	public Pharmacy(String name, Integer contract_pid, String location, List<Products> products) {
+		super();
+		this.name = name;
+		this.contract_pid = contract_pid;
+		this.location = location;
+		this.products = products;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -106,5 +117,13 @@ public class Pharmacy implements Serializable {
 		this.location = location;
 	}
 
+	public List<Products> getProducts() {
+		return products;
+	}
 
+	public void setProducts(List<Products> products) {
+		this.products = products;
+	}
+	
+	
 }

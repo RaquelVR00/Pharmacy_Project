@@ -1,7 +1,6 @@
 package db.interfaces;
 
 import java.util.List;
-
 import db.pojos.ContractWorker;
 
 public interface ContractWorkerManager {

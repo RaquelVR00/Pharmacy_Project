@@ -9,8 +9,9 @@ import java.util.List;
 
 
 import db.interfaces.PharmacyManager;
-
+import db.pojos.Component;
 import db.pojos.Pharmacy;
+import db.pojos.Products;
 public class SQLitePharmacyManager implements PharmacyManager {
 	private Connection c;
 	public SQLitePharmacyManager(Connection c) {
@@ -56,6 +57,78 @@ public class SQLitePharmacyManager implements PharmacyManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void give(int pharmacyId, int productId) {
+		//Link Product and Pharmacy
+				try {
+					String sql = "INSERT INTO pharmacyProducts (pharmacyId,productId) "
+							+ "VALUES (?,?)";
+					PreparedStatement prep = c.prepareStatement(sql);
+					prep.setInt(1,pharmacyId);
+					prep.setInt(2,productId);
+					
+					prep.executeUpdate();
+					prep.close();
+				} catch (SQLException e) {
+					e.printStackTrace();	
+			}
+	}
+	
+	public Pharmacy getPharmacy(int pharmacyId) {
+		//Get product and components
+		Pharmacy newPharmacy = null;
+		try {
+			String sql="SELECT * FROM pharmacy AS p JOIN pharmacyProducts AS pp ON p.id = pp.pharmacyId "
+					+"JOIN product AS pr ON pp.productId=pr.id "
+					+"WHERE p.id = ?";
+			PreparedStatement p = c.prepareStatement(sql);
+			p.setInt(1, pharmacyId);
+			ResultSet rs= p.executeQuery();
+			List<Products> productsList = new ArrayList<Products>();
+			boolean pharmacyCreated = false;
+			while(rs.next()) {
+				if(!pharmacyCreated) {
+				   int newPharmacyId = rs.getInt(1);
+				   String pharmacyName = rs.getString(2);
+				   String pharmacyLocation = rs.getString(3);
+				   int pharmacyContract_pid = rs.getInt(4);
+				   
+				   newPharmacy = new Pharmacy(newPharmacyId,pharmacyName,pharmacyContract_pid,pharmacyLocation);
+				   pharmacyCreated = true;
+				}
+			   int productId = rs.getInt(7);
+			   String productName = rs.getString(8);
+			   Products newProducts = new Products(productId, productName);
+			   productsList.add(newProducts);
+			}
+				newPharmacy.setProducts(productsList);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return newPharmacy;
+	}
+	
+	public List<Pharmacy> showPharmacy(){
+		List<Pharmacy> pharmaciesList = new ArrayList<Pharmacy>();
+		try {
+			String sql = "SELECT * FROM pharmacy";
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+			int id = rs.getInt("id");
+			String pharmacyName = rs.getString("name");
+			String pharmacyLocation = rs.getString("location");
+			int pharmacyContract_pid = rs.getInt("contract_pid");
+			
+			Pharmacy newPharmacy = new Pharmacy(id,pharmacyName,pharmacyContract_pid, pharmacyLocation);
+			//Add to component list
+			pharmaciesList.add(newPharmacy);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return pharmaciesList;
 	}
 }
 

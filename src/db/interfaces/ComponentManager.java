@@ -1,8 +1,7 @@
 package db.interfaces;
-import java.util.List;
 
+import java.util.List;
 import db.pojos.Component;
-import db.pojos.Products;
 
 public interface ComponentManager {
 	

@@ -2,6 +2,7 @@ package ui;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +15,9 @@ import db.interfaces.ContractWorkerManager;
 import db.interfaces.DBManager;
 import db.interfaces.PharmacyManager;
 import db.interfaces.ProductManager;
+import db.interfaces.UserManager;
 import db.interfaces.WorkerManager;
+import db.jpa.JPAUserManager;
 import db.pojos.Component;
 import db.pojos.ContractPharmacy;
 import db.pojos.Pharmacy;
@@ -22,6 +25,8 @@ import db.pojos.Products;
 import db.pojos.ContractWorker;
 import db.pojos.Worker;
 import db.sqlite.SQLiteManager;
+import db.pojos.users.Role;
+import db.pojos.users.User;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -41,6 +46,7 @@ public class menuCompleto {
 	private static PharmacyManager pharmacyManager;
 	private static ContractWorkerManager contractWorkerManager;
 	private static ContractPharmacyManager contractPharmacyManager;
+	private static UserManager userManager;
 
 	public static void main(String[] args) throws Exception {
 
@@ -54,29 +60,100 @@ public class menuCompleto {
 		pharmacyManager = dbManager.getPharmacyManager();
 		contractWorkerManager = dbManager.getContractWorkerManager();
 		contractPharmacyManager = dbManager.getContractPharmacyManager();
+		dbManager.createTables();
+		
+		userManager = new JPAUserManager();
+		userManager.connect();
 		// To initialize the bufferedReader
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to our data base!");
 		// System.out.println("Do you want to create the tables?");
-		dbManager.createTables();
+		
 		while (true) {
-			System.out.println("Who are you? Choose between the following options:  ");
-			System.out.println("1. Worker");
-			System.out.println("2. Boss");
-			System.out.println("3. Pharmacy");
+			System.out.println("What do you want to do?");
+			System.out.println("1. Create a new role");
+			System.out.println("2. Create a new user");
+			System.out.println("3. Login");
+			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			switch (choice) {
 			case 1:
-				workerMenu();
+				newRole();
 				break;
 			case 2:
-				bossMenu();
+				newUser();
 				break;
+			case 3:
+				login();
+				break;
+			case 0:
+				dbManager.disconnect();
+				userManager.disconnect();
+				return;
 			default:
-				pharmacyMenu();
 				break;
-
 			}
+		}
+	}
+	
+	private static void newRole() throws Exception {
+		System.out.println("Please type the new role information:");
+		System.out.print("Role name:");
+		String roleName = reader.readLine();
+		Role role = new Role(roleName);
+		userManager.createRole(role);
+	}
+	
+	private static void newUser() throws Exception {
+		System.out.println("Please type the new user information:");
+		System.out.print("Username:");
+		String username = reader.readLine();
+		System.out.print("Password:");
+		String password = reader.readLine();
+		// Create the password's hash
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] hash = md.digest();
+		// Show all the roles and let the user choose one
+		List<Role> roles = userManager.getRoles();
+		for (Role role : roles) {
+			System.out.println(role);
+		}
+		System.out.print("Type the chosen role id:");
+		int roleId = Integer.parseInt(reader.readLine());
+		// Get the chosen role from the database
+		Role chosenRole = userManager.getRole(roleId);
+		// Create the user and store it
+		User user = new User(username, hash, chosenRole);
+		userManager.createUser(user);
+	}
+	
+	private static void login() throws Exception {
+		System.out.println("Please input your credentials");
+		System.out.print("Username:");
+		String username = reader.readLine();
+		System.out.print("Password:");
+		String password = reader.readLine();
+		User user = userManager.checkPassword(username, password);
+		// We check if the user/password combination was OK
+		if (user == null) {
+			System.out.println("Wrong credentials, please try again!");
+		}
+		// We check the role
+		else if (user.getRole().getRole().equalsIgnoreCase("boss")) {
+			System.out.println("Welcome boss " + username + "!");
+			bossMenu();
+		}
+		else if (user.getRole().getRole().equalsIgnoreCase("worker")) {
+			System.out.println("Welcome worker " + username + "!");
+			workerMenu();
+		}
+		else if (user.getRole().getRole().equalsIgnoreCase("pharmacy")) {
+			System.out.println("Welcome pharmacy " + username + "!");
+			pharmacyMenu();
+		}
+		else {
+			System.out.println("Invalid role.");
 		}
 	}
 
@@ -249,7 +326,8 @@ public class menuCompleto {
 			System.out.println("13. Add contract with a pharmacy");
 			System.out.println("14. Add contract with a worker");
 			System.out.println("15. Add pharmacy");
-			System.out.println("16. Go back");
+			System.out.println("16. Show all pharmacies");
+			System.out.println("17. Go back");
 			int choice = Integer.parseInt(reader.readLine());
 
 			switch (choice) {
@@ -299,6 +377,9 @@ public class menuCompleto {
 				addPharmacy();
 				break;
 			case 16:
+				showPharmacies();
+				break;
+			case 17:
 				return;
 			}
 		}
@@ -452,6 +533,13 @@ public class menuCompleto {
 		pharmacyManager.add(pharmacy);
 	}
 
+	private static void showPharmacies() throws Exception {
+		List<Pharmacy> list_pharmacies = pharmacyManager.showPharmacy();
+		for (Pharmacy pharmacies : list_pharmacies) {
+			System.out.println(pharmacies);
+		}
+	}
+	
 	private static void pharmacyMenu() throws Exception {
 		while (true) {
 			System.out.println("What would you like to do?");
@@ -496,5 +584,10 @@ public class menuCompleto {
 		int updatedNumber = preexistingNumber - numberproducts;
 		toBeModified.setNumberProducts(updatedNumber);
 		productManager.update(toBeModified);
+		
+		searchPharmacyByName();
+		System.out.println("Enter your pharmacy's id: ");
+		int id_p = Integer.parseInt(reader.readLine());
+		pharmacyManager.give(id_p, id);
 	}
 }
