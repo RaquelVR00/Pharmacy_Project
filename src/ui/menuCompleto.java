@@ -147,7 +147,12 @@ public class menuCompleto {
 			System.out.println(product);
 		}
 		System.out.println("Enter the selected product´s id");
-		int id = Integer.parseInt(reader.readLine());
+		int id=0;
+		try{
+	        id = Integer.parseInt(reader.readLine());
+    	}catch(NumberFormatException ex){
+        	System.out.println("No es un número, porfavor introduzca uno");
+    	}
 		Products toBeModified = productManager.getProduct(id);
 		int preexistingNumber = toBeModified.getNumberProducts();
 		System.out.println("The number of products that are now avaiable are: " + preexistingNumber);
@@ -332,7 +337,8 @@ public class menuCompleto {
 		String nationality = reader.readLine();
 		// Worker worker = new
 		// Worker(name,position,Date.valueOf(start_date),nationality);
-		// Once we have created the worker we have to add it to the DB
+		// una vez que hemos creado el producto necesitamos insertarlo en la base de
+		// datos
 		// workerManager.add(worker);
 		System.out.println("Now you will find the contacts: ");
 		List<ContractWorker> contracts = contractWorkerManager.showContracts();
