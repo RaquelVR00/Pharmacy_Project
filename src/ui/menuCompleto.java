@@ -30,10 +30,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class menuCompleto {
-	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // cada vez que introduzcan
-																							// una fecha van a tener que
-																							// introducir este formato
-	private static BufferedReader reader; // para leeer de consola
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Each time dates are added this is the format that is needed.
+	private static BufferedReader reader; // To read from the console
 
 	// para añadir nuevos productos a la base de datos una vez que ya se han creado
 	private static DBManager dbManager;
@@ -423,9 +421,9 @@ public class menuCompleto {
 	private static void addContractWorker() throws Exception {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Bonus: ");
-		Double bonus = Double.parseDouble(reader.readLine());
+		Float bonus = Float.parseFloat(reader.readLine());
 		System.out.println("Salary: ");
-		Double salary = Double.parseDouble(reader.readLine());
+		Float salary = Float.parseFloat(reader.readLine());
 		System.out.println("Type: ");
 		String type = reader.readLine();
 		ContractWorker contract = new ContractWorker(bonus, salary, type);

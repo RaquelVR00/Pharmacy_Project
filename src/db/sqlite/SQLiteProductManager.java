@@ -21,8 +21,6 @@ public class SQLiteProductManager implements ProductManager {
 		this.c=c;
 	}
 	
-	List <Products> productsList = new ArrayList <Products> ();
-	
 	@Override
 	public List<Products> searchByName(String name) {
 		Products newProduct = null;

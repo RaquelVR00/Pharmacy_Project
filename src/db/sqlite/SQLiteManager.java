@@ -92,7 +92,7 @@ public class SQLiteManager implements DBManager {
 				   + " name     TEXT     NOT NULL, "
 				   + " type  TEXT  	NOT NULL, "
 				   + " price	FLOAT NOT NULL,"
-				   + " n_products INTEGER NOT NULL)";
+				   + " numberProducts INTEGER NOT NULL)";
 		stmt1.executeUpdate(sql3);
 	
 		stmt1 = c.createStatement();
@@ -107,8 +107,8 @@ public class SQLiteManager implements DBManager {
 		stmt1=c.createStatement();
 		String sql5 = "CREATE TABLE contract_worker"
 				+"(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+"salary DOUBLE,"
-				+"bonus DOUBLE,"
+				+"salary FLOAT,"
+				+"bonus FLOAT,"
 				+"type TEXT NOT NULL)";
 		stmt1.executeUpdate(sql5);
 		
@@ -117,14 +117,14 @@ public class SQLiteManager implements DBManager {
 				+"(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+" type TEXT NOT NULL,"
 				+" expenditure FLOAT NOT NULL,"
-				+" n_products INTEGER NOT NULL)";
+				+" numberProducts INTEGER NOT NULL)";
 		stmt1.executeUpdate(sql6);
 		
 		stmt1=c.createStatement();
 		String sql7= "CREATE TABLE pharmacyProducts"
-				+"(pharmacieId INTEGER REFERENCES pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+"(pharmacyId INTEGER REFERENCES pharmacy(id) ON UPDATE CASCADE ON DELETE SET NULL,"
 				+"productId INTEGER REFERENCES product(id) ON UPDATE CASCADE ON DELETE SET NULL,"
-				+"PRIMARY KEY(pharmacieId,productId))";
+				+"PRIMARY KEY(pharmacyId,productId))";
 		stmt1.executeUpdate(sql7);
 		
 		stmt1=c.createStatement();

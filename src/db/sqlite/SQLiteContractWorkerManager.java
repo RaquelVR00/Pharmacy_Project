@@ -23,8 +23,8 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 			String sql = "INSERT INTO contract_worker (bonus, salary, type) "
 					+ "VALUES (?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setDouble(1, contract_w.getBonus());
-			prep.setDouble(2, contract_w.getSalary());
+			prep.setFloat(1, contract_w.getBonus());
+			prep.setFloat(2, contract_w.getSalary());
 			prep.setString(3, contract_w.getType());
 			prep.executeUpdate();
 			prep.close();
@@ -46,8 +46,8 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 					while(rs.next()) {
 						if(!contractCreated) {
 					   Integer newContractId = rs.getInt(1);
-					   Double newContractSalary = rs.getDouble(2);
-					   Double newContractBonus = rs.getDouble(3);
+					   Float newContractSalary = rs.getFloat(2);
+					   Float newContractBonus = rs.getFloat(3);
 					   String newContractType = rs.getString(4);
 					   newContract = new ContractWorker(newContractId,newContractSalary,newContractBonus,newContractType);
 					   contractCreated = true;
@@ -67,8 +67,8 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
 			Integer id = rs.getInt("id");
-			Double salary = rs.getDouble("salary");
-			Double bonus = rs.getDouble("bonus");
+			Float salary = rs.getFloat("salary");
+			Float bonus = rs.getFloat("bonus");
 			String type = rs.getString("type");
 			ContractWorker newContract = new ContractWorker(id,salary,bonus,type);
 			//Add contract
@@ -88,7 +88,7 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 			String sql = "UPDATE product SET numberProducts=? WHERE id=?";
 			PreparedStatement s = c.prepareStatement(sql);
 			s.setInt(1, contract_w.getID());
-			s.setDouble(2, contract_w.getSalary());
+			s.setFloat(2, contract_w.getSalary());
 			s.executeUpdate();
 			s.close();
 		} catch (Exception e) {
