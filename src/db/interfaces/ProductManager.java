@@ -14,4 +14,5 @@ public interface ProductManager {
 	 public Products getProduct(int productId);
 	 public void update(Products product);
 	 public List<Products> showProducts();
+	 public void delete(int product_id);
 }

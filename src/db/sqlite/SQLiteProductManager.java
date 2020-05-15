@@ -111,8 +111,6 @@ public class SQLiteProductManager implements ProductManager {
 			e.printStackTrace();
 		}
 	}
-
-	
 	
 	public Products getProduct(int productId) {
 		//Get product and components
@@ -161,6 +159,19 @@ public class SQLiteProductManager implements ProductManager {
 			e.printStackTrace();
 		}
 	}
+	public void delete(int product_id) {
+		try {
+			String sql = "DELETE FROM product WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, product_id);
+			prep.executeUpdate();
+			prep.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	public List<Products> showProducts() {
 		Products newProduct = null;
 		List<Products> productsList = new ArrayList<Products>();

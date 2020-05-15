@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 //import java.util.Date;
 import java.util.List;
 
@@ -259,7 +260,6 @@ public class menuCompleto {
 						componentsRight = true;
 						productManager.update(toBeModified);
 					}
-
 				} else {
 					System.out.println("There are not enough components for the number of products you want to add.");
 					System.out.println("In the following list you can check the number of availavable components: ");
@@ -325,7 +325,6 @@ public class menuCompleto {
 		String type = reader.readLine();
 		System.out.println("Price: ");
 		Float price = Float.parseFloat(reader.readLine());
-		;
 		/*
 		 * boolean wrongText=false; do { try {
 		 * price=Float.parseFloat(reader.readLine()); } catch (Exception e) {
@@ -344,40 +343,46 @@ public class menuCompleto {
 		}
 		System.out.println("Choose the desired ID's:");
 		int x = 5;
+		int counter = 0;
+		int creatorCounter = 0;
+		boolean componentsRight = false;
+		boolean modifyNProducts = false;
+		List<Component> componentList = new ArrayList<Component>();
 		while (x != 0) {
 			int componentId = Integer.parseInt(reader.readLine());
-
-			componentManager.give(dbManager.getLastId(), componentId);
-
+			Component realComponent = componentManager.getComponent(componentId);
+			componentList.add(realComponent);
 			System.out.println(
 					"If you want to add another component enter 5, if you don't want to add another component enter 0.");
 			x = Integer.parseInt(reader.readLine());
 		}
-		boolean correctNumber = true;
-		int counter = 0;
-		while (correctNumber) {
-			System.out.println("Enter the number of products you would like to add: ");
-			int numberproducts = Integer.parseInt(reader.readLine());
-			int updatedNumber = preexistingNumber + numberproducts;
-			toBeModified.setNumberProducts(updatedNumber);
-			List<Component> componentList = toBeModified.getComponents();
-			boolean componentsRight = false;
-			for (Component componentChecker : componentList) {
-				int idComponent = componentChecker.getId();
+		while (componentsRight == false) {
+			for (Component component : componentList) {
+				int idComponent = component.getId();
 				Component realComponent = componentManager.getComponent(idComponent);
 				int numberComponents = realComponent.getNumberComponents();
 				if (numberComponents >= numberproducts) {
 					counter++;
 					if (counter == componentList.size()) {
 						componentsRight = true;
-						productManager.update(toBeModified);
+						modifyNProducts = true;
 					}
-
+				} else if (numberComponents == 0) {
+					System.out.println("There are no available components.");
+					productManager.delete(dbManager.getLastId());
+					componentsRight = true;
+					break;
+				} else if (componentsRight == true) {
+					break;
 				} else {
 					System.out.println("There are not enough components for the number of products you want to add.");
 					System.out.println("In the following list you can check the number of availavable components: ");
+					for (Component componentPrint : componentList) {
+						System.out.println(componentPrint);
+					}
+					System.out.println("Please enter a new number of products:");
+					numberproducts = Integer.parseInt(reader.readLine());
 					counter = 0;
-					correctNumber = true;
 				}
 			}
 			for (Component component : componentList) {
@@ -385,15 +390,20 @@ public class menuCompleto {
 				Component realComponent = componentManager.getComponent(idComponent);
 				int numberComponents = realComponent.getNumberComponents();
 				System.out.println(realComponent);
-				if (componentsRight) {
+				if (componentsRight && modifyNProducts) {
 					int updatedComponentsNumber = numberComponents - numberproducts;
 					realComponent.setNumberComponents(updatedComponentsNumber);
+					componentManager.give(dbManager.getLastId(), idComponent);
+					product.setNumberProducts(numberproducts);
+					Products updatedProduct = new Products(dbManager.getLastId(), product.getName(), product.getType(),
+							product.getPrice());
+					productManager.update(updatedProduct);
 					System.out.println(realComponent);
 					componentManager.update(realComponent);
-					correctNumber = false;
-				} else if (numberComponents == 0) {
-					System.out.println("There are no components available.");
-					correctNumber = false;
+					creatorCounter++;
+				} else if (creatorCounter != 0) {
+					System.out.println("Component can't be created because there are no components.");
+					productManager.delete(dbManager.getLastId());
 					break;
 				}
 			}
