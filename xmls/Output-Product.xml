@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Products name="a">
+    <type>a</type>
+    <price>44.0</price>
+    <numberProducts>0</numberProducts>
+    <components>
+        <component name="1">
+            <numberComponents>0</numberComponents>
+        </component>
+        <component name="2">
+            <numberComponents>0</numberComponents>
+        </component>
+    </components>
+</Products>
