@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+-->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<title>High quality products</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="default.css" />
+</head>
+<body>
+
+<div id="header">
+	<div id="header_inner">
+		<h1><span>Pharmaceutical</span>Company</h1>
+		<h1></h1>
+	</div>
+</div>
+
+<div id="main">
+
+	<div id="lcol">
+		<div id="menu">
+			<ul>
+				<li><a href="#">Site Homepage<span></span></a></li>
+				<li><a href="#">My Blog<span></span></a></li>
+				<li><a href="#">Portfolio<span></span></a></li>
+				<li><a href="#">About Me<span></span></a></li>
+				<li><a href="#">Contact Me<span></span></a></li>
+			</ul>
+		</div>
+		<div id="menu_end"></div>
+
+		<div id="lcontent">
+			<h3 class="first">Interesting.<span>Links</span></h3>
+			<ul class="divided">
+				<li class="first"><a href="#">http://www.other-selves.com/p/cosas-que-he.html</a></li>
+				<li><a href="#">Cursus lorem nulla</a></li>
+				<li><a href="#">Nunc ante elit</a></li>
+				<li><a href="#">Tincidunt aliquam</a></li>
+				<li><a href="#">Cursus sed tempus</a></li>
+			</ul>
+		
+			<h3>Aliquam.<span>Cursus</span></h3>
+			<p><a href="#">Sollicitudin sed</a> arcu et vivamus viverra. Nullam turpis. Vestibulum Nullam turpis vestibulum.</p>	
+			<div class="divider"></div>
+
+			<p><a href="#">Vestibulum veroeros</a> sed arcu et vivamus viverra lorem ipsum dolor sit amet dolore nulla facilisi.</p>
+		</div>
+
+	</div>
+
+	<div id="rcol">
+		<div id="rcontent">
+		
+			<h1>Here you will see <span>our product<sup>TM</sup></span></h1>
+			<span id="slogan2">Best quality at best price</span>
+			<div class="box">
+				<div class="box_inner">	
+					<div class="captioned_image">
+						<img src="images/smart-drugs-1.jpg" />
+						<div>Selected product picture</div>
+					</div>
+					<h2> <b>Name: <xsl:value-of select="/product/@name" /></b><br /></h2>
+					Type: <xsl:value-of select="/product/type" /><br />
+					Price: <xsl:value-of select="/product/price" /><br />
+					Number of products available: <xsl:value-of select="/product/numberProducts" /><br />
+				    Components:
+					<table>
+						<th>Medicine</th>
+						<xsl:for-each select="//components">
+						<tr>
+							<td><xsl:value-of select="id" /></td>
+							<td><xsl:value-of select="name" /></td>
+							<td><xsl:value-of select="price" /></td>
+							<td><xsl:value-of select="supplier" /></td>
+							<td><xsl:value-of select="numberComponents" /></td>
+						</tr>
+						</xsl:for-each>				</div>
+						</div>
+
+			<h3>Obscure.<span>Explanations</span></h3>
+			<p>
+				<strong>Curiously.green<sup>1.0</sup></strong> is a free, lightweight, tableless, W3C-compliant website design
+				by <a href="http://www.nodethirtythree.com/">NodeThirtyThree Design</a>. You can't sell it (or derivative
+				works based on it), but you're free to use it, dissect it, and manipulate it to your heart's content.
+				If you want to use it in any other manner, <a href="mailto:info at nodethirtythree.com">drop us a line</a> and we'll talk about it.
+			</p>
+
+			<p>
+				We hope you find this design useful for ... well, something. You can find more of our free work
+				(when released) at the same place you found this design, or some of our commercial work on
+				<a href="http://www.4templates.com/?aff=n33">4Templates.com</a>, a commercial website template site.
+			</p>
+
+			<div class="divider"></div>
+			<div class="summary">- Those people at <a href="http://www.nodethirtythree.com/">NodeThirtyThree Design</a></div>
+
+			<h3>Reviews.</span></h3>
+			<p>
+			It works great, one of the best drugs I've ever taken. I'm addicted.
+			</p>
+
+		</div>
+	</div>
+
+</div>
+
+<div id="footer">
+	2020 Group2 Designed by Pablo Castro, Ana Delgado, Maria Rollano, Raquel Vázquez.
+</div>
+
+</body>
+</html>
