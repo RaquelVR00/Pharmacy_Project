@@ -71,7 +71,12 @@ public class menuCompleto {
 			System.out.println("2. Create a new user");
 			System.out.println("3. Login");
 			System.out.println("0. Exit");
-			int choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+			int choice = 8;
+			do{
+				System.out.println("Introduce the numer of the option you would like to choose: ");
+				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+			}
+			while(choice<0 || choice>3);
 			switch (choice) {
 			case 1:
 				newRole();
@@ -175,7 +180,12 @@ public class menuCompleto {
 			System.out.println("8. Generate XML");
 			System.out.println("9. Create product from XML");
 			System.out.println("10. Go back");
-			int choice = Integer.parseInt(reader.readLine());
+			int choice = 12;
+			do{
+				System.out.println("Introduce the numer of the option you would like to choose: ");
+				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+			}
+			while(choice<0 || choice>9);
 			switch (choice) {
 			case 1:
 				searchComponentByName();
@@ -492,9 +502,13 @@ public class menuCompleto {
 			System.out.println("14. Add contract with a worker");
 			System.out.println("15. Add pharmacy");
 			System.out.println("16. Show all pharmacies");
-			System.out.println("17. Go back");
-			int choice = Integer.parseInt(reader.readLine());
-
+			System.out.println("0. Go back");
+			int choice = 20;
+			do{
+				System.out.println("Introduce the numer of the option you would like to choose: ");
+				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+			}
+			while(choice<0 || choice>16);
 			switch (choice) {
 			case 1:
 				searchWorkerByName();
@@ -544,7 +558,7 @@ public class menuCompleto {
 			case 16:
 				showPharmacies();
 				break;
-			case 17:
+			case 0:
 				return;
 			}
 		}
@@ -717,8 +731,13 @@ public class menuCompleto {
 			System.out.println("2. Search product by type");
 			System.out.println("3. Search product by price");
 			System.out.println("4. Buy");
-			System.out.println("5. Go back");
-			int choice = Integer.parseInt(reader.readLine());
+			System.out.println("0. Go back");
+			int choice = 8;
+			do{
+				System.out.println("Introduce the numer of the option you would like to choose: ");
+				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+			}
+			while(choice<0 || choice>4);
 
 			switch (choice) {
 			case 1:
@@ -733,7 +752,7 @@ public class menuCompleto {
 			case 4:
 				buy();
 				break;
-			case 5:
+			case 0:
 				return;
 			}
 		}
