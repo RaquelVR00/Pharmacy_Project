@@ -202,7 +202,7 @@ public class menuCompleto {
 				generateXML();
 				break;
 			case 9:
-				//createProductXML();
+				createProductXML();
 				break;
 			case 10:
 				return;
@@ -431,7 +431,7 @@ public class menuCompleto {
 		marshal.marshal(product, System.out);
 	}
 	
-	private static void admitDogXML() throws Exception {
+	private static void createProductXML() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(Products.class);
 		Unmarshaller unmarshal = context.createUnmarshaller();
 		File file = null;
