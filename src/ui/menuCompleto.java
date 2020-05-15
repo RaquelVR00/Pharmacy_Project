@@ -35,7 +35,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class menuCompleto {
-	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Each time dates are added this is the format that is needed.
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Each time dates are added
+																							// this is the format that
+																							// is needed.
 	private static BufferedReader reader; // To read from the console
 	// para añadir nuevos productos a la base de datos una vez que ya se han creado
 	private static DBManager dbManager;
@@ -58,7 +60,7 @@ public class menuCompleto {
 		pharmacyManager = dbManager.getPharmacyManager();
 		contractWorkerManager = dbManager.getContractWorkerManager();
 		contractPharmacyManager = dbManager.getContractPharmacyManager();
-		dbManager.createTables();		
+		dbManager.createTables();
 		userManager = new JPAUserManager();
 		userManager.connect();
 		// To initialize the bufferedReader
@@ -91,7 +93,7 @@ public class menuCompleto {
 			}
 		}
 	}
-	
+
 	private static void newRole() throws Exception {
 		System.out.println("Please type the new role information:");
 		System.out.print("Role name:");
@@ -99,7 +101,7 @@ public class menuCompleto {
 		Role role = new Role(roleName);
 		userManager.createRole(role);
 	}
-	
+
 	private static void newUser() throws Exception {
 		System.out.println("Please type the new user information:");
 		System.out.print("Username:");
@@ -134,7 +136,7 @@ public class menuCompleto {
 			pharmacyManager.add(pharmacy);
 		}
 	}
-	
+
 	private static void login() throws Exception {
 		System.out.println("Please input your credentials");
 		System.out.print("Username:");
@@ -150,17 +152,14 @@ public class menuCompleto {
 		else if (user.getRole().getRole().equalsIgnoreCase("boss")) {
 			System.out.println("Welcome boss " + username + "!");
 			bossMenu();
-		}
-		else if (user.getRole().getRole().equalsIgnoreCase("worker")) {
+		} else if (user.getRole().getRole().equalsIgnoreCase("worker")) {
 			System.out.println("Welcome worker " + username + "!");
 			workerMenu();
-		}
-		else if (user.getRole().getRole().equalsIgnoreCase("pharmacy")) {
+		} else if (user.getRole().getRole().equalsIgnoreCase("pharmacy")) {
 			System.out.println("Welcome pharmacy " + username + "!");
 			pharmacyMenu();
 			pharmacyName = username;
-		}
-		else {
+		} else {
 			System.out.println("Invalid role.");
 		}
 	}
@@ -232,22 +231,62 @@ public class menuCompleto {
 			System.out.println(product);
 		}
 		System.out.println("Enter the selected product´s id");
-		int id=0;
-		try{
-	        id = Integer.parseInt(reader.readLine());
-    	}catch(NumberFormatException ex){
-        	System.out.println("No es un número, porfavor introduzca uno");
-    	}
+		int id = 0;
+		try {
+			id = Integer.parseInt(reader.readLine());
+		} catch (NumberFormatException ex) {
+			System.out.println("It's not a number, please enter a number.");
+		}
 		Products toBeModified = productManager.getProduct(id);
 		int preexistingNumber = toBeModified.getNumberProducts();
 		System.out.println("The number of products that are now avaiable are: " + preexistingNumber);
-		System.out.println("Enter the number of products you would like to add: ");
-		int numberproducts = Integer.parseInt(reader.readLine());
-		int updatedNumber = preexistingNumber + numberproducts;
-		toBeModified.setNumberProducts(updatedNumber);
-		productManager.update(toBeModified);
+		boolean correctNumber = true;
+		int counter = 0;
+		while (correctNumber) {
+			System.out.println("Enter the number of products you would like to add: ");
+			int numberproducts = Integer.parseInt(reader.readLine());
+			int updatedNumber = preexistingNumber + numberproducts;
+			toBeModified.setNumberProducts(updatedNumber);
+			List<Component> componentList = toBeModified.getComponents();
+			boolean componentsRight = false;
+			for (Component componentChecker : componentList) {
+				int idComponent = componentChecker.getId();
+				Component realComponent = componentManager.getComponent(idComponent);
+				int numberComponents = realComponent.getNumberComponents();
+				if (numberComponents >= numberproducts) {
+					counter++;
+					if (counter == componentList.size()) {
+						componentsRight = true;
+						productManager.update(toBeModified);
+					}
+
+				} else {
+					System.out.println("There are not enough components for the number of products you want to add.");
+					System.out.println("In the following list you can check the number of availavable components: ");
+					counter = 0;
+					correctNumber = true;
+				}
+			}
+			for (Component component : componentList) {
+				int idComponent = component.getId();
+				Component realComponent = componentManager.getComponent(idComponent);
+				int numberComponents = realComponent.getNumberComponents();
+				System.out.println(realComponent);
+				if (componentsRight) {
+					int updatedComponentsNumber = numberComponents - numberproducts;
+					realComponent.setNumberComponents(updatedComponentsNumber);
+					System.out.println(realComponent);
+					componentManager.update(realComponent);
+					correctNumber = false;
+				} else if (numberComponents == 0) {
+					System.out.println("There are no components available.");
+					correctNumber = false;
+					break;
+				}
+			}
+		}
 	}
-	
+
 	private static void searchProductByName() throws Exception {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Enter the name of the product you want to search: ");
@@ -310,10 +349,55 @@ public class menuCompleto {
 
 			componentManager.give(dbManager.getLastId(), componentId);
 
-			System.out.println("If you want to add another component enter 5, if you don't want to add another component enter 0.");
+			System.out.println(
+					"If you want to add another component enter 5, if you don't want to add another component enter 0.");
 			x = Integer.parseInt(reader.readLine());
 		}
+		boolean correctNumber = true;
+		int counter = 0;
+		while (correctNumber) {
+			System.out.println("Enter the number of products you would like to add: ");
+			int numberproducts = Integer.parseInt(reader.readLine());
+			int updatedNumber = preexistingNumber + numberproducts;
+			toBeModified.setNumberProducts(updatedNumber);
+			List<Component> componentList = toBeModified.getComponents();
+			boolean componentsRight = false;
+			for (Component componentChecker : componentList) {
+				int idComponent = componentChecker.getId();
+				Component realComponent = componentManager.getComponent(idComponent);
+				int numberComponents = realComponent.getNumberComponents();
+				if (numberComponents >= numberproducts) {
+					counter++;
+					if (counter == componentList.size()) {
+						componentsRight = true;
+						productManager.update(toBeModified);
+					}
 
+				} else {
+					System.out.println("There are not enough components for the number of products you want to add.");
+					System.out.println("In the following list you can check the number of availavable components: ");
+					counter = 0;
+					correctNumber = true;
+				}
+			}
+			for (Component component : componentList) {
+				int idComponent = component.getId();
+				Component realComponent = componentManager.getComponent(idComponent);
+				int numberComponents = realComponent.getNumberComponents();
+				System.out.println(realComponent);
+				if (componentsRight) {
+					int updatedComponentsNumber = numberComponents - numberproducts;
+					realComponent.setNumberComponents(updatedComponentsNumber);
+					System.out.println(realComponent);
+					componentManager.update(realComponent);
+					correctNumber = false;
+				} else if (numberComponents == 0) {
+					System.out.println("There are no components available.");
+					correctNumber = false;
+					break;
+				}
+			}
+		}
 	}
 
 	private static void bossMenu() throws Exception {
@@ -458,6 +542,7 @@ public class menuCompleto {
 			System.out.println(pharmacy);
 		}
 	}
+
 	private static void searchPharmacyByName(String pharmacyName) throws Exception {
 		List<Pharmacy> pharmacyList = pharmacyManager.searchByName(pharmacyName);
 		for (Pharmacy pharmacy : pharmacyList) {
@@ -502,7 +587,6 @@ public class menuCompleto {
 		toBeModified.setNumberComponents(updatedNumber);
 		componentManager.update(toBeModified);
 	}
-
 
 	private static void addContractPharmacy() throws Exception {
 		System.out.println("Please, enter the following information: ");
@@ -552,7 +636,7 @@ public class menuCompleto {
 			System.out.println(pharmacies);
 		}
 	}
-	
+
 	private static void pharmacyMenu() throws Exception {
 		while (true) {
 			System.out.println("What would you like to do?");
@@ -603,7 +687,8 @@ public class menuCompleto {
 			System.out.println("Enter your pharmacy's id: ");
 			int id_p = Integer.parseInt(reader.readLine());
 			pharmacyManager.give(id_p, id);
-			System.out.println("If you want to buy another product enter 5, if you don't want to buy another product enter 0.");
+			System.out.println(
+					"If you want to buy another product enter 5, if you don't want to buy another product enter 0.");
 			x = Integer.parseInt(reader.readLine());
 		}
 	}

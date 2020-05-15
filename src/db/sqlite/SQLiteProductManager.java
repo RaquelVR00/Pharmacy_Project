@@ -168,19 +168,14 @@ public class SQLiteProductManager implements ProductManager {
 			String sql = "SELECT * FROM product ";
 			PreparedStatement prep = c.prepareStatement(sql);
 			ResultSet rs = prep.executeQuery();
-			List<Component> components = new ArrayList<Component>();
-			boolean productCreated = false;
 			while (rs.next()) {
-				if (!productCreated) {
-					int id = rs.getInt(1);
-					String productsName = rs.getString(2);
-					String productsType = rs.getString(3);
-					Float productsPrice = rs.getFloat(4);
-					int numberProducts = rs.getInt(5);
-					newProduct = new Products(id,productsName,productsType,productsPrice,numberProducts);
-					productCreated = true;
-					productsList.add(newProduct);
-				}
+				int id = rs.getInt(1);
+				String productsName = rs.getString(2);
+				String productsType = rs.getString(3);
+				Float productsPrice = rs.getFloat(4);
+				int numberProducts = rs.getInt(5);
+				newProduct = new Products(id,productsName,productsType,productsPrice,numberProducts);
+				productsList.add(newProduct);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
