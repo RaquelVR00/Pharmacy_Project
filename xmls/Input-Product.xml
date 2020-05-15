@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!DOCTYPE product [
+	<!ELEMENT product (type,price,numberProducts,components?)>
+	<!ATTLIST product name CDATA #REQUIRED>
+	<!ELEMENT type (#PCDATA)>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT numerProducts (#PCDATA)>
+	<!ELEMENT components (component+)>
+	<!ELEMENT component (name)>
+	<!ATTLIST component name CDATA #REQUIRED>
+]>
+
 <Products name="Ibupropheno">
     <type>antiinflamatory</type>
     <price>44.0</price>
@@ -12,3 +24,4 @@
         </component>
     </components>
 </Products>
+

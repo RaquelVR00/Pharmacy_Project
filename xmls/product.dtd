@@ -1,0 +1,10 @@
+<!DOCTYPE product [
+	<!ELEMENT product (type,price,numberProducts,components?)>
+	<!ATTLIST product name CDATA #REQUIRED>
+	<!ELEMENT type (#PCDATA)>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT numerProducts (#PCDATA)>
+	<!ELEMENT components (component+)>
+	<!ELEMENT component (name)>
+	<!ATTLIST component id CDATA #REQUIRED>
+]>

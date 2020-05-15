@@ -17,7 +17,7 @@ public class Component implements Serializable {
 
 	private static final long serialVersionUID = -6472568147682931329L;
 	
-	@XmlTransient
+	@XmlAttribute
 	private Integer id;
 	@XmlAttribute
 	private String name;

@@ -11,7 +11,7 @@ import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Products")
-@XmlType(propOrder = {"name", "type", "price", "numberProducts", "components", "pharmacies"})
+@XmlType(propOrder = {"name", "type", "price", "numberProducts", "components"})
 public class Products implements Serializable {
 	private static final long serialVersionUID = 1413835970238962198L;
 
@@ -28,9 +28,6 @@ public class Products implements Serializable {
 	@XmlElement(name = "component")
     @XmlElementWrapper(name = "components")
 	private List<Component> components;
-	@XmlElement(name = "pharmacy")
-    @XmlElementWrapper(name = "pharmacies")
-	private List<Pharmacy> pharmacies;
 	public Products() {
 		super();
 	}
@@ -203,14 +200,4 @@ public class Products implements Serializable {
 	public void setComponents(List<Component> components) {
 		this.components = components;
 	}
-
-
-	public List<Pharmacy> getPharmacies() {
-		return pharmacies;
-	}
-
-
-	public void setPharmacies(List<Pharmacy> pharmacies) {
-		this.pharmacies = pharmacies;
-	}	
 }
