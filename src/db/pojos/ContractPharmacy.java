@@ -12,18 +12,13 @@ public class ContractPharmacy implements Serializable {
 	private Integer id;
 	private String type;
 	private Float expenditure;
-	private int n_products;
+	private int numberProducts;
 	
-	public ContractPharmacy() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public ContractPharmacy(String type, Float expenditure, Integer n_products) {
 		super();
 		this.type = type;
 		this.expenditure = expenditure;
-		this.n_products = n_products;
+		this.numberProducts = n_products;
 	}
 
 	public ContractPharmacy(Integer id, String type, Float expenditure, int n_products) {
@@ -31,7 +26,13 @@ public class ContractPharmacy implements Serializable {
 		this.id = id;
 		this.type = type;
 		this.expenditure = expenditure;
-		this.n_products = n_products;
+		this.numberProducts = n_products;
+	}
+	public ContractPharmacy() {
+		super();
+		this.type = "Default";
+		this.expenditure = 0F;
+		this.numberProducts = 0;
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class ContractPharmacy implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ContractPharmacy [id=" + id + ", type=" + type + ", n_products=" + n_products + ", expenditure="
+		return "ContractPharmacy [id=" + id + ", type=" + type + ", n_products=" + numberProducts + ", expenditure="
 				+ expenditure + "]";
 	}
 
@@ -82,11 +83,11 @@ public class ContractPharmacy implements Serializable {
 	}
 
 	public int getN_products() {
-		return n_products;
+		return numberProducts;
 	}
 
 	public void setN_products(int n_products) {
-		this.n_products = n_products;
+		this.numberProducts = n_products;
 	}
 
 	public Float getExpenditure() {

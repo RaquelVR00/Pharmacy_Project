@@ -33,7 +33,7 @@ public class SQLitePharmacyManager implements PharmacyManager {
 			int pharmacyContract_pid = rs.getInt("contract_pid");
 			String pharmacyLocation = rs.getString("location");
 			Pharmacy newpharmacy = new Pharmacy(id,pharmacyName,pharmacyContract_pid,pharmacyLocation);
-		   pharmacyList.add(newpharmacy);
+			pharmacyList.add(newpharmacy);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -67,7 +67,6 @@ public class SQLitePharmacyManager implements PharmacyManager {
 					PreparedStatement prep = c.prepareStatement(sql);
 					prep.setInt(1,pharmacyId);
 					prep.setInt(2,productId);
-					
 					prep.executeUpdate();
 					prep.close();
 				} catch (SQLException e) {

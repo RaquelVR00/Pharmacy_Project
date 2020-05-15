@@ -9,4 +9,5 @@ public interface ContractPharmacyManager {
 	 public ContractPharmacy getContract(int contractId);
 	 public void update(ContractPharmacy contract_p);
 	 public List<ContractPharmacy> showContracts();
+	 public int getId();
 }

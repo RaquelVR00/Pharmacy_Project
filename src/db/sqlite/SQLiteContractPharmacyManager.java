@@ -22,7 +22,7 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 	@Override
 	public void add(ContractPharmacy contract_p) {
 		try {
-			String sql = "INSERT INTO contract_pharmacy (type, expenditure, n_products) "
+			String sql = "INSERT INTO contract_pharmacy (type, expenditure, numberProducts) "
 					+ "VALUES (?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, contract_p.getType());
@@ -40,6 +40,20 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 	public ContractPharmacy getContract(int contractId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public int getId() {
+		int id = 0;
+		try {
+			String sql = ("SELECT MAX(id) AS id FROM contract_pharmacy");
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			id = rs.getInt("id");
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println(id);
+		return id;
 	}
 
 	@Override
@@ -68,8 +82,8 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 				int id = rs.getInt("id");
 				String type = rs.getString("type");
 				Float expenditure = rs.getFloat("expenditure");
-				int n_products = rs.getInt("n_products");
-				ContractPharmacy newContract = new ContractPharmacy(id, type, expenditure, n_products);
+				int numberProducts = rs.getInt("numberProducts");
+				ContractPharmacy newContract = new ContractPharmacy(id, type, expenditure, numberProducts);
 			//Add contract
 			contractsList.add(newContract);
 			}

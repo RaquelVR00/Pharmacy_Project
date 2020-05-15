@@ -98,7 +98,7 @@ public class SQLiteProductManager implements ProductManager {
 	@Override
 	public void add(Products product) {
 		try {
-			String sql = "INSERT INTO product (name, type, price, n_products) "
+			String sql = "INSERT INTO product (name, type, price, numberProducts) "
 					+ "VALUES (?,?,?,?);";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1,product.getName());
@@ -151,7 +151,7 @@ public class SQLiteProductManager implements ProductManager {
 	public void update(Products product) {
 		try {
 			// Update the number of products
-			String sql = "UPDATE product SET n_products=? WHERE id=?";
+			String sql = "UPDATE product SET numberProducts=? WHERE id=?";
 			PreparedStatement s = c.prepareStatement(sql);
 			s.setInt(2, product.getId());
 			s.setInt(1, product.getNumberProducts());

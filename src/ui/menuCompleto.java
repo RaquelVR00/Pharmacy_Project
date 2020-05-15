@@ -37,7 +37,6 @@ import java.sql.Statement;
 public class menuCompleto {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Each time dates are added this is the format that is needed.
 	private static BufferedReader reader; // To read from the console
-
 	// para añadir nuevos productos a la base de datos una vez que ya se han creado
 	private static DBManager dbManager;
 	private static ProductManager productManager;
@@ -47,11 +46,10 @@ public class menuCompleto {
 	private static ContractWorkerManager contractWorkerManager;
 	private static ContractPharmacyManager contractPharmacyManager;
 	private static UserManager userManager;
+	private static String pharmacyName = "";
 
 	public static void main(String[] args) throws Exception {
-
 		// In order to connect with the DB
-
 		dbManager = new SQLiteManager();
 		dbManager.connect();
 		productManager = dbManager.getProductManager();
@@ -60,15 +58,13 @@ public class menuCompleto {
 		pharmacyManager = dbManager.getPharmacyManager();
 		contractWorkerManager = dbManager.getContractWorkerManager();
 		contractPharmacyManager = dbManager.getContractPharmacyManager();
-		dbManager.createTables();
-		
+		dbManager.createTables();		
 		userManager = new JPAUserManager();
 		userManager.connect();
 		// To initialize the bufferedReader
 		reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to our data base!");
 		// System.out.println("Do you want to create the tables?");
-		
 		while (true) {
 			System.out.println("What do you want to do?");
 			System.out.println("1. Create a new role");
@@ -126,6 +122,17 @@ public class menuCompleto {
 		// Create the user and store it
 		User user = new User(username, hash, chosenRole);
 		userManager.createUser(user);
+		if (roleId == 3) {
+			String pharmacyName = username;
+			System.out.println("Please, enter the following information: ");
+			System.out.println("Location");
+			String location = reader.readLine();
+			ContractPharmacy contract = new ContractPharmacy();
+			contractPharmacyManager.add(contract);
+			int contract_pid = contractPharmacyManager.getId();
+			Pharmacy pharmacy = new Pharmacy(pharmacyName, contract_pid, location);
+			pharmacyManager.add(pharmacy);
+		}
 	}
 	
 	private static void login() throws Exception {
@@ -151,6 +158,7 @@ public class menuCompleto {
 		else if (user.getRole().getRole().equalsIgnoreCase("pharmacy")) {
 			System.out.println("Welcome pharmacy " + username + "!");
 			pharmacyMenu();
+			pharmacyName = username;
 		}
 		else {
 			System.out.println("Invalid role.");
@@ -450,6 +458,12 @@ public class menuCompleto {
 			System.out.println(pharmacy);
 		}
 	}
+	private static void searchPharmacyByName(String pharmacyName) throws Exception {
+		List<Pharmacy> pharmacyList = pharmacyManager.searchByName(pharmacyName);
+		for (Pharmacy pharmacy : pharmacyList) {
+			System.out.println(pharmacy);
+		}
+	}
 
 	private static void purchaseComponent() throws Exception {
 		System.out.println("Please, enter the following information: ");
@@ -467,7 +481,6 @@ public class menuCompleto {
 		System.out.println("Number of components: ");
 		Integer numbercomponents = Integer.parseInt(reader.readLine());
 		Component component = new Component(name, price, supplier, numbercomponents);
-		System.out.println(component);
 		componentManager.add(component);
 	}
 
@@ -571,23 +584,27 @@ public class menuCompleto {
 
 	private static void buy() throws Exception {
 		List<Products> productList = productManager.showProducts();
-		for (Products product : productList) {
-			System.out.println(product);
+		int x = 5;
+		while (x != 0) {
+			for (Products product : productList) {
+				System.out.println(product);
+			}
+			System.out.println("Enter the selected product´s id");
+			int id = Integer.parseInt(reader.readLine());
+			Products toBeModified = productManager.getProduct(id);
+			int preexistingNumber = toBeModified.getNumberProducts();
+			System.out.println("The number of products that are now available are: " + preexistingNumber);
+			System.out.println("Enter the number of products you want to buy: ");
+			int numberproducts = Integer.parseInt(reader.readLine());
+			int updatedNumber = preexistingNumber - numberproducts;
+			toBeModified.setNumberProducts(updatedNumber);
+			productManager.update(toBeModified);
+			searchPharmacyByName(pharmacyName);
+			System.out.println("Enter your pharmacy's id: ");
+			int id_p = Integer.parseInt(reader.readLine());
+			pharmacyManager.give(id_p, id);
+			System.out.println("If you want to buy another product enter 5, if you don't want to buy another product enter 0.");
+			x = Integer.parseInt(reader.readLine());
 		}
-		System.out.println("Enter the selected product´s id");
-		int id = Integer.parseInt(reader.readLine());
-		Products toBeModified = productManager.getProduct(id);
-		int preexistingNumber = toBeModified.getNumberProducts();
-		System.out.println("The number of products that are now avaiable are: " + preexistingNumber);
-		System.out.println("Enter the number of products you want to buy: ");
-		int numberproducts = Integer.parseInt(reader.readLine());
-		int updatedNumber = preexistingNumber - numberproducts;
-		toBeModified.setNumberProducts(updatedNumber);
-		productManager.update(toBeModified);
-		
-		searchPharmacyByName();
-		System.out.println("Enter your pharmacy's id: ");
-		int id_p = Integer.parseInt(reader.readLine());
-		pharmacyManager.give(id_p, id);
 	}
 }

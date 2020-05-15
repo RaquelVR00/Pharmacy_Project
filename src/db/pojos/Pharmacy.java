@@ -81,7 +81,7 @@ public class Pharmacy implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Pharmacy [id=" + id + ", name=" + name + ",contrac_pid= " + contract_pid +
+		return "Pharmacy [id=" + id + ", name=" + name + ", contract_pid= " + contract_pid +
 				", location=" + location + "]";
 	}
 
