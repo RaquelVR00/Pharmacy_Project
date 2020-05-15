@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.time.LocalDate;
@@ -10,30 +11,16 @@ import java.util.ArrayList;
 //import java.util.Date;
 import java.util.List;
 
-import db.interfaces.ComponentManager;
-import db.interfaces.ContractPharmacyManager;
-import db.interfaces.ContractWorkerManager;
-import db.interfaces.DBManager;
-import db.interfaces.PharmacyManager;
-import db.interfaces.ProductManager;
-import db.interfaces.UserManager;
-import db.interfaces.WorkerManager;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
+import db.interfaces.*;
 import db.jpa.JPAUserManager;
-import db.pojos.Component;
-import db.pojos.ContractPharmacy;
-import db.pojos.Pharmacy;
-import db.pojos.Products;
-import db.pojos.ContractWorker;
-import db.pojos.Worker;
-import db.sqlite.SQLiteManager;
+import db.pojos.*;
 import db.pojos.users.Role;
 import db.pojos.users.User;
-
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import db.sqlite.SQLiteManager;
+import java.sql.*;
 
 public class menuCompleto {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Each time dates are added
@@ -175,7 +162,9 @@ public class menuCompleto {
 			System.out.println("5. Search product by type");
 			System.out.println("6. Search product by price");
 			System.out.println("7. Create product");
-			System.out.println("8. Go back");
+			System.out.println("8. Generate XML");
+			System.out.println("9. Create product from XML");
+			System.out.println("10. Go back");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
@@ -200,6 +189,12 @@ public class menuCompleto {
 				createProduct();
 				break;
 			case 8:
+				generateXML();
+				break;
+			case 9:
+				//createProductXML();
+				break;
+			case 10:
 				return;
 			}
 		}
@@ -408,6 +403,22 @@ public class menuCompleto {
 				}
 			}
 		}
+	}
+	
+	private static void generateXML() throws Exception {
+		List<Products> listProducts=productManager.showProducts();
+		for(Products product:listProducts) {
+			System.out.println(product);
+		}
+		System.out.println("Introduce the id of the product you want to create the XML from: ");
+		int id=Integer.parseInt(reader.readLine());
+		Products product = productManager.getProduct(id);
+		JAXBContext context = JAXBContext.newInstance(Products.class);
+		Marshaller marshal = context.createMarshaller();
+		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		File file = new File("./xmls/Output-Product.xml");
+		marshal.marshal(product, file);
+		marshal.marshal(product, System.out);
 	}
 
 	private static void bossMenu() throws Exception {

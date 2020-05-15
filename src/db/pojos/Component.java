@@ -5,16 +5,29 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import xml.utils.SQLDateAdapter;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"name", "type", "price", "supplier", "numberComponents"})
+
 
 public class Component implements Serializable {
 
 	private static final long serialVersionUID = -6472568147682931329L;
 	
+	@XmlTransient
 	private Integer id;
+	@XmlAttribute
 	private String name;
+	@XmlElement
 	private Float price;
+	@XmlElement
 	private String supplier;
+	@XmlElement
 	private int numberComponents;
+	@XmlTransient
 	private List<Products> products;
 	
 	public Component() {
@@ -168,9 +181,5 @@ public class Component implements Serializable {
 
 	public void setProducts(List<Products> products) {
 		this.products = products;
-	}
-
-	
-	
-	
+	}	
 }

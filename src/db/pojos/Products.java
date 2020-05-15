@@ -4,22 +4,37 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import xml.utils.SQLDateAdapter;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Products")
+@XmlType(propOrder = {"name", "type", "price", "numberProducts", "components", "pharmacies"})
 public class Products implements Serializable {
 	private static final long serialVersionUID = 1413835970238962198L;
 
+	@XmlTransient
 	private Integer id;
+	@XmlAttribute
 	private String name;
+	@XmlElement
 	private String type;
+	@XmlElement
 	private Float price;
+	@XmlElement
 	private int numberProducts;
+	@XmlElement(name = "component")
+    @XmlElementWrapper(name = "components")
 	private List<Component> components;
+	@XmlElement(name = "pharmacy")
+    @XmlElementWrapper(name = "pharmacies")
 	private List<Pharmacy> pharmacies;
-	
 	public Products() {
 		super();
 	}
 
-	
 	
 	public Products(Integer id, String name) {
 		super();
@@ -197,8 +212,5 @@ public class Products implements Serializable {
 
 	public void setPharmacies(List<Pharmacy> pharmacies) {
 		this.pharmacies = pharmacies;
-	}
-	
-	
-	
+	}	
 }
