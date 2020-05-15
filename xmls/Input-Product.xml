@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Products name="Ibupropheno">
+    <type>antiinflamatory</type>
+    <price>44.0</price>
+    <numberProducts>5</numberProducts>
+    <components>
+        <component name="1">
+            <numberComponents>4</numberComponents>
+        </component>
+        <component name="2">
+            <numberComponents>4</numberComponents>
+        </component>
+    </components>
+</Products>

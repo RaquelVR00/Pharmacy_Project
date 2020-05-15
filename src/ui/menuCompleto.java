@@ -2,6 +2,7 @@ package ui;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.time.LocalDate;
@@ -13,6 +14,13 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import db.interfaces.*;
 import db.jpa.JPAUserManager;
@@ -20,6 +28,8 @@ import db.pojos.*;
 import db.pojos.users.Role;
 import db.pojos.users.User;
 import db.sqlite.SQLiteManager;
+import xml.utils.CustomErrorHandler;
+
 import java.sql.*;
 
 public class menuCompleto {
@@ -419,6 +429,47 @@ public class menuCompleto {
 		File file = new File("./xmls/Output-Product.xml");
 		marshal.marshal(product, file);
 		marshal.marshal(product, System.out);
+	}
+	
+	private static void admitDogXML() throws Exception {
+		JAXBContext context = JAXBContext.newInstance(Products.class);
+		Unmarshaller unmarshal = context.createUnmarshaller();
+		File file = null;
+		boolean incorrectProduct = false;
+		do {
+			System.out.println("Type the filename for the XML document (expected in the xmls folder):");
+			String fileName = reader.readLine();
+			file = new File("./xmls/" + fileName);
+			try {
+				DocumentBuilderFactory dBF = DocumentBuilderFactory.newInstance();
+				dBF.setValidating(true);
+				DocumentBuilder builder = dBF.newDocumentBuilder();
+				CustomErrorHandler customErrorHandler = new xml.utils.CustomErrorHandler();
+				builder.setErrorHandler(customErrorHandler);
+				Document doc = builder.parse(file);
+				if (!customErrorHandler.isValid()) {
+					incorrectProduct = true;
+				}
+			} catch (ParserConfigurationException ex) {
+				System.out.println(file + " error while parsing!");
+				incorrectProduct = true;
+			} catch (SAXException ex) {
+				System.out.println(file + " was not well-formed!");
+				incorrectProduct = true;
+			} catch (IOException ex) {
+				System.out.println(file + " was not accesible!");
+				incorrectProduct = true;
+			}
+			
+		} while (incorrectProduct);
+		Products product = (Products) unmarshal.unmarshal(file);
+		System.out.println("Added to the database: " + product);
+		productManager.add(product);
+		int productId = dbManager.getLastId();
+		List<Component> components = product.getComponents();
+		for (Component component : components) {
+			componentManager.give(productId, component.getId());
+		}
 	}
 
 	private static void bossMenu() throws Exception {
