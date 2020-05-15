@@ -423,6 +423,7 @@ public class menuCompleto {
 		System.out.println("Introduce the id of the product you want to create the XML from: ");
 		int id=Integer.parseInt(reader.readLine());
 		Products product = productManager.getProduct(id);
+		System.out.println(product);
 		JAXBContext context = JAXBContext.newInstance(Products.class);
 		Marshaller marshal = context.createMarshaller();
 		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

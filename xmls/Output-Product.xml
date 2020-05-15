@@ -4,11 +4,15 @@
     <price>44.0</price>
     <numberProducts>0</numberProducts>
     <components>
-        <component name="1">
+        <component id="1" name="C1">
+            <price>55.0</price>
+            <supplier>Empresa1</supplier>
             <numberComponents>0</numberComponents>
         </component>
-        <component name="2">
-            <numberComponents>0</numberComponents>
+        <component id="2" name="C2">
+            <price>44.0</price>
+            <supplier>Empresa2</supplier>
+            <numberComponents>2</numberComponents>
         </component>
     </components>
 </Products>

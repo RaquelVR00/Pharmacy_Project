@@ -134,12 +134,15 @@ public class SQLiteProductManager implements ProductManager {
 			   newProduct = new Products(newProductId,productName,productType,productPrice,numberProducts);
 			   productCreated = true;
 				}
-			   int componentId = rs.getInt(7);
-			   String componentName = rs.getString(8);
-			   Component newComponent = new Component(componentId, componentName);
+			   int componentId = rs.getInt(8);
+			   String componentName = rs.getString(9);
+			   Float price = rs.getFloat(10);
+			   String supplier = rs.getString(11);
+			   int numberComponents = rs.getInt(12);
+			   Component newComponent = new Component(componentId, componentName, price, supplier, numberComponents);
 			   componentsList.add(newComponent);
 			}
-				newProduct.setComponents(componentsList);
+			newProduct.setComponents(componentsList);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

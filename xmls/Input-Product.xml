@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-
-<!DOCTYPE product [
-	<!ELEMENT product (type,price,numberProducts,components?)>
-	<!ATTLIST product name CDATA #REQUIRED>
+<!DOCTYPE Products [
+	<!ELEMENT Products (type,price,numberProducts,components?)>
+	<!ATTLIST Products name CDATA #REQUIRED>
 	<!ELEMENT type (#PCDATA)>
 	<!ELEMENT price (#PCDATA)>
-	<!ELEMENT numerProducts (#PCDATA)>
+	<!ELEMENT numberProducts (#PCDATA)>
 	<!ELEMENT components (component+)>
-	<!ELEMENT component (name)>
-	<!ATTLIST component name CDATA #REQUIRED>
+	<!ELEMENT component (price, supplier, numberComponents)>
+	<!ATTLIST component id CDATA #REQUIRED
+						name CDATA #REQUIRED>
+	<!ELEMENT supplier (#PCDATA)>
+	<!ELEMENT numberComponents (#PCDATA)>
 ]>
-
-<Products name="Ibupropheno">
-    <type>antiinflamatory</type>
+<Products name="a">
+    <type>a</type>
     <price>44.0</price>
-    <numberProducts>5</numberProducts>
+    <numberProducts>0</numberProducts>
     <components>
-        <component name="1">
-            <numberComponents>4</numberComponents>
+        <component id="1" name="C1">
+            <price>55.0</price>
+            <supplier>Empresa1</supplier>
+            <numberComponents>0</numberComponents>
         </component>
-        <component name="2">
-            <numberComponents>4</numberComponents>
+        <component id="2" name="C2">
+            <price>44.0</price>
+            <supplier>Empresa2</supplier>
+            <numberComponents>2</numberComponents>
         </component>
     </components>
 </Products>
-

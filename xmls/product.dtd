@@ -1,10 +1,14 @@
-<!DOCTYPE product [
-	<!ELEMENT product (type,price,numberProducts,components?)>
-	<!ATTLIST product name CDATA #REQUIRED>
+<!DOCTYPE Products [
+	<!ELEMENT Products (type,price,numberProducts,components?)>
+	<!ATTLIST Products name CDATA #REQUIRED>
 	<!ELEMENT type (#PCDATA)>
 	<!ELEMENT price (#PCDATA)>
-	<!ELEMENT numerProducts (#PCDATA)>
+	<!ELEMENT numberProducts (#PCDATA)>
 	<!ELEMENT components (component+)>
-	<!ELEMENT component (name)>
-	<!ATTLIST component id CDATA #REQUIRED>
+	<!ELEMENT component (price, supplier, numberComponents)>
+	<!ATTLIST component id CDATA #REQUIRED
+						name CDATA #REQUIRED>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT supplier (#PCDATA)>
+	<!ELEMENT numberComponents (#PCDATA)>
 ]>
