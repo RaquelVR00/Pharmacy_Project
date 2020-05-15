@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import xml.utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"name", "type", "price", "supplier", "numberComponents"})
+@XmlType(propOrder = {"name", "price", "supplier", "numberComponents"})
 
 
 public class Component implements Serializable {
