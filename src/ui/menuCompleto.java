@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 //import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -96,15 +97,51 @@ public class menuCompleto {
 			}
 		}
 	}
-
+	
+	private static void validateFloat() {
+		Scanner leer = new Scanner(System.in);
+		System.out.println("You must introduce a Float: ");
+        boolean isDouble = false;
+        double num = -1;
+        do {
+            String cadena = leer.nextLine();
+            try {
+                num = Double.parseDouble(cadena);
+                isDouble = true;
+            } catch (NumberFormatException nfe) {
+                System.out.println("Escriba un numero");
+            }
+        } while (!isDouble);
+	}
+	
+	private static void validateInteger() {
+		Scanner leer = new Scanner(System.in);
+		System.out.println("You must introduce a Integer: ");
+        boolean isInteger= false;
+        double num = -1;
+        do {
+            String cadena = leer.nextLine();
+            try {
+                num = Integer.parseInt(cadena);
+                isInteger = true;
+            } catch (NumberFormatException nfe) {
+                System.out.println("Escriba un numero");
+            }
+        } while (!isInteger);
+	}
+	
 	private static void newRole() throws Exception {
+		String roleName;
+		do {
 		System.out.println("Please type the new role information:");
 		System.out.print("Role name:");
-		String roleName = reader.readLine();
+		roleName = reader.readLine();
+		}
+		while(!roleName.equals("boss") && !roleName.equals("worker") && !roleName.equals("pharmacy"));
 		Role role = new Role(roleName);
 		userManager.createRole(role);
 	}
-
+		
 	private static void newUser() throws Exception {
 		System.out.println("Please type the new user information:");
 		System.out.print("Username:");
