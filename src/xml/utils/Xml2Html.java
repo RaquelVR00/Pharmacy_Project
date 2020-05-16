@@ -1,4 +1,4 @@
-package sample.db.xml;
+package xml.utils;
 
 import java.io.File;
 
@@ -7,7 +7,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-public class Xml2HtmlReport {
+public class Xml2Html {
 	
 	/**
 	 * Simple transformation method. You can use it in your project.
@@ -26,7 +26,7 @@ public class Xml2HtmlReport {
 	}
 
 	public static void main(String[] args) {
-		simpleTransform("./xmls/Output-Product.xml", "./xmls/ProductStyle.xslt", "./xmls/Product.html");
+		simpleTransform("./xmls/Output-Product.xml", "./xmls/ProductStyle2.xslt", "./xmls/Product.html");
 
 	}
 }

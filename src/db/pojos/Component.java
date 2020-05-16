@@ -19,7 +19,7 @@ public class Component implements Serializable {
 	
 	@XmlAttribute
 	private Integer id;
-	@XmlAttribute
+	@XmlElement
 	private String name;
 	@XmlElement
 	private Float price;

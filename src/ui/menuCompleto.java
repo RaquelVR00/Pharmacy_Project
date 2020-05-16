@@ -74,7 +74,7 @@ public class menuCompleto {
 			int choice = 8;
 			do{
 				System.out.println("Introduce the numer of the option you would like to choose: ");
-				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
 			while(choice<0 || choice>3);
 			switch (choice) {
@@ -183,7 +183,7 @@ public class menuCompleto {
 			int choice = 12;
 			do{
 				System.out.println("Introduce the numer of the option you would like to choose: ");
-				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
 			while(choice<0 || choice>9);
 			switch (choice) {
@@ -506,7 +506,7 @@ public class menuCompleto {
 			int choice = 20;
 			do{
 				System.out.println("Introduce the numer of the option you would like to choose: ");
-				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
 			while(choice<0 || choice>16);
 			switch (choice) {

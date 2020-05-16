@@ -2,12 +2,11 @@
 	<!ELEMENT Products (type,price,numberProducts,components?)>
 	<!ATTLIST Products name CDATA #REQUIRED>
 	<!ELEMENT type (#PCDATA)>
-	<!ELEMENT price (#PCDATA)>
 	<!ELEMENT numberProducts (#PCDATA)>
 	<!ELEMENT components (component+)>
-	<!ELEMENT component (price, supplier, numberComponents)>
-	<!ATTLIST component id CDATA #REQUIRED
-						name CDATA #REQUIRED>
+	<!ELEMENT component (name,price, supplier, numberComponents)>
+	<!ATTLIST component id CDATA #REQUIRED>
+	<!ELEMENT name (#PCDATA)>				
 	<!ELEMENT price (#PCDATA)>
 	<!ELEMENT supplier (#PCDATA)>
 	<!ELEMENT numberComponents (#PCDATA)>
