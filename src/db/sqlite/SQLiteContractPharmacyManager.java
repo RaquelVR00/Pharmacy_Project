@@ -52,7 +52,6 @@ public class SQLiteContractPharmacyManager implements ContractPharmacyManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(id);
 		return id;
 	}
 

@@ -10,5 +10,6 @@ public interface WorkerManager {
 	public void add(Worker worker);
 	public void fire(Integer worker_id);
 	public void printWorkers();
-	
+	public Worker getWorker(int WorkerId);
+	public void give(int workerId, int productId);
 }

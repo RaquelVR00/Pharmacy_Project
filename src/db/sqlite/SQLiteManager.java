@@ -134,6 +134,13 @@ public class SQLiteManager implements DBManager {
                  +"PRIMARY KEY(productId,componentId))";
 		stmt1.executeUpdate(sql8);
 		
+		stmt1=c.createStatement();
+		String sql9= "CREATE TABLE workerProducts"
+				+"(workerId INTEGER REFERENCES worker(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+"productId INTEGER REFERENCES product(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+"PRIMARY KEY(workerId,productId))";
+		stmt1.executeUpdate(sql9);
+		
 		stmt1.close();
 		
 		System.out.println("Tables created!!");

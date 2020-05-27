@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.interfaces.WorkerManager;
+import db.pojos.Component;
 import db.pojos.Worker;
 
 
@@ -75,7 +76,58 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 		return workersList;
 	}
-
+	public Worker searchById(Integer id) {
+		// TODO Auto-generated method stub
+		// return null;
+		Worker newworker = null;
+		try {
+			String sql = "SELECT * FROM worker WHERE id LIKE ?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, id );
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				String workerName = rs.getString("name");
+				String workerPosition = rs.getString("position");
+				Date workerStartDate = rs.getDate("start_date");
+				String workerNationality = rs.getString("nationality");
+				Integer workerContract_id = rs.getInt("contract_id");
+				newworker = new Worker(id, workerName, workerPosition, workerStartDate, workerNationality,
+						workerContract_id);
+				System.out.println(newworker);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return newworker;
+	}
+	public Worker getWorker(int workerId) {
+		Worker newWorker = null;
+		try {
+			String sql="SELECT * FROM worker"
+					+" WHERE id = ?";
+			PreparedStatement p= c.prepareStatement(sql);
+			p.setInt(1, workerId);
+			ResultSet rs= p.executeQuery();
+			boolean workerCreated = false;
+			while(rs.next()) {
+				if(!workerCreated) {
+			   int newWorkerId = rs.getInt(1);
+			   String workerName = rs.getString(2);
+			   String workerPosition = rs.getString(3);
+				Date workerStartDate = rs.getDate(4);
+				String workerNationality = rs.getString(5);
+				Integer workerContract_id = rs.getInt(6);
+				newWorker = new Worker(newWorkerId, workerName, workerPosition, workerStartDate, workerNationality,
+						workerContract_id);
+				System.out.println(newWorker);
+				workerCreated = true;
+				}
+			  }
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return newWorker;
+	}
 	@Override
 	public void add(Worker worker) {
 		// TODO Auto-generated method stub
@@ -131,6 +183,18 @@ public class SQLiteWorkerManager implements WorkerManager {
 		
 	}
 	
-
-
+	public void give(int workerId, int productId) {
+		//Link Product and Worker
+				try {
+					String sql = "INSERT INTO workerProducts (workerId,productId) "
+							+ "VALUES (?,?)";
+					PreparedStatement prep = c.prepareStatement(sql);
+					prep.setInt(1,workerId);
+					prep.setInt(2,productId);
+					prep.executeUpdate();
+					prep.close();
+				} catch (SQLException e) {
+					e.printStackTrace();	
+			}
+	}
 }

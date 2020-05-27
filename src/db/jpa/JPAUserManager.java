@@ -1,7 +1,11 @@
 package db.jpa;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -80,5 +84,95 @@ private EntityManager em;
 		}
 		return user;
 	}
-
+	
+	public void updateUserName(String username) {
+		//em.getTransaction().begin();
+		//em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+		//em.getTransaction().commit();
+		System.out.println(username);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		Query q1 = em.createNativeQuery("SELECT * FROM users WHERE USERNAME = ?", User.class);
+		q1.setParameter(1, username);
+		User user = (User) q1.getSingleResult();
+		System.out.println(user);
+		System.out.print("Type your new username:");
+		String newName = "";
+		try {
+			newName = reader.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Begin transaction
+		em.getTransaction().begin();
+		// Make changes
+		user.setUsername(newName);
+		// End transaction
+		em.getTransaction().commit();
+	}
+	
+	public void updatePassword(String username){
+		//em.getTransaction().begin();
+		//em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+		//em.getTransaction().commit();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		Query q2 = em.createNativeQuery("SELECT * FROM users WHERE USERNAME = ?", User.class);
+		q2.setParameter(1, username);
+		User user = (User) q2.getSingleResult();
+		System.out.print("Type your new password:");
+		String newPassword = "";
+		try {
+			newPassword = reader.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		md.update(newPassword.getBytes());
+		byte[] hash = md.digest();
+		// Begin transaction
+		em.getTransaction().begin();
+		// Make changes
+		user.setPassword(hash);
+		// End transaction
+		em.getTransaction().commit();
+	}
+	private void printWorker(String name) {
+		Query q1 = em.createNativeQuery("SELECT * FROM users WHERE USERNAME = ?", User.class);
+		q1.setParameter(1, name);
+		List<User> users = (List<User>) q1.getResultList();
+		// Print the employees
+		for (User user : users) {
+			System.out.println(user);
+		}
+	}
+	
+	public void deleteWorker(String name) {
+		System.out.println("Company's workers with that name: ");
+		printWorker(name);
+		System.out.print("Choose a worker to fire. Type it's ID:");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int emp_id = 0;
+		try {
+			emp_id = Integer.parseInt(reader.readLine());
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Query q2 = em.createNativeQuery("SELECT * FROM users WHERE ID = ?", User.class);
+		q2.setParameter(1, emp_id);
+		User poorGuy = (User) q2.getSingleResult();
+		// Begin transaction
+		em.getTransaction().begin();
+		// Store the object
+		em.remove(poorGuy);
+		// End transaction
+		em.getTransaction().commit();
+	}
 }

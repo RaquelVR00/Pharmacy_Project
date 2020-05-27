@@ -48,6 +48,8 @@ public class menuCompleto {
 	private static ContractPharmacyManager contractPharmacyManager;
 	private static UserManager userManager;
 	private static String pharmacyName = "";
+	private static String bossName = "";
+	private static String workerName = "";
 
 	public static void main(String[] args) throws Exception {
 		// In order to connect with the DB
@@ -74,7 +76,7 @@ public class menuCompleto {
 			System.out.println("0. Exit");
 			int choice = 8;
 			do{
-				System.out.println("Introduce the numer of the option you would like to choose: ");
+				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
 			while(choice<0 || choice>3);
@@ -155,11 +157,18 @@ public class menuCompleto {
 		// Show all the roles and let the user choose one
 		List<Role> roles = userManager.getRoles();
 		for (Role role : roles) {
+			if (role.getId() != 2) {
 			System.out.println(role);
+			}
 		}
 		System.out.print("Type the chosen role id:");
 		int roleId = Integer.parseInt(reader.readLine());
 		// Get the chosen role from the database
+		while (roleId != 1 && roleId != 3) {
+			System.out.println("Not valid id:");
+			System.out.print("Type the chosen role id:");
+			roleId = Integer.parseInt(reader.readLine());
+		}
 		Role chosenRole = userManager.getRole(roleId);
 		// Create the user and store it
 		User user = new User(username, hash, chosenRole);
@@ -191,14 +200,16 @@ public class menuCompleto {
 		// We check the role
 		else if (user.getRole().getRole().equalsIgnoreCase("boss")) {
 			System.out.println("Welcome boss " + username + "!");
+			bossName = username;
 			bossMenu();
 		} else if (user.getRole().getRole().equalsIgnoreCase("worker")) {
 			System.out.println("Welcome worker " + username + "!");
+			workerName = username;
 			workerMenu();
 		} else if (user.getRole().getRole().equalsIgnoreCase("pharmacy")) {
 			System.out.println("Welcome pharmacy " + username + "!");
-			pharmacyMenu();
 			pharmacyName = username;
+			pharmacyMenu();
 		} else {
 			System.out.println("Invalid role.");
 		}
@@ -216,13 +227,15 @@ public class menuCompleto {
 			System.out.println("7. Create product");
 			System.out.println("8. Generate XML");
 			System.out.println("9. Create product from XML");
-			System.out.println("10. Go back");
-			int choice = 12;
+			System.out.println("10. Change your user name");
+			System.out.println("11. Change your password");
+			System.out.println("12. Go back");
+			int choice = 14;
 			do{
 				System.out.println("Introduce the numer of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
-			while(choice<0 || choice>9);
+			while(choice<0 || choice>11);
 			switch (choice) {
 			case 1:
 				searchComponentByName();
@@ -252,6 +265,12 @@ public class menuCompleto {
 				createProductXML();
 				break;
 			case 10:
+				userManager.updateUserName(workerName);
+				return;
+			case 11:
+				userManager.updatePassword(workerName);
+				return;
+			case 12:
 				return;
 			}
 		}
@@ -311,6 +330,10 @@ public class menuCompleto {
 					if (counter == componentList.size()) {
 						componentsRight = true;
 						productManager.update(toBeModified);
+						workerManager.searchByName(workerName);
+						System.out.println("Enter your worker id: ");
+						int id_w = Integer.parseInt(reader.readLine());
+						workerManager.give(id_w, toBeModified.getId());
 					}
 				} else {
 					System.out.println("There are not enough components for the number of products you want to add.");
@@ -453,6 +476,10 @@ public class menuCompleto {
 					System.out.println(realComponent);
 					componentManager.update(realComponent);
 					creatorCounter++;
+					workerManager.searchByName(workerName);
+					System.out.println("Enter your worker id: ");
+					int id_w = Integer.parseInt(reader.readLine());
+					workerManager.give(id_w, updatedProduct.getId());
 				} else if (creatorCounter != 0) {
 					System.out.println("Component can't be created because there are no components.");
 					productManager.delete(dbManager.getLastId());
@@ -539,13 +566,15 @@ public class menuCompleto {
 			System.out.println("14. Add contract with a worker");
 			System.out.println("15. Add pharmacy");
 			System.out.println("16. Show all pharmacies");
+			System.out.println("17. Change your user name");
+			System.out.println("18. Change your password");
 			System.out.println("0. Go back");
 			int choice = 20;
 			do{
-				System.out.println("Introduce the numer of the option you would like to choose: ");
+				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
-			while(choice<0 || choice>16);
+			while(choice<0 || choice>18);
 			switch (choice) {
 			case 1:
 				searchWorkerByName();
@@ -595,6 +624,12 @@ public class menuCompleto {
 			case 16:
 				showPharmacies();
 				break;
+			case 17:
+				userManager.updateUserName(bossName);
+				return;
+			case 18:
+				userManager.updatePassword(bossName);
+				return;
 			case 0:
 				return;
 			}
@@ -637,7 +672,7 @@ public class menuCompleto {
 		// una vez que hemos creado el producto necesitamos insertarlo en la base de
 		// datos
 		// workerManager.add(worker);
-		System.out.println("Now you will find the contacts: ");
+		System.out.println("Now you will find the contracts: ");
 		List<ContractWorker> contracts = contractWorkerManager.showContracts();
 		for (ContractWorker contract : contracts) {
 			System.out.println(contract);
@@ -646,6 +681,21 @@ public class menuCompleto {
 		int contractId = Integer.parseInt(reader.readLine());
 		Worker worker = new Worker(name, position, Date.valueOf(start_date), nationality, contractId);
 		workerManager.add(worker);
+		
+		String username = name;
+		System.out.print("Password:");
+		String password = "1234";
+		System.out.println("The default password for a worker is: 1234");
+		// Create the password's hash
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] hash = md.digest();
+		int roleId = 2;
+		// Get the chosen role from the database
+		Role chosenRole = userManager.getRole(roleId);
+		// Create the user and store it
+		User user = new User(username, hash, chosenRole);
+		userManager.createUser(user);
 	}
 
 	private static void fireWorker() throws Exception {
@@ -653,6 +703,10 @@ public class menuCompleto {
 		System.out.println("Choose a worker to delete, type its ID: ");
 		workerManager.printWorkers();
 		int worker_id = Integer.parseInt(reader.readLine());
+		Worker worker = workerManager.getWorker(worker_id);
+		System.out.println(worker_id);
+		System.out.println(worker);
+		userManager.deleteWorker(worker.getName());
 		workerManager.fire(worker_id);
 		System.out.println("Deletion finished.");
 	}
@@ -768,10 +822,12 @@ public class menuCompleto {
 			System.out.println("2. Search product by type");
 			System.out.println("3. Search product by price");
 			System.out.println("4. Buy");
+			System.out.println("5. Change your user name");
+			System.out.println("6. Change your password");
 			System.out.println("0. Go back");
 			int choice = 8;
 			do{
-				System.out.println("Introduce the numer of the option you would like to choose: ");
+				System.out.println("Introduce the number of the option you would like to choose: ");
 				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
 			while(choice<0 || choice>4);
@@ -789,6 +845,12 @@ public class menuCompleto {
 			case 4:
 				buy();
 				break;
+			case 5:
+				userManager.updateUserName(pharmacyName);
+				return;
+			case 6:
+				userManager.updatePassword(pharmacyName);
+				return;
 			case 0:
 				return;
 			}
