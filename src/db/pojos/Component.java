@@ -28,11 +28,11 @@ public class Component implements Serializable {
 	@XmlElement
 	private int numberComponents;
 	@XmlTransient
-	private List<Products> products;
+	private List<Product> products;
 	
 	public Component() {
 		super();
-		products = new ArrayList<Products>();
+		products = new ArrayList<Product>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -41,7 +41,7 @@ public class Component implements Serializable {
 		this.name = name;
 		this.price = price;
 		this.supplier = supplier;
-		products = new ArrayList<Products>();
+		products = new ArrayList<Product>();
 
 	}
 	
@@ -50,7 +50,7 @@ public class Component implements Serializable {
 		super();
 		this.id = id;
 		this.name = name;
-		products = new ArrayList<Products>();
+		products = new ArrayList<Product>();
 
 	}
 
@@ -60,12 +60,12 @@ public class Component implements Serializable {
 		this.name = name;
 		this.price = price;
 		this.supplier = supplier;
-		products = new ArrayList<Products>();
+		products = new ArrayList<Product>();
 
 	}
 	
 
-	public Component(Integer id, String name, Float price, String supplier, List<Products> products) {
+	public Component(Integer id, String name, Float price, String supplier, List<Product> products) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -175,11 +175,11 @@ public class Component implements Serializable {
 		this.numberComponents = numberComponents;
 	}
 
-	public List<Products> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Products> products) {
+	public void setProducts(List<Product> products) {
 		this.products = products;
 	}	
 }

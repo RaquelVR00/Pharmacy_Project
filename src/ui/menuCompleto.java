@@ -232,10 +232,10 @@ public class menuCompleto {
 			System.out.println("12. Go back");
 			int choice = 14;
 			do{
-				System.out.println("Introduce the numer of the option you would like to choose: ");
+				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
-			while(choice<0 || choice>11);
+			while(choice<0 || choice>12);
 			switch (choice) {
 			case 1:
 				searchComponentByName();
@@ -298,8 +298,8 @@ public class menuCompleto {
 	}
 
 	private static void addProduct() throws Exception {
-		List<Products> productList = productManager.showProducts();
-		for (Products product : productList) {
+		List<Product> productList = productManager.showProducts();
+		for (Product product : productList) {
 			System.out.println(product);
 		}
 		System.out.println("Enter the selected product´s id");
@@ -309,7 +309,7 @@ public class menuCompleto {
 		} catch (NumberFormatException ex) {
 			System.out.println("It's not a number, please enter a number.");
 		}
-		Products toBeModified = productManager.getProduct(id);
+		Product toBeModified = productManager.getProduct(id);
 		int preexistingNumber = toBeModified.getNumberProducts();
 		System.out.println("The number of products that are now avaiable are: " + preexistingNumber);
 		boolean correctNumber = true;
@@ -366,8 +366,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Enter the name of the product you want to search: ");
 		String name = reader.readLine();
-		List<Products> productList = productManager.searchByName(name);
-		for (Products product : productList) {
+		List<Product> productList = productManager.searchByName(name);
+		for (Product product : productList) {
 			System.out.println(product);
 		}
 	}
@@ -376,8 +376,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Enter the type of the product you want to search: ");
 		String type = reader.readLine();
-		List<Products> productList = productManager.searchByType(type);
-		for (Products product : productList) {
+		List<Product> productList = productManager.searchByType(type);
+		for (Product product : productList) {
 			System.out.println(product);
 		}
 	}
@@ -386,8 +386,8 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Enter the price of the product you want to search: ");
 		Float price = Float.parseFloat(reader.readLine());
-		List<Products> productList = productManager.searchByPrice(price);
-		for (Products product : productList) {
+		List<Product> productList = productManager.searchByPrice(price);
+		for (Product product : productList) {
 			System.out.println(product);
 		}
 	}
@@ -407,7 +407,7 @@ public class menuCompleto {
 		 */
 		System.out.println("Number of products: ");
 		Integer numberproducts = Integer.parseInt(reader.readLine());
-		Products product = new Products(name, type, price, numberproducts);
+		Product product = new Product(name, type, price, numberproducts);
 		// Once we have created the product we have to add it to the DB
 		productManager.add(product);
 		// Products p = productManager.getProduct(productId)
@@ -470,7 +470,7 @@ public class menuCompleto {
 					realComponent.setNumberComponents(updatedComponentsNumber);
 					componentManager.give(dbManager.getLastId(), idComponent);
 					product.setNumberProducts(numberproducts);
-					Products updatedProduct = new Products(dbManager.getLastId(), product.getName(), product.getType(),
+					Product updatedProduct = new Product(dbManager.getLastId(), product.getName(), product.getType(),
 							product.getPrice());
 					productManager.update(updatedProduct);
 					System.out.println(realComponent);
@@ -478,6 +478,7 @@ public class menuCompleto {
 					creatorCounter++;
 					workerManager.searchByName(workerName);
 					System.out.println("Enter your worker id: ");
+					workerManager.printWorkers();
 					int id_w = Integer.parseInt(reader.readLine());
 					workerManager.give(id_w, updatedProduct.getId());
 				} else if (creatorCounter != 0) {
@@ -490,15 +491,15 @@ public class menuCompleto {
 	}
 	
 	private static void generateXML() throws Exception {
-		List<Products> listProducts=productManager.showProducts();
-		for(Products product:listProducts) {
+		List<Product> listProducts=productManager.showProducts();
+		for(Product product:listProducts) {
 			System.out.println(product);
 		}
 		System.out.println("Introduce the id of the product you want to create the XML from: ");
 		int id=Integer.parseInt(reader.readLine());
-		Products product = productManager.getProduct(id);
+		Product product = productManager.getProduct(id);
 		System.out.println(product);
-		JAXBContext context = JAXBContext.newInstance(Products.class);
+		JAXBContext context = JAXBContext.newInstance(Product.class);
 		Marshaller marshal = context.createMarshaller();
 		marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		File file = new File("./xmls/Output-Product.xml");
@@ -507,7 +508,7 @@ public class menuCompleto {
 	}
 	
 	private static void createProductXML() throws Exception {
-		JAXBContext context = JAXBContext.newInstance(Products.class);
+		JAXBContext context = JAXBContext.newInstance(Product.class);
 		Unmarshaller unmarshal = context.createUnmarshaller();
 		File file = null;
 		boolean incorrectProduct = false;
@@ -537,7 +538,7 @@ public class menuCompleto {
 			}
 			
 		} while (incorrectProduct);
-		Products product = (Products) unmarshal.unmarshal(file);
+		Product product = (Product) unmarshal.unmarshal(file);
 		System.out.println("Added to the database: " + product);
 		productManager.add(product);
 		int productId = dbManager.getLastId();
@@ -858,15 +859,15 @@ public class menuCompleto {
 	}
 
 	private static void buy() throws Exception {
-		List<Products> productList = productManager.showProducts();
+		List<Product> productList = productManager.showProducts();
 		int x = 5;
 		while (x != 0) {
-			for (Products product : productList) {
+			for (Product product : productList) {
 				System.out.println(product);
 			}
 			System.out.println("Enter the selected product´s id");
 			int id = Integer.parseInt(reader.readLine());
-			Products toBeModified = productManager.getProduct(id);
+			Product toBeModified = productManager.getProduct(id);
 			int preexistingNumber = toBeModified.getNumberProducts();
 			System.out.println("The number of products that are now available are: " + preexistingNumber);
 			System.out.println("Enter the number of products you want to buy: ");

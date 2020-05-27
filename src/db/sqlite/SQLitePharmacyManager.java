@@ -11,7 +11,7 @@ import java.util.List;
 import db.interfaces.PharmacyManager;
 import db.pojos.Component;
 import db.pojos.Pharmacy;
-import db.pojos.Products;
+import db.pojos.Product;
 public class SQLitePharmacyManager implements PharmacyManager {
 	private Connection c;
 	public SQLitePharmacyManager(Connection c) {
@@ -84,7 +84,7 @@ public class SQLitePharmacyManager implements PharmacyManager {
 			PreparedStatement p = c.prepareStatement(sql);
 			p.setInt(1, pharmacyId);
 			ResultSet rs= p.executeQuery();
-			List<Products> productsList = new ArrayList<Products>();
+			List<Product> productsList = new ArrayList<Product>();
 			boolean pharmacyCreated = false;
 			while(rs.next()) {
 				if(!pharmacyCreated) {
@@ -98,7 +98,7 @@ public class SQLitePharmacyManager implements PharmacyManager {
 				}
 			   int productId = rs.getInt(7);
 			   String productName = rs.getString(8);
-			   Products newProducts = new Products(productId, productName);
+			   Product newProducts = new Product(productId, productName);
 			   productsList.add(newProducts);
 			}
 				newPharmacy.setProducts(productsList);

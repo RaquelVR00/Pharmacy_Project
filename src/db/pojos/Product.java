@@ -12,7 +12,7 @@ import xml.utils.SQLDateAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Products")
 @XmlType(propOrder = {"name", "type", "price", "numberProducts", "components"})
-public class Products implements Serializable {
+public class Product implements Serializable {
 	private static final long serialVersionUID = 1413835970238962198L;
 
 	@XmlTransient
@@ -28,12 +28,12 @@ public class Products implements Serializable {
 	@XmlElement(name = "component")
     @XmlElementWrapper(name = "components")
 	private List<Component> components;
-	public Products() {
+	public Product() {
 		super();
 	}
 
 	
-	public Products(Integer id, String name) {
+	public Product(Integer id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -41,7 +41,7 @@ public class Products implements Serializable {
 
 
 
-	public Products(Integer id, String name, String type, Float price) {
+	public Product(Integer id, String name, String type, Float price) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -50,7 +50,7 @@ public class Products implements Serializable {
 	}
 
 
-	public Products(String name, String type, Float price) {
+	public Product(String name, String type, Float price) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -60,7 +60,7 @@ public class Products implements Serializable {
 	
 
 
-	public Products(String name, Float price) {
+	public Product(String name, Float price) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -70,7 +70,7 @@ public class Products implements Serializable {
 
 	
 
-	public Products(String type) {
+	public Product(String type) {
 		super();
 		this.type = type;
 		this.components = new ArrayList<Component>();
@@ -78,14 +78,14 @@ public class Products implements Serializable {
 	}
 
 
-	public Products(int numberProducts) {
+	public Product(int numberProducts) {
 		super();
 		this.numberProducts = numberProducts;
 	}
 	
 	
 
-	public Products(Integer id, String name, String type, Float price, int numberProducts) {
+	public Product(Integer id, String name, String type, Float price, int numberProducts) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -95,7 +95,7 @@ public class Products implements Serializable {
 	}
 
 
-	public Products(String name, String type, Float price, int numberProducts) {
+	public Product(String name, String type, Float price, int numberProducts) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -121,7 +121,7 @@ public class Products implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Products other = (Products) obj;
+		Product other = (Product) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

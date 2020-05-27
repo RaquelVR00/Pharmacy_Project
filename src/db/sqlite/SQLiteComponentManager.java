@@ -10,7 +10,7 @@ import java.util.List;
 
 import db.interfaces.ComponentManager;
 import db.pojos.Component;
-import db.pojos.Products;
+import db.pojos.Product;
 
 public class SQLiteComponentManager implements ComponentManager {
 

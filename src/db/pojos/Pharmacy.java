@@ -18,7 +18,7 @@ public class Pharmacy implements Serializable {
 	private String name;
 	private Integer contract_pid;
 	private String location;
-	private List<Products> products;
+	private List<Product> products;
 	
 	public Pharmacy(){
 		super();
@@ -46,7 +46,7 @@ public class Pharmacy implements Serializable {
 	}
 	
 	
-	public Pharmacy(String name, Integer contract_pid, String location, List<Products> products) {
+	public Pharmacy(String name, Integer contract_pid, String location, List<Product> products) {
 		super();
 		this.name = name;
 		this.contract_pid = contract_pid;
@@ -117,11 +117,11 @@ public class Pharmacy implements Serializable {
 		this.location = location;
 	}
 
-	public List<Products> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Products> products) {
+	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
 	
