@@ -423,6 +423,7 @@ public class menuCompleto {
 			}
 		}while(wrongtext1);
 		Product product = new Product(name, type, price, numberproducts);
+		product.setId(dbManager.getLastId());
 		// Once we have created the product we have to add it to the DB
 		productManager.add(product);
 		// Products p = productManager.getProduct(productId)
@@ -507,9 +508,10 @@ public class menuCompleto {
 					realComponent.setNumberComponents(updatedComponentsNumber);
 					componentManager.give(dbManager.getLastId(), idComponent);
 					product.setNumberProducts(numberproducts);
-					Product updatedProduct = new Product(dbManager.getLastId(), product.getName(), product.getType(),
-							product.getPrice());
-					productManager.update(updatedProduct);
+					/*Product updatedProduct = new Product(dbManager.getLastId(), product.getName(), product.getType(),
+							product.getPrice());*/
+					
+					productManager.update(product);
 					System.out.println(realComponent);
 					componentManager.update(realComponent);
 					creatorCounter++;
@@ -529,7 +531,7 @@ public class menuCompleto {
 							System.out.println("It's not a int, please enter a int.");
 						}
 					}while(wrongtext3);
-					workerManager.give(id_w, updatedProduct.getId());
+					workerManager.give(id_w, product.getId());
 				} else if (creatorCounter != 0) {
 					System.out.println("Component can't be created because there are no components.");
 					productManager.delete(dbManager.getLastId());
@@ -1032,9 +1034,9 @@ public class menuCompleto {
 			int choice = 8;
 			do{
 				System.out.println("Introduce the number of the option you would like to choose: ");
-				Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
+				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
 			}
-			while(choice<0 || choice>4);
+			while(choice<0 || choice>6);
 
 			switch (choice) {
 			case 1:
