@@ -95,5 +95,22 @@ public class SQLiteContractWorkerManager implements ContractWorkerManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public List<Integer> getIds() {
+		List<Integer> intList=new ArrayList<Integer>();
+		try {
+			String sql="SELECT id FROM contract_worker";
+			PreparedStatement p = c.prepareStatement(sql);
+			ResultSet rs= p.executeQuery();
+			while(rs.next()) {
+				int contractId = rs.getInt(1);
+				intList.add(contractId);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return intList;
+	}
 
 }

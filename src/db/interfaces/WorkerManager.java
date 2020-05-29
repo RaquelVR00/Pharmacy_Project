@@ -12,4 +12,5 @@ public interface WorkerManager {
 	public void printWorkers();
 	public Worker getWorker(int WorkerId);
 	public void give(int workerId, int productId);
+	public List<String> getUsernames();
 }

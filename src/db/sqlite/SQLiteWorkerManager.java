@@ -13,7 +13,6 @@ import db.interfaces.WorkerManager;
 import db.pojos.Component;
 import db.pojos.Worker;
 
-
 public class SQLiteWorkerManager implements WorkerManager {
 
 	private static Connection c;
@@ -39,7 +38,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 				Date workerStartDate = rs.getDate("start_date");
 				String workerNationality = rs.getString("nationality");
 				Integer workerContract_id = rs.getInt("contract_id");
-				Worker newworker = new Worker(id,workerName, workerPosition, workerStartDate, workerNationality,
+				Worker newworker = new Worker(id, workerName, workerPosition, workerStartDate, workerNationality,
 						workerContract_id);
 				workersList.add(newworker);
 			}
@@ -76,6 +75,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 		return workersList;
 	}
+
 	public Worker searchById(Integer id) {
 		// TODO Auto-generated method stub
 		// return null;
@@ -83,7 +83,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 		try {
 			String sql = "SELECT * FROM worker WHERE id LIKE ?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, id );
+			prep.setInt(1, id);
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
 				String workerName = rs.getString("name");
@@ -100,46 +100,49 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 		return newworker;
 	}
+
 	public Worker getWorker(int workerId) {
 		Worker newWorker = null;
 		try {
-			String sql="SELECT * FROM worker"
-					+" WHERE id = ?";
-			PreparedStatement p= c.prepareStatement(sql);
+			String sql = "SELECT * FROM worker" + " WHERE id = ?";
+			PreparedStatement p = c.prepareStatement(sql);
 			p.setInt(1, workerId);
-			ResultSet rs= p.executeQuery();
+			ResultSet rs = p.executeQuery();
 			boolean workerCreated = false;
-			while(rs.next()) {
-				if(!workerCreated) {
-			   int newWorkerId = rs.getInt(1);
-			   String workerName = rs.getString(2);
-			   String workerPosition = rs.getString(3);
-				Date workerStartDate = rs.getDate(4);
-				String workerNationality = rs.getString(5);
-				Integer workerContract_id = rs.getInt(6);
-				newWorker = new Worker(newWorkerId, workerName, workerPosition, workerStartDate, workerNationality,
-						workerContract_id);
-				System.out.println(newWorker);
-				workerCreated = true;
+			while (rs.next()) {
+				if (!workerCreated) {
+					int newWorkerId = rs.getInt(1);
+					String workerName = rs.getString(2);
+					String workerPosition = rs.getString(3);
+					Date workerStartDate = rs.getDate(4);
+					String workerNationality = rs.getString(5);
+					Integer workerContract_id = rs.getInt(6);
+					String username = rs.getString(7);
+					newWorker = new Worker(newWorkerId, workerName, workerPosition, workerStartDate, workerNationality,
+							workerContract_id);
+					newWorker.setUsername(username);
+					workerCreated = true;
 				}
-			  }
-		}catch (SQLException e) {
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return newWorker;
 	}
+
 	@Override
 	public void add(Worker worker) {
 		// TODO Auto-generated method stub
 		try {
-			String sql = "INSERT INTO worker (name, position, start_date, nationality, contract_id) "
-					+ "VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO worker (name, position, start_date, nationality, contract_id, nameuser) "
+					+ "VALUES (?,?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, worker.getName());
 			prep.setString(2, worker.getPosition());
 			prep.setDate(3, worker.getStart_date());
 			prep.setString(4, worker.getNationality());
 			prep.setInt(5, worker.getContract_id());
+			prep.setString(6, worker.getUsername());
 			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException e) {
@@ -150,7 +153,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 	public void fire(Integer worker_id) {
 		// TODO Auto-generated method stub
 		try {
-			//String sql = "DELETE FROM workers WHERE name LIKE ?";
+			// String sql = "DELETE FROM workers WHERE name LIKE ?";
 			String sql = "DELETE FROM worker WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, worker_id);
@@ -161,40 +164,56 @@ public class SQLiteWorkerManager implements WorkerManager {
 			e.printStackTrace();
 		}
 	}
-	
-	public void printWorkers(){
+
+	public void printWorkers() {
 		try {
-		Statement stmt = c.createStatement();
-		String sql = "SELECT * FROM worker";
-		ResultSet rs = stmt.executeQuery(sql);
-		while (rs.next()) {
-			int id = rs.getInt("id");
-			String name = rs.getString("name");
-			String position = rs.getString("position");
-			Date date = rs.getDate("start_date");
-			String nationality = rs.getString("nationality");
-			int contract_id = rs.getInt("contract_id");
-			Worker worker = new Worker(id, name, position, date, nationality, contract_id);
-			System.out.println(worker);	
+			Statement stmt = c.createStatement();
+			String sql = "SELECT * FROM worker";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String position = rs.getString("position");
+				Date date = rs.getDate("start_date");
+				String nationality = rs.getString("nationality");
+				int contract_id = rs.getInt("contract_id");
+				Worker worker = new Worker(id, name, position, date, nationality, contract_id);
+				System.out.println(worker);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();// TODO
 		}
-		}catch(SQLException e) {
-			e.printStackTrace();//TODO
+
+	}
+
+	public void give(int workerId, int productId) {
+		// Link Product and Worker
+		try {
+			String sql = "INSERT INTO workerProducts (workerId,productId) " + "VALUES (?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, workerId);
+			prep.setInt(2, productId);
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
 	}
 	
-	public void give(int workerId, int productId) {
-		//Link Product and Worker
-				try {
-					String sql = "INSERT INTO workerProducts (workerId,productId) "
-							+ "VALUES (?,?)";
-					PreparedStatement prep = c.prepareStatement(sql);
-					prep.setInt(1,workerId);
-					prep.setInt(2,productId);
-					prep.executeUpdate();
-					prep.close();
-				} catch (SQLException e) {
-					e.printStackTrace();	
+	public List<String> getUsernames() {
+		List<String> stringList=new ArrayList<String>();
+		try {
+			String sql="SELECT nameuser FROM worker";
+			PreparedStatement p = c.prepareStatement(sql);
+			ResultSet rs= p.executeQuery();
+			while(rs.next()) {
+				String nameuser = rs.getString(7);
+				stringList.add(nameuser);
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return stringList;
 	}
 }

@@ -87,7 +87,12 @@ public class SQLiteProductManager implements ProductManager {
 					Float productsPrice = rs.getFloat(4);
 					int numberProducts = rs.getInt(5);
 					newProduct = new Product(id,productsName,productsType,productsPrice,numberProducts);
-				productList.add(newProduct);
+					if(newProduct!=null) {
+						productList.add(newProduct);
+					}
+			}
+			if(productList.isEmpty()){
+				return null;
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -141,11 +146,15 @@ public class SQLiteProductManager implements ProductManager {
 			   int numberComponents = rs.getInt(12);
 			   Component newComponent = new Component(componentId, componentName, price, supplier, numberComponents);
 			   componentsList.add(newComponent);
+			  
 			}
-			newProduct.setComponents(componentsList);
+			if(newProduct != null){
+				newProduct.setComponents(componentsList);
+			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		 System.out.println(newProduct);
 		return newProduct;
 	}
 

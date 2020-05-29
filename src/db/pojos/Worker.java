@@ -17,6 +17,7 @@ public class Worker implements Serializable {
 	private String nationality;
 	private Integer contract_id;
 	private List<ContractWorker> contract;
+	private String nameuser;
 	
 	public Worker() {
 		super();
@@ -144,6 +145,14 @@ public class Worker implements Serializable {
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getUsername() {
+		return nameuser;
+	}
+
+	public void setUsername(String username) {
+		this.nameuser = username;
 	}
 
 }

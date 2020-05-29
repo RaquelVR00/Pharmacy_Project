@@ -8,4 +8,5 @@ public interface ContractWorkerManager {
 	 public ContractWorker getContract(int contractId);
 	 public void update(ContractWorker contract_w);
 	 public List<ContractWorker> showContracts();
+	 public List<Integer> getIds();
 }

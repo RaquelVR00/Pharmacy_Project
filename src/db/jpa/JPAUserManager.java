@@ -154,7 +154,7 @@ private EntityManager em;
 	}
 	
 	public void deleteWorker(String name) {
-		System.out.println("Company's workers with that name: ");
+		/*System.out.println("Company's workers with that name: ");
 		printWorker(name);
 		System.out.print("Choose a worker to fire. Type it's ID:");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -164,9 +164,10 @@ private EntityManager em;
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		Query q2 = em.createNativeQuery("SELECT * FROM users WHERE ID = ?", User.class);
-		q2.setParameter(1, emp_id);
+		}*/
+		Query q2 = em.createNativeQuery("SELECT * FROM users WHERE USERNAME = ?", User.class);
+		System.out.println(name);
+		q2.setParameter(1, name);
 		User poorGuy = (User) q2.getSingleResult();
 		// Begin transaction
 		em.getTransaction().begin();
