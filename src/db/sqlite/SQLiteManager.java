@@ -75,7 +75,8 @@ public class SQLiteManager implements DBManager {
 				   + " position  TEXT	 NOT NULL,"
 				   + " start_date DATE DEFAULT (CURRENT_DATE),"
 				   + " nationality TEXT NOT NULL,"
-				   + " contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL)";
+				   + " contract_id INTEGER REFERENCES contract_worker(id) ON UPDATE CASCADE ON DELETE SET NULL"
+				   + " user_id INTEGER REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE)";
 		stmt1.executeUpdate(sql1);
 		
 		stmt1 = c.createStatement();
