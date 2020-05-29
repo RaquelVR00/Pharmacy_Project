@@ -16,7 +16,6 @@ public class Worker implements Serializable {
 	private Date start_date;
 	private String nationality;
 	private Integer contract_id;
-	private int user_id;
 	private List<ContractWorker> contract;
 	
 	public Worker() {
@@ -147,12 +146,4 @@ public class Worker implements Serializable {
 		return serialVersionUID;
 	}
 
-	public int getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
-	}
-	
 }
