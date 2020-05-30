@@ -77,11 +77,18 @@ public class menuCompleto {
 			System.out.println("2. Create a new user");
 			System.out.println("3. Login");
 			System.out.println("0. Exit");
-			int choice = 8;
+			Integer choice = new Integer(0);
+			boolean wrongtext = false;
 			do {
 				System.out.println("Introduce the number of the option you would like to choose: ");
-				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			} while (choice < 0 || choice > 3);
+				try {
+					choice = Integer.parseInt(reader.readLine());
+					wrongtext = false;
+				} catch (NumberFormatException ex) {
+					wrongtext = true;
+					System.out.println("It's not a int, please enter a int.");
+				}
+			} while (choice < 0 || choice > 3 || wrongtext);
 			switch (choice) {
 			case 1:
 				newRole();
@@ -141,18 +148,40 @@ public class menuCompleto {
 		Role chosenRole = userManager.getRole(roleId);
 		// Create the user and store it
 		User user = new User(username, hash, chosenRole);
-		userManager.createUser(user);
-		if (roleId == 3) {
+		if (roleId != 3) {
+			userManager.createUser(user);
+		}
+		boolean empty = true;
+		List<ContractPharmacy> contracts = contractPharmacyManager.showContracts();
+		if (roleId == 3 && !contracts.isEmpty()) {
+			userManager.createUser(user);
 			String pharmacyName = username;
 			System.out.println("Please, enter the following information: ");
 			System.out.println("Location");
 			String location = reader.readLine();
-			ContractPharmacy contract = new ContractPharmacy();
-			contractPharmacyManager.add(contract);
-			int contract_pid = contractPharmacyManager.getId();
+
+			for (ContractPharmacy contract : contracts) {
+				System.out.println(contract);
+			}
+			Integer contract_pid = new Integer(0);
+			boolean wrongtext = false;
+			do {
+				System.out.println("Contract: ");
+				try {
+					contract_pid = Integer.parseInt(reader.readLine());
+					wrongtext = false;
+				} catch (NumberFormatException ex) {
+					wrongtext = true;
+					System.out.println("It's not a int, please enter a int.");
+				}
+			} while (wrongtext);
 			Pharmacy pharmacy = new Pharmacy(pharmacyName, contract_pid, location);
 			pharmacyManager.add(pharmacy);
+		} else {
+			System.out.println(
+					"Sorry there are not contracts rigth now, contact with the boss of the pharmaceutical company");
 		}
+
 	}
 
 	private static void login() throws Exception {
@@ -189,21 +218,28 @@ public class menuCompleto {
 			System.out.println("What would you like to do?");
 			System.out.println("1. Search component by name");
 			System.out.println("2. Search component by supplier");
-			System.out.println("3. Add product");
+			System.out.println("3. Create product");
 			System.out.println("4. Search product by name");
 			System.out.println("5. Search product by type");
 			System.out.println("6. Search product by price");
-			System.out.println("7. Create product");
+			System.out.println("7. Add product");
 			System.out.println("8. Generate XML");
 			System.out.println("9. Create product from XML");
 			System.out.println("10. Change your user name");
 			System.out.println("11. Change your password");
 			System.out.println("12. Go back");
-			int choice = 14;
+			Integer choice = new Integer(0);
+			boolean wrongtext = false;
 			do {
 				System.out.println("Introduce the number of the option you would like to choose: ");
-				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			} while (choice < 0 || choice > 12);
+				try {
+					choice = Integer.parseInt(reader.readLine());
+					wrongtext = false;
+				} catch (NumberFormatException ex) {
+					wrongtext = true;
+					System.out.println("It's not a int, please enter a int.");
+				}
+			} while (choice < 0 || choice > 12 || wrongtext);
 			switch (choice) {
 			case 1:
 				searchComponentByName();
@@ -212,7 +248,7 @@ public class menuCompleto {
 				searchComponentBySupplier();
 				break;
 			case 3:
-				addProduct();
+				createProduct();
 				break;
 			case 4:
 				searchProductByName();
@@ -224,7 +260,7 @@ public class menuCompleto {
 				searchProductByPrice();
 				break;
 			case 7:
-				createProduct();
+				addProduct();
 				break;
 			case 8:
 				generateXML();
@@ -325,8 +361,10 @@ public class menuCompleto {
 							productManager.update(toBeModified);
 						}
 					} else {
-						System.out.println("There are not enough components for the number of products you want to add.");
-						System.out.println("In the following list you can check the number of availavable components: ");
+						System.out
+								.println("There are not enough components for the number of products you want to add.");
+						System.out
+								.println("In the following list you can check the number of availavable components: ");
 						for (Component component : componentList) {
 							System.out.println(component);
 						}
@@ -351,7 +389,8 @@ public class menuCompleto {
 				}
 			}
 		} else {
-			System.out.println("At least one of the components needed has an availability of 0. Products can't be added.");
+			System.out.println(
+					"At least one of the components needed has an availability of 0. Products can't be added.");
 		}
 	}
 
@@ -438,9 +477,9 @@ public class menuCompleto {
 				}
 			} while (wrongtext1);
 			Product product = new Product(name, type, price, numberproducts);
-			product.setId(dbManager.getLastId());
 			// Once we have created the product we have to add it to the DB
 			productManager.add(product);
+			product.setId(dbManager.getLastId());
 			// Products p = productManager.getProduct(productId)
 			System.out.println("Now you will find all the available components:");
 			List<Component> components = componentManager.showComponents();
@@ -498,6 +537,7 @@ public class menuCompleto {
 			for (Component component : componentList) {
 				int updatedComponentsNumber = component.getNumberComponents() - numberproducts;
 				component.setNumberComponents(updatedComponentsNumber);
+				componentManager.update(component);
 				int idComponent = component.getId();
 				componentManager.give(dbManager.getLastId(), idComponent);
 				product.setNumberProducts(numberproducts);
@@ -506,15 +546,18 @@ public class menuCompleto {
 			Integer id_w = new Integer(0);
 			boolean wrongtext3 = false;
 			do {
-				System.out.println("Enter your worker id: ");
-				try {
-					id_w = Integer.parseInt(reader.readLine());
-					wrongtext3 = false;
-				} catch (NumberFormatException ex) {
-					wrongtext3 = true;
-					System.out.println("It's not a int, please enter a int.");
-				}
-			} while (wrongtext3);
+				do {
+					System.out.println("Enter your worker id: ");
+					try {
+						id_w = Integer.parseInt(reader.readLine());
+						wrongtext3 = false;
+					} catch (NumberFormatException ex) {
+						wrongtext3 = true;
+						System.out.println("It's not a int, please enter a int.");
+					}
+				} while (wrongtext3);
+			} while (workerManager.getWorker(id_w) == null);
+			workerManager.give(id_w, product.getId());
 		} else {
 			System.out.println("A product can't be created if there are no components at all.");
 		}
@@ -610,16 +653,22 @@ public class menuCompleto {
 			System.out.println("12. Search product by price");
 			System.out.println("13. Add contract with a pharmacy");
 			System.out.println("14. Add contract with a worker");
-			System.out.println("15. Add pharmacy");
-			System.out.println("16. Show all pharmacies");
-			System.out.println("17. Change your user name");
-			System.out.println("18. Change your password");
+			System.out.println("15. Show all pharmacies");
+			System.out.println("16. Change your user name");
+			System.out.println("17. Change your password");
 			System.out.println("0. Go back");
-			int choice = 20;
+			Integer choice = new Integer(0);
+			boolean wrongtext = false;
 			do {
-				System.out.println("Introduce the number of the option you would like to choose: ");
-				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			} while (choice < 0 || choice > 18);
+					System.out.println("Introduce the number of the option you would like to choose: ");
+					try {
+						choice = Integer.parseInt(reader.readLine());
+						wrongtext = false;
+					} catch (NumberFormatException ex) {
+						wrongtext = true;
+						System.out.println("It's not a int, please enter a int.");
+					}			
+		    } while (choice < 0 || choice > 17 || wrongtext);
 			switch (choice) {
 			case 1:
 				searchWorkerByName();
@@ -664,15 +713,12 @@ public class menuCompleto {
 				addContractWorker();
 				break;
 			case 15:
-				addPharmacy();
-				break;
-			case 16:
 				showPharmacies();
 				break;
-			case 17:
+			case 16:
 				userManager.updateUserName(bossName);
 				return;
-			case 18:
+			case 17:
 				userManager.updatePassword(bossName);
 				return;
 			case 0:
@@ -760,7 +806,7 @@ public class menuCompleto {
 		String UserName = username;
 		System.out.print("Password:");
 		String password = getPassword();
-		System.out.println("the default password for a worker is:" +password);
+		System.out.println("the default password for a worker is:" + password);
 		// Create the password's hash
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
@@ -929,7 +975,6 @@ public class menuCompleto {
 			}
 		} while (wrongtext1);
 		ContractPharmacy contract = new ContractPharmacy(type, expenditure, n_products);
-		System.out.println(contract);
 		contractPharmacyManager.add(contract);
 	}
 
@@ -967,34 +1012,6 @@ public class menuCompleto {
 		contractWorkerManager.add(contract);
 	}
 
-	private static void addPharmacy() throws Exception {
-		System.out.println("Please, enter the following information: ");
-		System.out.println("Name: ");
-		String name = reader.readLine();
-		System.out.println("Location");
-		String location = reader.readLine();
-		System.out.println("Available contracts: ");
-		List<ContractPharmacy> contracts = contractPharmacyManager.showContracts();
-		for (ContractPharmacy contract : contracts) {
-			System.out.println(contract);
-		}
-		// System.out.println("Contract: ");
-		Integer contract_pid = new Integer(0);
-		boolean wrongtext = false;
-		do {
-			System.out.println("Contract: ");
-			try {
-				contract_pid = Integer.parseInt(reader.readLine());
-				wrongtext = false;
-			} catch (NumberFormatException ex) {
-				wrongtext = true;
-				System.out.println("It's not a int, please enter a int.");
-			}
-		} while (wrongtext);
-		Pharmacy pharmacy = new Pharmacy(name, contract_pid, location);
-		pharmacyManager.add(pharmacy);
-	}
-
 	private static void showPharmacies() throws Exception {
 		List<Pharmacy> list_pharmacies = pharmacyManager.showPharmacy();
 		for (Pharmacy pharmacies : list_pharmacies) {
@@ -1012,11 +1029,18 @@ public class menuCompleto {
 			System.out.println("5. Change your user name");
 			System.out.println("6. Change your password");
 			System.out.println("0. Go back");
-			int choice = 8;
+			Integer choice = new Integer(0);
+			boolean wrongtext = false;
 			do {
-				System.out.println("Introduce the number of the option you would like to choose: ");
-				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			} while (choice < 0 || choice > 6);
+					System.out.println("Introduce the number of the option you would like to choose: ");
+					try {
+						choice = Integer.parseInt(reader.readLine());
+						wrongtext = false;
+					} catch (NumberFormatException ex) {
+						wrongtext = true;
+						System.out.println("It's not a int, please enter a int.");
+					}
+			} while (choice < 0 || choice > 6 || wrongtext);
 
 			switch (choice) {
 			case 1:
@@ -1093,19 +1117,21 @@ public class menuCompleto {
 			x = Integer.parseInt(reader.readLine());
 		}
 	}
+
 	public static String getPassword(int length) {
 		return getPassword(numbers + caps + low_case, length);
 	}
- 
+
 	public static String getPassword(String key, int length) {
 		String pswd = "";
- 
+
 		for (int i = 0; i < length; i++) {
-			pswd+=(key.charAt((int)(Math.random() * key.length())));
+			pswd += (key.charAt((int) (Math.random() * key.length())));
 		}
- 
+
 		return pswd;
 	}
+
 	public static String getPassword() {
 		return getPassword(8);
 	}
