@@ -207,7 +207,7 @@ public class SQLiteWorkerManager implements WorkerManager {
 			PreparedStatement p = c.prepareStatement(sql);
 			ResultSet rs= p.executeQuery();
 			while(rs.next()) {
-				String nameuser = rs.getString(7);
+				String nameuser = rs.getString("nameuser");
 				stringList.add(nameuser);
 			}
 		} catch (SQLException e) {

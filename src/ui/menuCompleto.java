@@ -748,7 +748,8 @@ public class menuCompleto {
 		do {
 			System.out.println("Introduce a username for the worker: ");
 			username = reader.readLine();
-			List<String> existUsernames = workerManager.getUsernames();
+			List<String> existUsernames = new ArrayList<String>();
+			existUsernames = workerManager.getUsernames();
 			if (existUsernames.contains(username)) {
 				distictUser = true;
 			} else {
@@ -759,7 +760,7 @@ public class menuCompleto {
 		String UserName = username;
 		System.out.print("Password:");
 		String password = getPassword();
-		System.out.println("the default password for a worker is: password");
+		System.out.println("the default password for a worker is:" +password);
 		// Create the password's hash
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
