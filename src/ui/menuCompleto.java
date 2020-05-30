@@ -50,6 +50,9 @@ public class menuCompleto {
 	private static String pharmacyName = "";
 	private static String bossName = "";
 	private static String workerName = "";
+	public static String numbers = "0123456789";
+	public static String caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static String low_case = "abcdefghijklmnopqrstuvwxyz";
 
 	public static void main(String[] args) throws Exception {
 		// In order to connect with the DB
@@ -75,11 +78,10 @@ public class menuCompleto {
 			System.out.println("3. Login");
 			System.out.println("0. Exit");
 			int choice = 8;
-			do{
+			do {
 				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			}
-			while(choice<0 || choice>3);
+			} while (choice < 0 || choice > 3);
 			switch (choice) {
 			case 1:
 				newRole();
@@ -99,20 +101,18 @@ public class menuCompleto {
 			}
 		}
 	}
-	
-	
+
 	private static void newRole() throws Exception {
 		String roleName;
 		do {
-		System.out.println("Please type the new role information:");
-		System.out.print("Role name:");
-		roleName = reader.readLine();
-		}
-		while(!roleName.equals("boss") && !roleName.equals("worker") && !roleName.equals("pharmacy"));
+			System.out.println("Please type the new role information:");
+			System.out.print("Role name:");
+			roleName = reader.readLine();
+		} while (!roleName.equals("boss") && !roleName.equals("worker") && !roleName.equals("pharmacy"));
 		Role role = new Role(roleName);
 		userManager.createRole(role);
 	}
-		
+
 	private static void newUser() throws Exception {
 		System.out.println("Please type the new user information:");
 		System.out.print("Username:");
@@ -127,7 +127,7 @@ public class menuCompleto {
 		List<Role> roles = userManager.getRoles();
 		for (Role role : roles) {
 			if (role.getId() != 2) {
-			System.out.println(role);
+				System.out.println(role);
 			}
 		}
 		System.out.print("Type the chosen role id:");
@@ -200,11 +200,10 @@ public class menuCompleto {
 			System.out.println("11. Change your password");
 			System.out.println("12. Go back");
 			int choice = 14;
-			do{
+			do {
 				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			}
-			while(choice<0 || choice>12);
+			} while (choice < 0 || choice > 12);
 			switch (choice) {
 			case 1:
 				searchComponentByName();
@@ -271,7 +270,6 @@ public class menuCompleto {
 		for (Product product : productList) {
 			System.out.println(product);
 		}
-		//System.out.println("Enter the selected product´s id");
 		Integer id = new Integer(0);
 		boolean wrongtext = false;
 		do {
@@ -281,69 +279,79 @@ public class menuCompleto {
 					id = Integer.parseInt(reader.readLine());
 					wrongtext = false;
 				} catch (NumberFormatException ex) {
-						wrongtext = true;
+					wrongtext = true;
 					System.out.println("It's not a int, please enter a int.");
 				}
-			}while(wrongtext);
-		}while(productManager.getProduct(id)==null);
+			} while (wrongtext);
+		} while (productManager.getProduct(id) == null);
 		Product toBeModified = productManager.getProduct(id);
 		int preexistingNumber = toBeModified.getNumberProducts();
 		System.out.println("The number of products that are now avaiable are: " + preexistingNumber);
 		boolean correctNumber = true;
 		int counter = 0;
-		while (correctNumber) {
-			Integer numberproducts = new Integer(0);
-			boolean wrongtext1 = false;
-			//System.out.println("Enter the number of products you would like to add: ");
-			do {
-				System.out.println("Enter the number of products you would like to add: ");
-				try {
-					numberproducts = Integer.parseInt(reader.readLine());
-					wrongtext1 = false;
-				} catch (NumberFormatException ex) {
+		int counter2 = 0;
+		List<Component> componentList = toBeModified.getComponents();
+		for (Component componentInList : componentList) {
+			int numberComponents = componentInList.getNumberComponents();
+			if (numberComponents > 0) {
+				counter++;
+			}
+		}
+		if (counter == componentList.size()) {
+			while (correctNumber) {
+				Integer numberproducts = new Integer(0);
+				boolean wrongtext1 = false;
+				do {
+					System.out.println("Enter the number of products you would like to add: ");
+					try {
+						numberproducts = Integer.parseInt(reader.readLine());
+						wrongtext1 = false;
+					} catch (NumberFormatException ex) {
 						wrongtext1 = true;
-					System.out.println("It's not a int, please enter a int.");
-				}
-			}while(wrongtext1);
-			int updatedNumber = preexistingNumber + numberproducts;
-			toBeModified.setNumberProducts(updatedNumber);
-			List<Component> componentList = toBeModified.getComponents();
-			boolean componentsRight = false;
-			for (Component componentChecker : componentList) {
-				int idComponent = componentChecker.getId();
-				Component realComponent = componentManager.getComponent(idComponent);
-				int numberComponents = realComponent.getNumberComponents();
-				if (numberComponents >= numberproducts) {
-					counter++;
-					if (counter == componentList.size()) {
-						componentsRight = true;
-						productManager.update(toBeModified);
-						
+						System.out.println("It's not a int, please enter a int.");
 					}
-				} else {
-					System.out.println("There are not enough components for the number of products you want to add.");
-					System.out.println("In the following list you can check the number of availavable components: ");
-					counter = 0;
-					correctNumber = true;
+				} while (wrongtext1);
+				int updatedNumber = preexistingNumber + numberproducts;
+				toBeModified.setNumberProducts(updatedNumber);
+				boolean componentsRight = false;
+				for (Component componentChecker : componentList) {
+					int idComponent = componentChecker.getId();
+					Component realComponent = componentManager.getComponent(idComponent);
+					int numberComponents = realComponent.getNumberComponents();
+					if (numberComponents >= numberproducts) {
+						counter2++;
+						if (counter2 == componentList.size()) {
+							componentsRight = true;
+							productManager.update(toBeModified);
+						}
+					} else {
+						System.out.println("There are not enough components for the number of products you want to add.");
+						System.out.println("In the following list you can check the number of availavable components: ");
+						for (Component component : componentList) {
+							System.out.println(component);
+						}
+						counter2 = 0;
+						correctNumber = true;
+					}
+				}
+				for (Component component : componentList) {
+					int idComponent = component.getId();
+					Component realComponent = componentManager.getComponent(idComponent);
+					int numberComponents = realComponent.getNumberComponents();
+					if (componentsRight) {
+						int updatedComponentsNumber = numberComponents - numberproducts;
+						realComponent.setNumberComponents(updatedComponentsNumber);
+						componentManager.update(realComponent);
+						correctNumber = false;
+					} else if (numberComponents == 0) {
+						System.out.println("There are no components available.");
+						correctNumber = false;
+						break;
+					}
 				}
 			}
-			for (Component component : componentList) {
-				int idComponent = component.getId();
-				Component realComponent = componentManager.getComponent(idComponent);
-				int numberComponents = realComponent.getNumberComponents();
-				//System.out.println(realComponent);
-				if (componentsRight) {
-					int updatedComponentsNumber = numberComponents - numberproducts;
-					realComponent.setNumberComponents(updatedComponentsNumber);
-					//System.out.println(realComponent);
-					componentManager.update(realComponent);
-					correctNumber = false;
-				} else if (numberComponents == 0) {
-					System.out.println("There are no components available.");
-					correctNumber = false;
-					break;
-				}
-			}
+		} else {
+			System.out.println("At least one of the components needed has an availability of 0. Products can't be added.");
 		}
 	}
 
@@ -369,21 +377,21 @@ public class menuCompleto {
 
 	private static void searchProductByPrice() throws Exception {
 		System.out.println("Please, enter the following information: ");
-		
+
 		Float price = new Float(0.0);
 		boolean wrongtext = false;
-		do{
+		do {
 			System.out.println("Enter the price of the product you want to search: ");
 			do {
 				try {
 					price = Float.parseFloat(reader.readLine());
 					wrongtext = false;
 				} catch (NumberFormatException ex) {
-						wrongtext = true;
+					wrongtext = true;
 					System.out.println("It's not a float, please enter a float.");
 				}
-			}while(wrongtext);
-		}while(productManager.searchByPrice(price) == null);
+			} while (wrongtext);
+		} while (productManager.searchByPrice(price) == null);
 		List<Product> productList = productManager.searchByPrice(price);
 		for (Product product : productList) {
 			System.out.println(product);
@@ -391,162 +399,135 @@ public class menuCompleto {
 	}
 
 	private static void createProduct() throws Exception {
-		System.out.println("Please, enter the following information: ");
-		System.out.println("Name: ");
-		String name = reader.readLine();
-		System.out.println("Type: ");
-		String type = reader.readLine();
-		//System.out.println("Price: ");
-		Float price = new Float(0.0);
-		boolean wrongtext = false;
-		do {
-			System.out.println("Price: ");
-			try {
-				price = Float.parseFloat(reader.readLine());
-				wrongtext = false;
-			} catch (NumberFormatException ex) {
-					wrongtext = true;
-				System.out.println("It's not a float, please enter a float.");
-			}
-		}while(wrongtext);
-		//System.out.println("Number of products: ");
-		Integer numberproducts = new Integer(0);
-		boolean wrongtext1 = false;
-		do {
-			System.out.println("Number of products: ");
-			try {
-				numberproducts = Integer.parseInt(reader.readLine());
-				wrongtext1 = false;
-			} catch (NumberFormatException ex) {
-					wrongtext1 = true;
-				System.out.println("It's not a int, please enter a int.");
-			}
-		}while(wrongtext1);
-		Product product = new Product(name, type, price, numberproducts);
-		product.setId(dbManager.getLastId());
-		// Once we have created the product we have to add it to the DB
-		productManager.add(product);
-		// Products p = productManager.getProduct(productId)
-		System.out.println("Now you will find all the available components:");
-		List<Component> components = componentManager.showComponents();
-		for (Component component : components) {
-			System.out.println(component);
-		}
-		System.out.println("Choose the desired ID's:");
-		int x = 5;
 		int counter = 0;
-		int creatorCounter = 0;
-		boolean componentsRight = false;
-		boolean modifyNProducts = false;
-		List<Component> componentList = new ArrayList<Component>();
-		while (x != 0) {
-			Integer componentId = new Integer(0);
-			boolean wrongtext2 = false;
-			do {
-				do {
-					System.out.println("Number of products: ");
-					try {
-						componentId = Integer.parseInt(reader.readLine());
-						wrongtext2 = false;
-					} catch (NumberFormatException ex) {
-							wrongtext2 = true;
-						System.out.println("It's not a int, please enter a int.");
-					}
-				}while(wrongtext2);
-			}while(componentManager.getComponent(componentId)==null);
-			Component realComponent = componentManager.getComponent(componentId);
-			componentList.add(realComponent);
-			System.out.println("If you want to add another component enter 5, if you don't want to add another component enter 0.");
-			x = Integer.parseInt(reader.readLine());
+		List<Component> componentsList = componentManager.showComponents();
+		for (Component componentInList : componentsList) {
+			int numberComponents = componentInList.getNumberComponents();
+			if (numberComponents > 0) {
+				counter++;
+			}
 		}
-		while (componentsRight == false) {
-			for (Component component : componentList) {
-				int idComponent = component.getId();
-				Component realComponent = componentManager.getComponent(idComponent);
-				int numberComponents = realComponent.getNumberComponents();
-				if (numberComponents >= numberproducts) {
-					counter++;
-					if (counter == componentList.size()) {
-						componentsRight = true;
-						modifyNProducts = true;
-					}
-				} else if (numberComponents == 0) {
-					System.out.println("There are no available components.");
-					productManager.delete(dbManager.getLastId());
-					componentsRight = true;
-					break;
-				} else if (componentsRight == true) {
-					break;
-				} else {
-					System.out.println("There are not enough components for the number of products you want to add.");
-					System.out.println("In the following list you can check the number of availavable components: ");
-					for (Component componentPrint : componentList) {
-						System.out.println(componentPrint);
-					}
-					//System.out.println("Please enter a new number of products:");
-					boolean wrongtext2 = false;
+		if (counter >= 1) {
+			System.out.println("Please, enter the following information: ");
+			System.out.println("Name: ");
+			String name = reader.readLine();
+			System.out.println("Type: ");
+			String type = reader.readLine();
+			Float price = new Float(0.0);
+			boolean wrongtext = false;
+			do {
+				System.out.println("Price: ");
+				try {
+					price = Float.parseFloat(reader.readLine());
+					wrongtext = false;
+				} catch (NumberFormatException ex) {
+					wrongtext = true;
+					System.out.println("It's not a float, please enter a float.");
+				}
+			} while (wrongtext);
+			Integer numberproducts = new Integer(0);
+			boolean wrongtext1 = false;
+			do {
+				System.out.println("Number of products: ");
+				try {
+					numberproducts = Integer.parseInt(reader.readLine());
+					wrongtext1 = false;
+				} catch (NumberFormatException ex) {
+					wrongtext1 = true;
+					System.out.println("It's not a int, please enter a int.");
+				}
+			} while (wrongtext1);
+			Product product = new Product(name, type, price, numberproducts);
+			product.setId(dbManager.getLastId());
+			// Once we have created the product we have to add it to the DB
+			productManager.add(product);
+			// Products p = productManager.getProduct(productId)
+			System.out.println("Now you will find all the available components:");
+			List<Component> components = componentManager.showComponents();
+			for (Component component : components) {
+				System.out.println(component);
+			}
+			System.out.println("Choose the desired ID's:");
+			int x = 5;
+			List<Component> componentList = new ArrayList<Component>();
+			while (x != 0) {
+				Integer componentId = new Integer(0);
+				boolean wrongtext2 = false;
+				do {
 					do {
-						System.out.println("Please enter a new number of products:");
+						System.out.println("Component Id: ");
 						try {
-							numberproducts = Integer.parseInt(reader.readLine());
+							componentId = Integer.parseInt(reader.readLine());
 							wrongtext2 = false;
 						} catch (NumberFormatException ex) {
-								wrongtext2 = true;
+							wrongtext2 = true;
 							System.out.println("It's not a int, please enter a int.");
 						}
-					}while(wrongtext2);
-					counter = 0;
+					} while (wrongtext2);
+				} while (componentManager.getComponent(componentId) == null);
+				Component realComponent = componentManager.getComponent(componentId);
+				int numberComponents = realComponent.getNumberComponents();
+				if (numberComponents >= numberproducts) {
+					componentList.add(realComponent);
+				} else {
+					do {
+						System.out
+								.println("There are not enough components for the number of products you want to add.");
+						System.out.println(
+								"Please, enter the id of a valid component (a component that has at least the same number available"
+										+ " as the number of products you want to create.");
+						do {
+							System.out.println("Component Id: ");
+							try {
+								componentId = Integer.parseInt(reader.readLine());
+								wrongtext2 = false;
+							} catch (NumberFormatException ex) {
+								wrongtext2 = true;
+								System.out.println("It's not a int, please enter a int.");
+							}
+						} while (wrongtext2);
+						realComponent = componentManager.getComponent(componentId);
+						numberComponents = realComponent.getNumberComponents();
+					} while (componentManager.getComponent(componentId) == null && (numberComponents < numberproducts));
+					componentList.add(realComponent);
 				}
+				System.out.println(
+						"If you want to add another component enter 5, if you don't want to add another component enter 0.");
+				x = Integer.parseInt(reader.readLine());
 			}
 			for (Component component : componentList) {
+				int updatedComponentsNumber = component.getNumberComponents() - numberproducts;
+				component.setNumberComponents(updatedComponentsNumber);
 				int idComponent = component.getId();
-				Component realComponent = componentManager.getComponent(idComponent);
-				int numberComponents = realComponent.getNumberComponents();
-				System.out.println(realComponent);
-				if (componentsRight && modifyNProducts) {
-					int updatedComponentsNumber = numberComponents - numberproducts;
-					realComponent.setNumberComponents(updatedComponentsNumber);
-					componentManager.give(dbManager.getLastId(), idComponent);
-					product.setNumberProducts(numberproducts);
-					/*Product updatedProduct = new Product(dbManager.getLastId(), product.getName(), product.getType(),
-							product.getPrice());*/
-					
-					productManager.update(product);
-					System.out.println(realComponent);
-					componentManager.update(realComponent);
-					creatorCounter++;
-					workerManager.searchByName(workerName);
-					//System.out.println("Enter your worker id: ");
-					System.out.println();
-					workerManager.printWorkers();
-					Integer id_w = new Integer(0);
-					boolean wrongtext3 = false;
-					do {
-						System.out.println("Enter your worker id: ");
-						try {
-							id_w = Integer.parseInt(reader.readLine());
-							wrongtext3 = false;
-						} catch (NumberFormatException ex) {
-								wrongtext3 = true;
-							System.out.println("It's not a int, please enter a int.");
-						}
-					}while(wrongtext3);
-					workerManager.give(id_w, product.getId());
-				} else if (creatorCounter != 0) {
-					System.out.println("Component can't be created because there are no components.");
-					productManager.delete(dbManager.getLastId());
-					break;
-				}
+				componentManager.give(dbManager.getLastId(), idComponent);
+				product.setNumberProducts(numberproducts);
 			}
+			workerManager.printWorkers();
+			Integer id_w = new Integer(0);
+			boolean wrongtext3 = false;
+			do {
+				System.out.println("Enter your worker id: ");
+				try {
+					id_w = Integer.parseInt(reader.readLine());
+					wrongtext3 = false;
+				} catch (NumberFormatException ex) {
+					wrongtext3 = true;
+					System.out.println("It's not a int, please enter a int.");
+				}
+			} while (wrongtext3);
+		} else {
+			System.out.println("A product can't be created if there are no components at all.");
 		}
+
 	}
-	
+
 	private static void generateXML() throws Exception {
-		List<Product> listProducts=productManager.showProducts();
-		for(Product product:listProducts) {
+		List<Product> listProducts = productManager.showProducts();
+		for (Product product : listProducts) {
 			System.out.println(product);
 		}
-		//System.out.println("Introduce the id of the product you want to create the XML from: ");
+		// System.out.println("Introduce the id of the product you want to create the
+		// XML from: ");
 		Integer id = new Integer(0);
 		boolean wrongtext = false;
 		do {
@@ -556,11 +537,11 @@ public class menuCompleto {
 					id = Integer.parseInt(reader.readLine());
 					wrongtext = false;
 				} catch (NumberFormatException ex) {
-						wrongtext = true;
+					wrongtext = true;
 					System.out.println("It's not a int, please enter a int.");
 				}
-			}while(wrongtext);
-		}while(productManager.getProduct(id)==null);
+			} while (wrongtext);
+		} while (productManager.getProduct(id) == null);
 		Product product = productManager.getProduct(id);
 		System.out.println(product);
 		JAXBContext context = JAXBContext.newInstance(Product.class);
@@ -570,7 +551,7 @@ public class menuCompleto {
 		marshal.marshal(product, file);
 		marshal.marshal(product, System.out);
 	}
-	
+
 	private static void createProductXML() throws Exception {
 		JAXBContext context = JAXBContext.newInstance(Product.class);
 		Unmarshaller unmarshal = context.createUnmarshaller();
@@ -600,7 +581,7 @@ public class menuCompleto {
 				System.out.println(file + " was not accesible!");
 				incorrectProduct = true;
 			}
-			
+
 		} while (incorrectProduct);
 		Product product = (Product) unmarshal.unmarshal(file);
 		System.out.println("Added to the database: " + product);
@@ -635,11 +616,10 @@ public class menuCompleto {
 			System.out.println("18. Change your password");
 			System.out.println("0. Go back");
 			int choice = 20;
-			do{
+			do {
 				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			}
-			while(choice<0 || choice>18);
+			} while (choice < 0 || choice > 18);
 			switch (choice) {
 			case 1:
 				searchWorkerByName();
@@ -742,7 +722,7 @@ public class menuCompleto {
 		for (ContractWorker contract : contracts) {
 			System.out.println(contract);
 		}
-		//System.out.println("Choose the ID of the desired contract:");
+		// System.out.println("Choose the ID of the desired contract:");
 		Integer contractId = new Integer(0);
 		boolean wrongtext = false;
 		do {
@@ -750,36 +730,36 @@ public class menuCompleto {
 			try {
 				contractId = Integer.parseInt(reader.readLine());
 				List<Integer> listId = contractWorkerManager.getIds();
-				if(listId.contains(contractId)) {
+				if (listId.contains(contractId)) {
 					wrongtext = false;
-				}else {
+				} else {
 					wrongtext = true;
 				}
 			} catch (NumberFormatException ex) {
-					wrongtext = true;
+				wrongtext = true;
 				System.out.println("It's not a int, please enter a int.");
 			}
-		}while(wrongtext);
-		
+		} while (wrongtext);
+
 		Worker worker = new Worker(name, position, Date.valueOf(start_date), nationality, contractId);
-		
+
 		String username = "";
 		boolean distictUser = false;
 		do {
 			System.out.println("Introduce a username for the worker: ");
 			username = reader.readLine();
 			List<String> existUsernames = workerManager.getUsernames();
-			if(existUsernames.contains(username)) {
+			if (existUsernames.contains(username)) {
 				distictUser = true;
-			}else {
+			} else {
 				distictUser = false;
 			}
-		}while(distictUser);
-		
+		} while (distictUser);
+
 		String UserName = username;
 		System.out.print("Password:");
-		String password = "1234";
-		System.out.println("the default password for a worker is: 1234");
+		String password = getPassword();
+		System.out.println("the default password for a worker is: password");
 		// Create the password's hash
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
@@ -796,7 +776,7 @@ public class menuCompleto {
 
 	private static void fireWorker() throws Exception {
 		// BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		//System.out.println("Choose a worker to delete, type its ID: ");
+		// System.out.println("Choose a worker to delete, type its ID: ");
 		workerManager.printWorkers();
 		Integer worker_id = new Integer(0);
 		boolean wrongtext = false;
@@ -807,13 +787,13 @@ public class menuCompleto {
 					worker_id = Integer.parseInt(reader.readLine());
 					wrongtext = false;
 				} catch (NumberFormatException ex) {
-						wrongtext = true;
+					wrongtext = true;
 					System.out.println("It's not a int, please enter a int.");
 				}
-			}while(wrongtext);
-		}while(workerManager.getWorker(worker_id)==null);
+			} while (wrongtext);
+		} while (workerManager.getWorker(worker_id) == null);
 		Worker worker = workerManager.getWorker(worker_id);
-		
+
 		String name = worker.getUsername();
 		System.out.println(name);
 		userManager.deleteWorker(name);
@@ -842,7 +822,7 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Name: ");
 		String name = reader.readLine();
-		//System.out.println("Price: ");
+		// System.out.println("Price: ");
 		Float price = new Float(0.0);
 		boolean wrongtext = false;
 		do {
@@ -851,13 +831,13 @@ public class menuCompleto {
 				price = Float.parseFloat(reader.readLine());
 				wrongtext = false;
 			} catch (NumberFormatException ex) {
-					wrongtext = true;
+				wrongtext = true;
 				System.out.println("It's not a float, please enter a float.");
 			}
-		}while(wrongtext);
+		} while (wrongtext);
 		System.out.println("Supplier: ");
 		String supplier = reader.readLine();
-		//System.out.println("Number of components: ");
+		// System.out.println("Number of components: ");
 		Integer numbercomponents = new Integer(0);
 		boolean wrongtext1 = false;
 		do {
@@ -869,13 +849,13 @@ public class menuCompleto {
 				wrongtext1 = true;
 				System.out.println("It's not a int, please enter a int.");
 			}
-		}while(wrongtext1);
+		} while (wrongtext1);
 		Component component = new Component(name, price, supplier, numbercomponents);
 		componentManager.add(component);
 	}
 
 	private static void addComponent() throws Exception {
-		//System.out.println("Introduce the selected component's id");
+		// System.out.println("Introduce the selected component's id");
 		List<Component> list_components = componentManager.showComponents();
 		for (Component components : list_components) {
 			System.out.println(components);
@@ -892,13 +872,13 @@ public class menuCompleto {
 					wrongtext = true;
 					System.out.println("It's not a int, please enter a int.");
 				}
-			}while(wrongtext);
-		}while(componentManager.getComponent(id)==null);
+			} while (wrongtext);
+		} while (componentManager.getComponent(id) == null);
 		Component toBeModified = componentManager.getComponent(id);
 		System.out.println(toBeModified);
 		int preexistingNumber = toBeModified.getNumberComponents();
 		System.out.println("The number of components that are now avaiable are: " + preexistingNumber);
-		//System.out.println("Introduce the number of components you want to add: ");
+		// System.out.println("Introduce the number of components you want to add: ");
 		Integer numbercomponents = new Integer(0);
 		boolean wrongtext1 = false;
 		do {
@@ -910,7 +890,7 @@ public class menuCompleto {
 				wrongtext1 = true;
 				System.out.println("It's not a int, please enter a int.");
 			}
-		}while(wrongtext1);
+		} while (wrongtext1);
 		int updatedNumber = preexistingNumber + numbercomponents;
 		// Component updateComponent=new Component(updatedNumber);
 		toBeModified.setNumberComponents(updatedNumber);
@@ -921,7 +901,7 @@ public class menuCompleto {
 		System.out.println("Please, enter the following information: ");
 		System.out.println("Type: ");
 		String type = reader.readLine();
-		//System.out.println("Number of products ");
+		// System.out.println("Number of products ");
 		Integer n_products = new Integer(0);
 		boolean wrongtext = false;
 		do {
@@ -933,8 +913,8 @@ public class menuCompleto {
 				wrongtext = true;
 				System.out.println("It's not a int, please enter a int.");
 			}
-		}while(wrongtext);
-		//System.out.println("Expenditure ");
+		} while (wrongtext);
+		// System.out.println("Expenditure ");
 		Float expenditure = new Float(0.0);
 		boolean wrongtext1 = false;
 		do {
@@ -946,7 +926,7 @@ public class menuCompleto {
 				wrongtext1 = true;
 				System.out.println("It's not a float, please enter a float.");
 			}
-		}while(wrongtext1);
+		} while (wrongtext1);
 		ContractPharmacy contract = new ContractPharmacy(type, expenditure, n_products);
 		System.out.println(contract);
 		contractPharmacyManager.add(contract);
@@ -954,7 +934,7 @@ public class menuCompleto {
 
 	private static void addContractWorker() throws Exception {
 		System.out.println("Please, enter the following information: ");
-		//System.out.println("Bonus: ");
+		// System.out.println("Bonus: ");
 		Float bonus = new Float(0.0);
 		boolean wrongtext = false;
 		do {
@@ -966,8 +946,8 @@ public class menuCompleto {
 				wrongtext = true;
 				System.out.println("It's not a float, please enter a float.");
 			}
-		}while(wrongtext);
-		//System.out.println("Salary: ");
+		} while (wrongtext);
+		// System.out.println("Salary: ");
 		Float salary = new Float(0.0);
 		boolean wrongtext1 = false;
 		do {
@@ -979,7 +959,7 @@ public class menuCompleto {
 				wrongtext1 = true;
 				System.out.println("It's not a float, please enter a float.");
 			}
-		}while(wrongtext1);
+		} while (wrongtext1);
 		System.out.println("Type: ");
 		String type = reader.readLine();
 		ContractWorker contract = new ContractWorker(bonus, salary, type);
@@ -997,7 +977,7 @@ public class menuCompleto {
 		for (ContractPharmacy contract : contracts) {
 			System.out.println(contract);
 		}
-		//System.out.println("Contract: ");
+		// System.out.println("Contract: ");
 		Integer contract_pid = new Integer(0);
 		boolean wrongtext = false;
 		do {
@@ -1009,7 +989,7 @@ public class menuCompleto {
 				wrongtext = true;
 				System.out.println("It's not a int, please enter a int.");
 			}
-		}while(wrongtext);
+		} while (wrongtext);
 		Pharmacy pharmacy = new Pharmacy(name, contract_pid, location);
 		pharmacyManager.add(pharmacy);
 	}
@@ -1032,11 +1012,10 @@ public class menuCompleto {
 			System.out.println("6. Change your password");
 			System.out.println("0. Go back");
 			int choice = 8;
-			do{
+			do {
 				System.out.println("Introduce the number of the option you would like to choose: ");
 				choice = Integer.parseInt(reader.readLine()); // We save the chosen option in an integer
-			}
-			while(choice<0 || choice>6);
+			} while (choice < 0 || choice > 6);
 
 			switch (choice) {
 			case 1:
@@ -1070,7 +1049,7 @@ public class menuCompleto {
 			for (Product product : productList) {
 				System.out.println(product);
 			}
-			//System.out.println("Enter the selected product´s id");
+			// System.out.println("Enter the selected product´s id");
 			Integer id = new Integer(0);
 			boolean wrongtext = false;
 			do {
@@ -1083,8 +1062,8 @@ public class menuCompleto {
 						wrongtext = true;
 						System.out.println("It's not a int, please enter a int.");
 					}
-				}while(wrongtext);
-			}while(productManager.getProduct(id) == null);
+				} while (wrongtext);
+			} while (productManager.getProduct(id) == null);
 			Product toBeModified = productManager.getProduct(id);
 			int preexistingNumber = toBeModified.getNumberProducts();
 			System.out.println("The number of products that are now available are: " + preexistingNumber);
@@ -1094,7 +1073,7 @@ public class menuCompleto {
 			toBeModified.setNumberProducts(updatedNumber);
 			productManager.update(toBeModified);
 			searchPharmacyByName(pharmacyName);
-			//System.out.println("Enter your pharmacy's id: ");
+			// System.out.println("Enter your pharmacy's id: ");
 			Integer id_p = new Integer(0);
 			boolean wrongtext1 = false;
 			do {
@@ -1106,10 +1085,27 @@ public class menuCompleto {
 					wrongtext1 = true;
 					System.out.println("It's not a int, please enter a int.");
 				}
-			}while(wrongtext1);
+			} while (wrongtext1);
 			pharmacyManager.give(id_p, id);
-			System.out.println("If you want to buy another product enter 5, if you don't want to buy another product enter 0.");
+			System.out.println(
+					"If you want to buy another product enter 5, if you don't want to buy another product enter 0.");
 			x = Integer.parseInt(reader.readLine());
 		}
+	}
+	public static String getPassword(int length) {
+		return getPassword(numbers + caps + low_case, length);
+	}
+ 
+	public static String getPassword(String key, int length) {
+		String pswd = "";
+ 
+		for (int i = 0; i < length; i++) {
+			pswd+=(key.charAt((int)(Math.random() * key.length())));
+		}
+ 
+		return pswd;
+	}
+	public static String getPassword() {
+		return getPassword(8);
 	}
 }
