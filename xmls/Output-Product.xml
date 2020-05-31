@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Products name="cc">
-    <type>cc</type>
-    <price>22.0</price>
-    <numberProducts>3</numberProducts>
+<Products name="paracetamol">
+    <type>comprimido</type>
+    <price>2.5</price>
+    <numberProducts>10</numberProducts>
     <components>
         <component id="1">
-            <name>C1</name>
-            <price>55.0</price>
-            <supplier>Empresa1</supplier>
-            <numberComponents>0</numberComponents>
+            <name>hidroxi</name>
+            <price>20.0</price>
+            <supplier>P1</supplier>
+            <numberComponents>20</numberComponents>
         </component>
     </components>
 </Products>

@@ -623,6 +623,7 @@ public class menuCompleto {
 		File file = null;
 		boolean incorrectProduct = false;
 		do {
+			incorrectProduct = false;
 			System.out.println("Type the filename for the XML document (expected in the xmls folder):");
 			String fileName = reader.readLine();
 			file = new File("./xmls/" + fileName);

@@ -14,16 +14,16 @@
 	<!ELEMENT numberComponents (#PCDATA)>
 ]>
 
-<Products name="input1">
-    <type>I1</type>
-    <price>10.0</price>
-    <numberProducts>10</numberProducts>
+<Products name="proxamol">
+    <type>anti-inflammatory</type>
+    <price>9.74</price>
+    <numberProducts>100</numberProducts>
     <components>
         <component id="1">
-            <name>C2</name>
-            <price>44.0</price>
-            <supplier>Empresa2</supplier>
-            <numberComponents>0</numberComponents>
+            <name>Serenoa</name>
+            <price>20.0</price>
+            <supplier>Atienza</supplier>
+            <numberComponents>200</numberComponents>
         </component>
     </components>
 </Products>
