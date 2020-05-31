@@ -500,8 +500,8 @@ public class menuCompleto {
 			} while (wrongtext1);
 			Product product = new Product(name, type, price, numberproducts);
 			// Once we have created the product we have to add it to the DB
-			productManager.add(product);
-			product.setId(dbManager.getLastId());
+			//productManager.add(product);
+			//product.setId(dbManager.getLastId());
 			// Products p = productManager.getProduct(productId)
 			System.out.println("Now you will find all the available components:");
 			List<Component> components = componentManager.showComponents();
@@ -531,12 +531,19 @@ public class menuCompleto {
 				if (numberComponents >= numberproducts) {
 					componentList.add(realComponent);
 				} else {
+					//boolean b1 = false;
+					String validate = "";
 					do {
-						System.out
-								.println("There are not enough components for the number of products you want to add.");
+						System.out.println("There are not enough components for the number of products you want to add.");
+						System.out.println("If you want to exit say yes");
+						validate = reader.readLine();
+						if(validate.equals("yes")) {
+							return;
+						}
 						System.out.println(
 								"Please, enter the id of a valid component (a component that has at least the same number available"
 										+ " as the number of products you want to create.");
+						
 						do {
 							System.out.println("Component Id: ");
 							try {
@@ -549,19 +556,24 @@ public class menuCompleto {
 						} while (wrongtext2);
 						realComponent = componentManager.getComponent(componentId);
 						numberComponents = realComponent.getNumberComponents();
-					} while (componentManager.getComponent(componentId) == null && (numberComponents < numberproducts));
+					} while (componentManager.getComponent(componentId) == null || (numberComponents < numberproducts));
 					componentList.add(realComponent);
 				}
 				System.out.println(
 						"If you want to add another component enter 5, if you don't want to add another component enter 0.");
 				x = Integer.parseInt(reader.readLine());
+				
 			}
+				productManager.add(product);
+				product.setId(dbManager.getLastId());
 			for (Component component : componentList) {
 				int updatedComponentsNumber = component.getNumberComponents() - numberproducts;
 				component.setNumberComponents(updatedComponentsNumber);
 				componentManager.update(component);
 				int idComponent = component.getId();
-				componentManager.give(dbManager.getLastId(), idComponent);
+				
+				//componentManager.give(dbManager.getLastId(), idComponent);
+				componentManager.give(product.getId(), idComponent);
 				product.setNumberProducts(numberproducts);
 			}
 			workerManager.printWorkers();
