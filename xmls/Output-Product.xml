@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Products name="paracetamol">
-    <type>comprimido</type>
-    <price>2.5</price>
-    <numberProducts>10</numberProducts>
+<Products name="Ibuprofeno">
+    <type>Anti-inflamatory</type>
+    <price>40.0</price>
+    <numberProducts>300</numberProducts>
     <components>
         <component id="1">
-            <name>hidroxi</name>
-            <price>20.0</price>
-            <supplier>P1</supplier>
-            <numberComponents>20</numberComponents>
+            <name>Ethanol</name>
+            <price>25.0</price>
+            <supplier>Supplier1</supplier>
+            <numberComponents>300</numberComponents>
         </component>
     </components>
 </Products>
