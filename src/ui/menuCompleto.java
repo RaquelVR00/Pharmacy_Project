@@ -167,8 +167,6 @@ public class menuCompleto {
 		if(exit.contentEquals("yes") || exit.contentEquals("Yes")) {
 			return;
 		}
-		// Get the chosen role from the database
-			roleId = Integer.parseInt(reader.readLine());
 		Role chosenRole = userManager.getRole(roleId);
 		// Create the user and store it
 		User user = new User(username, hash, chosenRole);
@@ -201,7 +199,7 @@ public class menuCompleto {
 			} while (wrongtext);
 			Pharmacy pharmacy = new Pharmacy(pharmacyName, contract_pid, location);
 			pharmacyManager.add(pharmacy);
-		} else if(contracts.isEmpty()){
+		} else if(roleId == 3 && contracts.isEmpty()){
 			System.out.println(
 					"Sorry there are not contracts rigth now, contact with the boss of the pharmaceutical company");
 		}

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2017 Ana Delgado Asiego, Maria Rollano Corroto, Pablo Castro Alija y
+Copyright (c) 2017 Ana Delgado Assiego, Maria Rollano Corroto, Pablo Castro Alija y
  Raquel Vázquez Reza
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
