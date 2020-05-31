@@ -73,7 +73,7 @@ public class menuCompleto {
 		// System.out.println("Do you want to create the tables?");
 		while (true) {
 			System.out.println("What do you want to do?");
-			System.out.println("1. Create a new role");
+			System.out.println("1. Create roles");
 			System.out.println("2. Create a new user");
 			System.out.println("3. Login");
 			System.out.println("0. Exit");
@@ -110,41 +110,65 @@ public class menuCompleto {
 	}
 
 	private static void newRole() throws Exception {
-		String roleName;
-		do {
-			System.out.println("Please type the new role information:");
-			System.out.print("Role name:");
-			roleName = reader.readLine();
-		} while (!roleName.equals("boss") && !roleName.equals("worker") && !roleName.equals("pharmacy"));
+		String roleName="boss";
 		Role role = new Role(roleName);
 		userManager.createRole(role);
+		roleName = "worker";
+		role = new Role(roleName);
+		userManager.createRole(role);
+		roleName = "pharmacy";
+		role = new Role(roleName);
+		userManager.createRole(role);
+		System.out.println("Roles Created!!");
 	}
 
 	private static void newUser() throws Exception {
+		List<Role> roles = userManager.getRoles();
+		if(roles.isEmpty()) {
+			System.out.println("There are not roles, please create the roles");
+			return;
+		}
 		System.out.println("Please type the new user information:");
 		System.out.print("Username:");
 		String username = reader.readLine();
 		System.out.print("Password:");
 		String password = reader.readLine();
+	
 		// Create the password's hash
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] hash = md.digest();
 		// Show all the roles and let the user choose one
-		List<Role> roles = userManager.getRoles();
-		for (Role role : roles) {
-			if (role.getId() != 2) {
-				System.out.println(role);
+		Integer roleId = new Integer (0);
+		boolean wrongtext = true;
+		String exit = "1";
+		do {
+			if(exit.equals("yes") || exit.equals("Yes") ){
+				break;
 			}
-		}
-		System.out.print("Type the chosen role id:");
-		int roleId = Integer.parseInt(reader.readLine());
-		// Get the chosen role from the database
-		while (roleId != 1 && roleId != 3) {
-			System.out.println("Not valid id:");
+			for (Role role : roles) {
+				if (role.getId() != 2) {
+					System.out.println(role);
+				}
+			}
 			System.out.print("Type the chosen role id:");
-			roleId = Integer.parseInt(reader.readLine());
+			try {
+				roleId = Integer.parseInt(reader.readLine());
+				wrongtext = false;
+			} catch (NumberFormatException ex) {
+				wrongtext = true;
+				System.out.println("It's not a int, please enter a int.");
+			}
+			if(roleId != 1 && roleId != 3) {
+				System.out.println("Not valid id, if you want to exit this option say yes:");
+				exit=reader.readLine();
+			}
+		} while (roleId != 1 && roleId != 3);
+		if(exit.contentEquals("yes") || exit.contentEquals("Yes")) {
+			return;
 		}
+		// Get the chosen role from the database
+			roleId = Integer.parseInt(reader.readLine());
 		Role chosenRole = userManager.getRole(roleId);
 		// Create the user and store it
 		User user = new User(username, hash, chosenRole);
@@ -164,7 +188,7 @@ public class menuCompleto {
 				System.out.println(contract);
 			}
 			Integer contract_pid = new Integer(0);
-			boolean wrongtext = false;
+			wrongtext = false;
 			do {
 				System.out.println("Contract: ");
 				try {
@@ -177,7 +201,7 @@ public class menuCompleto {
 			} while (wrongtext);
 			Pharmacy pharmacy = new Pharmacy(pharmacyName, contract_pid, location);
 			pharmacyManager.add(pharmacy);
-		} else {
+		} else if(contracts.isEmpty()){
 			System.out.println(
 					"Sorry there are not contracts rigth now, contact with the boss of the pharmaceutical company");
 		}
