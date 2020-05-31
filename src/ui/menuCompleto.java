@@ -291,7 +291,8 @@ public class menuCompleto {
 				createProductXML();
 				break;
 			case 10:
-				userManager.updateUserName(workerName);
+				String userName = userManager.updateUserName(workerName);
+				workerManager.updateUserName(workerName,userName);
 				return;
 			case 11:
 				userManager.updatePassword(workerName);
@@ -825,18 +826,18 @@ public class menuCompleto {
 		Worker worker = new Worker(name, position, Date.valueOf(start_date), nationality, contractId);
 
 		String username = "";
-		boolean distictUser = false;
+		boolean distinctUser = false;
 		do {
 			System.out.println("Introduce a username for the worker: ");
 			username = reader.readLine();
 			List<String> existUsernames = new ArrayList<String>();
 			existUsernames = workerManager.getUsernames();
 			if (existUsernames.contains(username)) {
-				distictUser = true;
+				distinctUser = true;
 			} else {
-				distictUser = false;
+				distinctUser = false;
 			}
-		} while (distictUser);
+		} while (distinctUser);
 
 		String UserName = username;
 		System.out.print("Password:");

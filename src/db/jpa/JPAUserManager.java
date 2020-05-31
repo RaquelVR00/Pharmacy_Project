@@ -85,7 +85,7 @@ private EntityManager em;
 		return user;
 	}
 	
-	public void updateUserName(String username) {
+	public String updateUserName(String username) {
 		//em.getTransaction().begin();
 		//em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 		//em.getTransaction().commit();
@@ -109,6 +109,7 @@ private EntityManager em;
 		user.setUsername(newName);
 		// End transaction
 		em.getTransaction().commit();
+		return newName;
 	}
 	
 	public void updatePassword(String username){

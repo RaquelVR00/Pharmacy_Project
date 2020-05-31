@@ -216,4 +216,17 @@ public class SQLiteWorkerManager implements WorkerManager {
 		}
 		return stringList;
 	}
+	
+	public void updateUserName(String username, String newusername) {
+		try {
+			String sql = "UPDATE worker SET nameuser=? WHERE nameuser=?";
+			PreparedStatement s = c.prepareStatement(sql);
+			s.setString(2, username);
+			s.setString(1, newusername);
+			s.executeUpdate();
+			s.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

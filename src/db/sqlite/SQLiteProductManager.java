@@ -171,6 +171,7 @@ public class SQLiteProductManager implements ProductManager {
 			e.printStackTrace();
 		}
 	}
+	
 	public void delete(int product_id) {
 		try {
 			String sql = "DELETE FROM product WHERE id=?";

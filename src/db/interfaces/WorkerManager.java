@@ -13,4 +13,5 @@ public interface WorkerManager {
 	public Worker getWorker(int WorkerId);
 	public void give(int workerId, int productId);
 	public List<String> getUsernames();
+	public void updateUserName(String username, String newusername);
 }
